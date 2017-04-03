@@ -20,7 +20,7 @@ public class StringCalculatorTest {
         // Given
         String sentence = "1";
         
-        Integer result = calculator.calc(sentence);
+        Integer result = calculator.calculate(sentence);
         
         // Then
         assertThat(result).isEqualTo(1);
@@ -32,7 +32,7 @@ public class StringCalculatorTest {
         String sentence = "2";
         
         // When
-        Integer result = calculator.calc(sentence);
+        Integer result = calculator.calculate(sentence);
         
         // Then
         assertThat(result).isEqualTo(2);
@@ -44,7 +44,7 @@ public class StringCalculatorTest {
         String sentence = "1+1";
         
         // When
-        Integer result = calculator.calc(sentence);
+        Integer result = calculator.calculate(sentence);
         
         // Then
         assertThat(result).isEqualTo(2);
@@ -57,7 +57,7 @@ public class StringCalculatorTest {
         String sentence = "1+" + Integer.MAX_VALUE;
         
         // When
-        Integer result = calculator.calc(sentence);
+        Integer result = calculator.calculate(sentence);
         
         // Then
         assertThat(result).isEqualTo(2);
@@ -69,7 +69,7 @@ public class StringCalculatorTest {
         String sentence = "1+1+1";
         
         // When
-        Integer result = calculator.calc(sentence);
+        Integer result = calculator.calculate(sentence);
         
         // Then
         assertThat(result).isEqualTo(3);
@@ -81,7 +81,7 @@ public class StringCalculatorTest {
         String sentence = "1-1";
         
         // When
-        Integer result = calculator.calc(sentence);
+        Integer result = calculator.calculate(sentence);
         
         // Then
         assertThat(result).isEqualTo(0);
@@ -93,7 +93,7 @@ public class StringCalculatorTest {
         String sentence = "1+1-1";
         
         // When
-        Integer result = calculator.calc(sentence);
+        Integer result = calculator.calculate(sentence);
         
         // Then
         assertThat(result).isEqualTo(1);
@@ -105,7 +105,7 @@ public class StringCalculatorTest {
         String sentence = "1-1+1";
         
         // When
-        Integer result = calculator.calc(sentence);
+        Integer result = calculator.calculate(sentence);
         
         // Then
         assertThat(result).isEqualTo(1);
@@ -117,7 +117,7 @@ public class StringCalculatorTest {
         String sentence = "1*1";
         
         // When
-        Integer result = calculator.calc(sentence);
+        Integer result = calculator.calculate(sentence);
         
         // Then
         assertThat(result).isEqualTo(1);
@@ -129,7 +129,7 @@ public class StringCalculatorTest {
         String sentence = "2*2*2";
         
         // When
-        Integer result = calculator.calc(sentence);
+        Integer result = calculator.calculate(sentence);
         
         // Then
         assertThat(result).isEqualTo(8);
@@ -141,7 +141,7 @@ public class StringCalculatorTest {
         String sentence = "2+2*2";
         
         // When
-        Integer result = calculator.calc(sentence);
+        Integer result = calculator.calculate(sentence);
         
         // Then
         assertThat(result).isEqualTo(6);
@@ -153,7 +153,7 @@ public class StringCalculatorTest {
         String sentence = "2^0";
         
         // When
-        Integer result = calculator.calc(sentence);
+        Integer result = calculator.calculate(sentence);
         
         // Then
         assertThat(result).isEqualTo(1);
@@ -165,7 +165,7 @@ public class StringCalculatorTest {
         String sentence = "2^1";
         
         // When
-        Integer result = calculator.calc(sentence);
+        Integer result = calculator.calculate(sentence);
         
         // Then
         assertThat(result).isEqualTo(2);
@@ -177,7 +177,7 @@ public class StringCalculatorTest {
         String sentence = "2^6";
         
         // When
-        Integer result = calculator.calc(sentence);
+        Integer result = calculator.calculate(sentence);
         
         // Then
         assertThat(result).isEqualTo(64);
@@ -189,7 +189,7 @@ public class StringCalculatorTest {
         String sentence = "2^3^2";
         
         // When
-        Integer result = calculator.calc(sentence);
+        Integer result = calculator.calculate(sentence);
         
         // Then
         assertThat(result).isEqualTo(64);
@@ -201,7 +201,7 @@ public class StringCalculatorTest {
         String sentence = "2^3*2^2";
         
         // When
-        Integer result = calculator.calc(sentence);
+        Integer result = calculator.calculate(sentence);
         
         // Then
         assertThat(result).isEqualTo(32);

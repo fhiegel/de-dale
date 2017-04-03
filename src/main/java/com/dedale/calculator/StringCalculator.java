@@ -2,10 +2,10 @@ package com.dedale.calculator;
 
 public class StringCalculator {
     
-    public Integer calc(String sentence) {
+    public Integer calculate(String sentence) {
         for (StringToIntegerOperation operation : StringToIntegerOperation.values()) {
             if (operation.mayApplyOperation(sentence)) {
-                return operation.apply(sentence, this::calc);
+                return operation.apply(sentence, this::calculate);
             }
         }
         return Integer.parseInt(sentence);

@@ -1,60 +1,48 @@
 package com.dedale.calculator;
 
+import static com.dedale.calculator.OperandReader.LEFT_TO_RIGHT;
+import static com.dedale.calculator.OperandReader.RIGHT_TO_LEFT;
+
 import java.util.function.Function;
 
 enum StringToIntegerOperation {
-    PLUS("+", (left, right) -> left + right),
     
-    MINUS("-", (left, right) -> left - right),
+    PLUS("+", LEFT_TO_RIGHT, (left, right) -> left + right),
     
-    MULTIPLY("*", (left, right) -> left * right),
+    MINUS("-", LEFT_TO_RIGHT, (left, right) -> left - right),
     
-    POWER("^", (left, right) -> (int) Math.pow(left, right));
+    MULTIPLY("*", LEFT_TO_RIGHT, (left, right) -> left * right),
     
-    private static final String ESCAPE_PREFIX = "\\";
-    
-    private String regex;
-    private String separator;
-    private IntegerOperation operation;
-    
-    private StringToIntegerOperation(String separator, IntegerOperation function) {
-        this.regex = ESCAPE_PREFIX + separator;
-        this.separator = separator;
-        this.operation = function;
-    }
+    POWER("^", RIGHT_TO_LEFT, (left, right) -> (int) Math.pow(left, right));
     
     @FunctionalInterface
     interface IntegerOperation {
         Integer apply(Integer left, Integer right);
     }
     
+    private static final String ESCAPE_PREFIX = "\\";
+    
+    private String symbol;
+    private OperandReader operandReader;
+    private IntegerOperation operation;
+    
+    private StringToIntegerOperation(String symbol, OperandReader operandReader, IntegerOperation function) {
+        this.symbol = symbol;
+        this.operandReader = operandReader;
+        this.operation = function;
+    }
+    
     public boolean mayApplyOperation(String appliyableString) {
         if (appliyableString == null || appliyableString.isEmpty()) {
             return false;
         }
-        return appliyableString.matches(".+" + regex + ".+");
+        return appliyableString.matches(".+" + ESCAPE_PREFIX + symbol + ".+");
     }
     
     public Integer apply(String sentence, Function<String, Integer> parser) {
-        String left = getLeftOperand(sentence);
-        String right = getRightOperand(sentence);
+        String left = operandReader.readLeftOperand(sentence, symbol);
+        String right = operandReader.readRightOperand(sentence, symbol);
         return operation.apply(parser.apply(left), parser.apply(right));
     }
     
-    private String getLeftOperand(String sentence) {
-        if (this.equals(POWER)) {
-            return sentence.subSequence(0, sentence.lastIndexOf(separator)).toString();
-        }
-        String[] sentenceAsArray = sentence.split(regex, 2);
-        return sentenceAsArray[0];
-    }
-    
-    private String getRightOperand(String sentence) {
-        if (this.equals(POWER)) {
-            String[] split = sentence.split(regex);
-            return split[split.length - 1];
-        }
-        String[] sentenceAsArray = sentence.split(regex, 2);
-        return sentenceAsArray[1];
-    }
 }
