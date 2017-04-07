@@ -1,10 +1,17 @@
 package com.dedale.calculator;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.anyInt;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
+
+import java.util.Arrays;
 
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
+
+import com.dedale.dice.DiceSum;
 
 public class StringCalculatorTest {
     
@@ -206,5 +213,23 @@ public class StringCalculatorTest {
         // Then
         assertThat(result).isEqualTo(32);
     }
-
+    
+    @Test
+    public void returns_3_for_throwing_1d4() throws Exception {
+        // Given
+        DiceSum adaptee = mock(DiceSum.class);
+        when(adaptee.rollKindOf(anyInt(), anyInt())).thenReturn(3);
+        
+        StringToIntegerOperation dice = new StringToIntegerOperation("d", OperandReader.LEFT_TO_RIGHT, (l,r) -> SumDiceRollsOperation.sumDices(adaptee, l, r));
+        calculator = new StringCalculator(Arrays.asList(dice));
+        
+        String sentence = "1d4";
+        
+        // When
+        Integer result = calculator.calculate(sentence);
+        
+        // Then
+        assertThat(result).isEqualTo(3);
+    }
+    
 }

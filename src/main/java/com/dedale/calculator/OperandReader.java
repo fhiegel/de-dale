@@ -12,6 +12,7 @@ enum OperandReader {
     }
     
     private static final String ESCAPE_PREFIX = "\\";
+    private static final String REGEXP_SYMBOLS = "+-*^";
     
     private OperandExtractor left;
     private OperandExtractor right;
@@ -22,11 +23,15 @@ enum OperandReader {
     }
     
     public String readLeftOperand(String sentence, String symbol) {
-        return left.extract(sentence, ESCAPE_PREFIX + symbol);
+        return left.extract(sentence, escapeSymbol(symbol));
     }
     
     public String readRightOperand(String sentence, String symbol) {
-        return right.extract(sentence, ESCAPE_PREFIX + symbol);
+        return right.extract(sentence, escapeSymbol(symbol));
+    }
+
+    private String escapeSymbol(String symbol) {
+        return REGEXP_SYMBOLS.contains(symbol) ? ESCAPE_PREFIX + symbol : symbol;
     }
     
     private static String leftOfLeftmost(String sentence, String regex) {

@@ -1,32 +1,17 @@
 package com.dedale.calculator;
 
-import static com.dedale.calculator.OperandReader.LEFT_TO_RIGHT;
-import static com.dedale.calculator.OperandReader.RIGHT_TO_LEFT;
-
 import java.util.function.Function;
 
-enum StringToIntegerOperation {
-    
-    PLUS("+", LEFT_TO_RIGHT, (left, right) -> left + right),
-    
-    MINUS("-", LEFT_TO_RIGHT, (left, right) -> left - right),
-    
-    MULTIPLY("*", LEFT_TO_RIGHT, (left, right) -> left * right),
-    
-    POWER("^", RIGHT_TO_LEFT, (left, right) -> (int) Math.pow(left, right));
-    
-    @FunctionalInterface
-    interface IntegerOperation {
-        Integer apply(Integer left, Integer right);
-    }
+class StringToIntegerOperation {
     
     private static final String ESCAPE_PREFIX = "\\";
+    private static final String REGEXP_SYMBOLS = "+-*^";
     
     private String symbol;
     private OperandReader operandReader;
     private IntegerOperation operation;
     
-    private StringToIntegerOperation(String symbol, OperandReader operandReader, IntegerOperation function) {
+    StringToIntegerOperation(String symbol, OperandReader operandReader, IntegerOperation function) {
         this.symbol = symbol;
         this.operandReader = operandReader;
         this.operation = function;
@@ -36,7 +21,11 @@ enum StringToIntegerOperation {
         if (appliyableString == null || appliyableString.isEmpty()) {
             return false;
         }
-        return appliyableString.matches(".+" + ESCAPE_PREFIX + symbol + ".+");
+        if (REGEXP_SYMBOLS.contains(symbol)) {
+            return appliyableString.matches(".+" + ESCAPE_PREFIX + symbol + ".+");
+        } else {
+            return appliyableString.matches(".+" + symbol + ".+");
+        }
     }
     
     public Integer apply(String sentence, Function<String, Integer> parser) {
