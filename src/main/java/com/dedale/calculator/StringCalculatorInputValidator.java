@@ -12,7 +12,7 @@ public class StringCalculatorInputValidator {
     }
     
     public boolean validate(String input) {
-        return stringCalculator.getOperations().stream().anyMatch(o -> o.mayApplyOperation(input)) || input.matches("\\d+");
+        return stringCalculator.getOperations().stream().anyMatch(o -> o.mayApplyOperation(input)) || input.matches("\\s*\\d+\\s*");
     }
     
 }

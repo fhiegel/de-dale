@@ -2,13 +2,10 @@ package com.dedale.calculator;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import java.util.Collections;
-
 import org.junit.Test;
 
 public class StringCalculatorInputValidatorTest {
     
-    static final StringCalculator EMPTY_CALCULATOR = new StringCalculator(Collections.emptyList());
     static final StringCalculator ADD_CALCULATOR = new StringCalculator(new OperationListBuilder()
             .addOperation()
             .withSymbol("+")
@@ -75,6 +72,18 @@ public class StringCalculatorInputValidatorTest {
         
         // Then
         assertThat(valid).isFalse();
+    }
+    
+    @Test
+    public void should_validate_number_with_spaces() throws Exception {
+        // Given
+        StringCalculatorInputValidator validator = new StringCalculatorInputValidator(ADD_CALCULATOR);
+        
+        // When
+        boolean valid = validator.validate("  123 ");
+        
+        // Then
+        assertThat(valid).isTrue();
     }
     
 }
