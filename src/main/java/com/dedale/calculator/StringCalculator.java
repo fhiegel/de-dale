@@ -18,6 +18,10 @@ public class StringCalculator {
         this.operations = operations;
     }
     
+    Collection<StringToIntegerOperation> getOperations() {
+        return operations;
+    }
+
     static OperationListBuilder beginBuildOperations() {
         return new OperationListBuilder()
                 
@@ -58,7 +62,7 @@ public class StringCalculator {
                 return operation.apply(sentence, this::calculate);
             }
         }
-        return Integer.parseInt(sentence);
+        return Integer.parseInt(sentence.trim());
     }
     
 }

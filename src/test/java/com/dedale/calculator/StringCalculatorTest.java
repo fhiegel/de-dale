@@ -18,7 +18,7 @@ public class StringCalculatorTest {
     private StringCalculator calculator;
     
     @Before
-    public void initializeDicecalcr() throws Exception {
+    public void initializeCalculator() throws Exception {
         calculator = new StringCalculator();
     }
     
@@ -49,6 +49,18 @@ public class StringCalculatorTest {
     public void returns_two_when_string_oneplusone_given() throws Exception {
         // Given
         String sentence = "1+1";
+        
+        // When
+        Integer result = calculator.calculate(sentence);
+        
+        // Then
+        assertThat(result).isEqualTo(2);
+    }
+    
+    @Test
+    public void returns_two_for_oneplusone_with_space() throws Exception {
+        // Given
+        String sentence = "1 + 1";
         
         // When
         Integer result = calculator.calculate(sentence);

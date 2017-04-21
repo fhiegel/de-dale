@@ -22,9 +22,9 @@ class StringToIntegerOperation {
             return false;
         }
         if (REGEXP_SYMBOLS.contains(symbol)) {
-            return appliyableString.matches(".+" + ESCAPE_PREFIX + symbol + ".+");
+            return appliyableString.matches("\\d+" + ESCAPE_PREFIX + symbol + "\\d+");
         } else {
-            return appliyableString.matches(".+" + symbol + ".+");
+            return appliyableString.matches("\\d+" + symbol + "\\d+");
         }
     }
     

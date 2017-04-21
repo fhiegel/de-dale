@@ -8,19 +8,24 @@ import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+import com.dedale.calculator.StringCalculator;
+import com.dedale.calculator.StringCalculatorInputValidator;
+
 @Path("dices")
 public class DiceResource {
     
     @Inject
-    private ResourceValidator validator;
+    private StringCalculator calculator;
+    @Inject
+    private StringCalculatorInputValidator validator;
     
     @POST
     @Produces(MediaType.TEXT_PLAIN)
     public String defaultRoll(String diceSentence) {
-        if(!validator.validate(diceSentence)){
-            throw new WebApplicationException("Cannot parse dice sentence. sentence:"+diceSentence, Response.Status.BAD_REQUEST);
+        if (!validator.validate(diceSentence)) {
+            throw new WebApplicationException("Cannot parse dice sentence. sentence:" + diceSentence, Response.Status.BAD_REQUEST);
         }
-        return diceSentence;
+        return calculator.calculate(diceSentence).toString();
     }
     
 }
