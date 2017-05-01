@@ -23,7 +23,10 @@
 		<maven.compiler.source>${java.version}</maven.compiler.source>
 		<maven.compiler.target>${java.version}</maven.compiler.target>
 		<maven-compiler-plugin.version>3.6.1</maven-compiler-plugin.version>
-		
+		<!-- APACHE -->
+		<apache.lang.version>3.4</apache.lang.version>
+		<apache.common.io.version>2.5</apache.common.io.version>
+
 		<!-- Tests -->
 		<junit.version>4.12</junit.version>
 		<jersey-test.version>2.25.1</jersey-test.version>
@@ -34,7 +37,6 @@
 	</properties>
 
 	<build>
-		<finalName>de-dale</finalName>
 		<plugins>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
@@ -58,25 +60,27 @@
 	</dependencyManagement>
 
 	<dependencies>
+	   <!-- JERSEY -->
 		<dependency>
 			<groupId>org.glassfish.jersey.containers</groupId>
 			<artifactId>jersey-container-servlet</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>org.glassfish.jersey.media</groupId>
-			<artifactId>jersey-media-moxy</artifactId>
+			<artifactId>jersey-media-json-jackson</artifactId>
 		</dependency>
+
 
 		<!-- APACHE -->
 		<dependency>
 			<groupId>org.apache.commons</groupId>
 			<artifactId>commons-lang3</artifactId>
-			<version>3.4</version>
+			<version>${apache.lang.version}</version>
 		</dependency>
 		<dependency>
-			<groupId>org.apache.commons</groupId>
+			<groupId>commons-io</groupId>
 			<artifactId>commons-io</artifactId>
-			<version>1.3.2</version>
+			<version>${apache.common.io.version}</version>
 		</dependency>
 
 		<!-- LOG4J -->
@@ -125,7 +129,6 @@
 		<dependency>
 			<groupId>org.glassfish.jersey.test-framework.providers</groupId>
 			<artifactId>jersey-test-framework-provider-inmemory</artifactId>
-			<version>${jersey-test.version}</version>
 			<scope>test</scope>
 		</dependency>
 
