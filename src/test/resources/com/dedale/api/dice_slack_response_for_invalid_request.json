@@ -1,0 +1,12 @@
+{
+    "attachments": [
+        {
+            "author_name": "Dummy User",
+            "color": "#ff0000",
+            "mrkdwn_in" : [ "text" ],
+            "text": "Impossible de lancer la définition de dé suivante : `not a dice Sentense`"
+        }
+    ],
+    "mrkdwn" : true,
+    "response_type": "in_channel"
+}
