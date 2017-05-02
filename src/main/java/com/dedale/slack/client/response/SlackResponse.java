@@ -2,6 +2,7 @@ package com.dedale.slack.client.response;
 
 import static com.dedale.slack.client.response.SlackResponseType.EPHEMERAL;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import com.dedale.utils.JsonUtils;
@@ -21,7 +22,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  * To enable formatting on attachment fields, set the mrkdwn_in array on each
  * attachment to the list of fields to process. Some examples:
  */
-@JsonInclude(Include.NON_NULL)
+@JsonInclude(Include.NON_EMPTY)
 public class SlackResponse {
 
     private String text;
@@ -29,7 +30,13 @@ public class SlackResponse {
     @JsonProperty("response_type")
     private SlackResponseType responseType = EPHEMERAL;
 
-    private List<String> attachments;
+    private List<SlackResponseAttachment> attachments = new ArrayList<>();
+    
+    @JsonProperty("mrkdwn")
+    private boolean markdown = true;
+    
+    @JsonProperty("username")
+    private String userName;
 
     SlackResponse() {
     }
@@ -50,16 +57,20 @@ public class SlackResponse {
         this.responseType = responseType;
     }
 
-    public List<String> getAttachments() {
+    public List<SlackResponseAttachment> getAttachments() {
         return attachments;
     }
 
-    void setAttachments(List<String> attachments) {
+    void setAttachments(List<SlackResponseAttachment> attachments) {
         this.attachments = attachments;
     }
 
+    void addAttachment(SlackResponseAttachment attachment) {
+        getAttachments().add(attachment);
+    }
+
     // Object implementation methods
-    
+
     @Override
     public String toString() {
         return getClass().getSimpleName() + " " + JsonUtils.asJson(this);

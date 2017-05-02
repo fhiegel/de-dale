@@ -11,14 +11,14 @@ public class SlackResponseBuilder {
     }
 
     // Text
-    
+
     public SlackResponseBuilder withText(String text) {
         bean.setText(text);
         return this;
     }
 
     // ResponseType
-    
+
     public SlackResponseBuilder inChannel() {
         return withResponseType(SlackResponseType.IN_CHANNEL);
     }
@@ -31,14 +31,24 @@ public class SlackResponseBuilder {
         bean.setResponseType(responseType);
         return this;
     }
-    
+
     // Attachments
 
-    public SlackResponseBuilder withAttachments(List<String> attachments) {
+    public SlackResponseAttachmentBuilder<SlackResponseBuilder> addAttachment() {
+        return new SlackResponseAttachmentBuilder<>(this::addAttachment, this);
+        
+    }
+
+    private SlackResponseBuilder addAttachment(SlackResponseAttachment attachment) {
+        bean.addAttachment(attachment);
+        return this;
+    }
+
+    public SlackResponseBuilder withAttachments(List<SlackResponseAttachment> attachments) {
         bean.setAttachments(attachments);
         return this;
     }
-    
+
     // Build in methods
 
     public SlackResponse build() {
