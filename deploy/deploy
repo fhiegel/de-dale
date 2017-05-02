@@ -1,0 +1,25 @@
+#
+# Deployment scripts for De-Dale
+#
+
+# Configuration
+appName='de-dale'
+basedir="$(pwd)"
+targetDir="${basedir}/target"
+
+### Stop TOMCAT ##########
+sh $TOMCAT_HOME/bin/shutdown.sh
+
+### DEPLOY ###############
+versionPattern="*SNAPSHOT.war"
+deployFile="$(find ${targetDir} -name ${versionPattern} | sort -r | head -n 1)"
+
+echo ------------------------------
+echo "--- Deploy : ${deployFile}"
+echo ------------------------------
+
+rm -R $TOMCAT_HOME/webapps/${appName}*
+cp ${deployFile} $TOMCAT_HOME/webapps/${appName}.war
+
+### Start TOMCAT #########
+sh $TOMCAT_HOME/bin/startup.sh
