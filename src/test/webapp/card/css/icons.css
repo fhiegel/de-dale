@@ -1,0 +1,27 @@
+@font-face {
+	font-family: 'de-dale-card-icons';
+	src: url('../fonts/de-dale-card-icons.eot');
+	src: url('../fonts/de-dale-card-icons.eot?#iefix')
+		format('embedded-opentype'), url('../fonts/de-dale-card-icons.woff')
+		format('woff'), url('../fonts/de-dale-card-icons.ttf')
+		format('truetype'),
+		url('../fonts/de-dale-card-icons.svg#de-dale-card-icons')
+		format('svg');
+	font-weight: normal;
+	font-style: normal;
+}
+
+[class*='icon-card-']:before {
+	display: inline-block;
+	font-family: 'de-dale-card-icons';
+	font-style: normal;
+	font-weight: normal;
+	line-height: 1;
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+	/*vertical-align: sub;*/
+}
+
+.icon-card-hexabyrinth:before {
+	content: '\0048';
+}
