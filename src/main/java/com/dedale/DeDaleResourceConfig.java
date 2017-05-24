@@ -5,12 +5,15 @@ import org.glassfish.jersey.server.ResourceConfig;
 
 import com.dedale.calculator.StringCalculator;
 import com.dedale.calculator.StringCalculatorInputValidator;
+import com.dedale.cards.CardFeature;
 import com.dedale.slack.client.SlackClientFeature;
+import com.dedale.utils.JsonConfiguration;
 
 public class DeDaleResourceConfig extends ResourceConfig {
     
     public DeDaleResourceConfig() {
         packages("com.dedale.api");
+        register(JsonConfiguration.class);
         
         register(new AbstractBinder() {
             @Override
@@ -21,6 +24,7 @@ public class DeDaleResourceConfig extends ResourceConfig {
         });
         
         register(SlackClientFeature.class);
+        register(CardFeature.class);
     }
     
 }

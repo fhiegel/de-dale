@@ -10,7 +10,7 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.MultivaluedMap;
 import javax.ws.rs.ext.MessageBodyWriter;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
+import com.dedale.utils.JsonUtils;
 
 public class SlackResponseWriter implements MessageBodyWriter<SlackResponse> {
 
@@ -29,7 +29,7 @@ public class SlackResponseWriter implements MessageBodyWriter<SlackResponse> {
     public void writeTo(SlackResponse slackResponse, Class<?> type, Type genericType, Annotation[] annotations, MediaType mediaType,
             MultivaluedMap<String, Object> httpHeaders, OutputStream entityStream)
             throws IOException, WebApplicationException {
-        new ObjectMapper().writeValue(entityStream, slackResponse);
+        JsonUtils.writeValue(entityStream, slackResponse);
     }
 
 }
