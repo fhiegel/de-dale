@@ -5,6 +5,22 @@
  * .card-item.background-color = maincolor +40% lighter, opacity 0.75
  * .card-item.border-color = maincolor +40% lighter, opacity 1
  */
+.white.card-shape{
+	background-color: rgba(255, 255, 255, 1);
+} 
+ .white .card {
+	background-color: rgba(255, 255, 255, 1);
+}
+
+.white .card-item {
+	background-color: rgba(255, 255, 255, 0.75);
+	border-color: rgba(255, 255, 255, 1);
+}
+
+.white .card-field {
+	border-color: rgba(255, 255, 255, 1);
+}
+ 
 .green .card {
 	background-color: rgba(0, 128, 0, 1);
 }

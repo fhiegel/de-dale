@@ -1,10 +1,20 @@
 package com.dedale.cards;
 
-import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 
+import lombok.Getter;
+
+@Getter
 public class CardContainer {
     
-    public Collection<Card> cards = new ArrayList<>();
+    private Collection<Card> cards = Collections.emptyList();
     
+    public CardContainer() {
+    }
+    
+    public CardContainer(Collection<Card> cards) {
+        this.cards = Collections.unmodifiableCollection(cards);
+    }
+
 }

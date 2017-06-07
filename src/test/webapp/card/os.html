@@ -1,0 +1,598 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>git-vah</title>
+	<link rel="stylesheet" type="text/css" media="screen, print"
+		href="css/screen.css">
+	<link rel="stylesheet" type="text/css" media="print"
+		href="css/print.css">
+	<link rel="stylesheet" type="text/css" href="css/icons.css">
+	<link rel="stylesheet" type="text/css" href="css/colors.css">
+	<style>
+		ul {
+			padding-left:1.3em;
+			margin-top: 0.3em;
+			margin-bottom: 0.3em;
+		}
+		ul ul {
+			padding-left:1.3em;
+			margin-top: 0;
+			margin-bottom: 0;
+		}
+		
+		.no-way {
+			display: none;
+		}
+	</style>
+</head>
+
+<body>
+	<div class="card-container">
+	
+		<!--
+		  -	Lucky Lucy
+		  -->
+		<div class="card-shape gray">
+			<div class="card">
+				<div class="card-item emphasized short">
+					<span class="card-header-name">Chance (p.58)</span>
+				</div>
+				<div class="card-item card-long-text" style="font-size: 0.90em;">
+					<ul>
+						<li><b>Repousser les limites :</b> Ajouter l’indice de CHC au test, avant ou après le lancer. Appliquer <i>"Règle des Six"</i> et <i>"No Limits"</i></li>
+						<li><b>Seconde chance :</b> Relancer tous les dés en échec. N’annule pas les complications, ou échecs critiques.</li>
+						<li><b>Prendre l’initiative :</b> Personnage joue en premier quel que soit son score, pour un tour de combat.</li>
+						<li><b>Blitz :</b> Lancer 5 dés d’initative pour un tour de combat.</li>
+						<li><b>De justesse :</b> Annuler les effets d’une complication. Changer un échec critique en simple complication.</li>
+						<li><b>Ultime action :</b> {CON + VOL} (3) SI mis hors combat, le personnage peut faire une dernière unique action (tout type).</li>
+					</ul>
+				</div>
+			</div>
+		</div>
+		
+		<div class="card-shape gray">
+			<div class="card">
+				<div class="card-item emphasized short">
+					<span class="card-header-name">Leadership (p.144)</span>
+				</div>
+				
+				<div class="card-item short no-padding">
+					<div class="card-field-container">
+						<div class="card-field">
+							<span class="card-field-value" style="font-size: 0.75em;">{Leadership + CHA} [Sociale]</span>
+						</div>
+						<div class="card-field">
+							<span class="card-field-value" style="font-size: 0.75em;">Action complexe</span>
+						</div>
+					</div>
+				</div>
+				<div class="card-item emphasized short">
+					<span class="card-field-header">Commandement</span>
+				</div>
+				<div class="card-item card-long-text" style="font-size: 0.85em;">
+					<ul>
+						<li>Résistance : Leadership + Volonté [Sociale]</li>
+						<li>La cible accepte le personnage commme leader pour un tour de combat par succès excédentaire.
+					</ul>
+				</div>
+				<div class="card-item emphasized short">
+					<span class="card-field-header">Inspiration</span>
+				</div>
+				<div class="card-item card-long-text " style="font-size: 0.85em;">
+					Les succès agissent comme un <i>test d'éqauipe</i> sur pour un subordonné.
+				</div>
+				<div class="card-item emphasized short">
+					<span class="card-field-header">Ralliement</span>
+				</div>
+				<div class="card-item card-long-text" style="font-size: 0.85em;">
+					Tous les subordonnés ajoutent 1 à leur score d'initiative pour chaque 2 succès.
+				</div>
+			</div>
+		</div>
+		
+		<!--
+		  -	Bryan
+		  -->
+		<div class="card-shape gray">
+			<div class="card">
+				<div class="card-item emphasized short">
+					<span class="card-header-name">Attaque & Défense (p.174)</span>
+				</div>
+				<div class="card-item emphasized short">
+					<span class="card-field-header">Déclarer l'attaque</span>
+				</div>
+				<div class="card-item">
+					<span class="card-field-value" style="font-size: 0.85em;">{Compétence de combat + Attribut<br>&nbsp;&nbsp;&nbsp;&nbsp; + Modificateurs} [Limite]</span>
+				</div>
+				
+				<div class="card-item emphasized short">
+					<span class="card-field-header">Déclarer le mode de défense</span>
+				</div>
+				<div class="card-item short">
+					<span class="card-field-header">Par défaut</span>
+					<span class="card-field-value" style="font-size: 0.85em;">{REA + INT}</span>
+				</div>
+				<div class="card-item no-padding">
+					<div class="card-field-container">
+						<div class="card-field">
+							<span class="card-field-value" style="font-size: 0.85em;">Esquive</span>
+						</div>
+						<div class="card-field">
+							<span class="card-field-value" style="font-size: 0.85em;">Blocage</span>
+						</div>
+						<div class="card-field">
+							<span class="card-field-value" style="font-size: 0.85em;">Défense totale</span>
+						</div>
+					</div>
+				</div>
+				<div class="card-item">
+					La meilleure stratégie de défense ? Se mettre <i>A couvert</i>.
+				</div>
+				
+				<div class="card-item emphasized short">
+					<span class="card-field-header">Résoudre : Attaque vs Défense</span>
+				</div>
+				<div class="card-item">
+					<ul>
+						<li>Les succès de l'attaque sont ajoutés aux dégâts</li>
+						<li>Attaque = Défense : <i>Effleurement</i><br> => pas de dégâts, mais effets appliqués (poison, etc.)</li>
+					</ul>
+				</div>
+			</div>
+		</div>
+		
+		
+		<div class="card-shape gray">
+			<div class="card">
+				<div class="card-item emphasized short">
+					<span class="card-header-name">Dégâts & Armure (p.175)</span>
+				</div>
+				
+				<div class="card-item emphasized short">
+					<span class="card-field-header">Dégâts*</span>
+				</div>
+				<div class="card-item">
+					<span class="card-field-value" style="font-size: 0.85em;">VD + Succès excédentaires de l’Attaque</span>
+				</div>
+				
+				<div class="card-item emphasized short">
+					<span class="card-field-header">Armure*</span>
+				</div>
+				<div class="card-item">
+					<span class="card-field-value" style="font-size: 0.85em;">Armure - PA</span>
+				</div>
+				
+				<div class="card-item emphasized short">
+					<span class="card-field-header">Type de dégâts</span>
+				</div>
+				<div class="card-item" style="font-size: 0.85em;">
+					<ul>
+						<li>Armure* - Dégâts* >= 0 :<br>&nbsp;&nbsp;&nbsp;&nbsp;Dégâts physiques</li>
+						<li>Armure* - Dégâts* < 0 :<br>&nbsp;&nbsp;&nbsp;&nbsp;Dégâts étourdissants</li>
+					</ul>
+				</div>
+				<div class="card-item card-long-text " style="font-size: 0.85em;">
+					<ul>
+						<li>Certaines armes n'infligent que des dégâts étourdissants</li>
+						<li>Lorsque le moniteur de condition étourdissant est plein, tous les dégâts sont physiques.</li>
+					</ul>
+				</div>
+				
+				<div class="card-item emphasized short">
+					<span class="card-field-header">Résoudre</span>
+					<span class="card-field-value" style="font-size: 0.85em;">Dégâts* - {Armure* + CON}</span>
+				</div>
+			</div>
+		</div>
+		  
+		<!--
+		  -	Katarn
+		  -->
+		  
+		<div class="card-shape gray">
+			<div class="card">
+				<div class="card-item emphasized short">
+					<span class="card-header-name">Attaque & Défense (p.174)</span>
+				</div>
+				<div class="card-item emphasized short">
+					<span class="card-field-header">Déclarer l'attaque</span>
+				</div>
+				<div class="card-item">
+					<span class="card-field-value" style="font-size: 0.85em;">{Compétence de combat + Attribut<br>&nbsp;&nbsp;&nbsp;&nbsp; + Modificateurs} [Limite]</span>
+				</div>
+				
+				<div class="card-item emphasized short">
+					<span class="card-field-header">Déclarer le mode de défense</span>
+				</div>
+				<div class="card-item short">
+					<span class="card-field-header">Par défaut</span>
+					<span class="card-field-value" style="font-size: 0.85em;">{REA + INT}</span>
+				</div>
+				<div class="card-item no-padding">
+					<div class="card-field-container">
+						<div class="card-field">
+							<span class="card-field-value" style="font-size: 0.85em;">Esquive</span>
+						</div>
+						<div class="card-field">
+							<span class="card-field-value" style="font-size: 0.85em;">Blocage</span>
+						</div>
+						<div class="card-field">
+							<span class="card-field-value" style="font-size: 0.85em;">Défense totale</span>
+						</div>
+					</div>
+				</div>
+				<div class="card-item">
+					La meilleure stratégie de défense ? Se mettre <i>A couvert</i>.
+				</div>
+				
+				<div class="card-item emphasized short">
+					<span class="card-field-header">Résoudre : Attaque vs Défense</span>
+				</div>
+				<div class="card-item">
+					<ul>
+						<li>Les succès de l'attaque sont ajoutés aux dégâts</li>
+						<li>Attaque = Défense : <i>Effleurement</i><br> => pas de dégâts, mais effets appliqués (poison, etc.)</li>
+					</ul>
+				</div>
+			</div>
+		</div>
+		
+		
+		<div class="card-shape gray">
+			<div class="card">
+				<div class="card-item emphasized short">
+					<span class="card-header-name">Dégâts & Armure (p.175)</span>
+				</div>
+				
+				<div class="card-item emphasized short">
+					<span class="card-field-header">Dégâts*</span>
+				</div>
+				<div class="card-item">
+					<span class="card-field-value" style="font-size: 0.85em;">VD + Succès excédentaires de l’Attaque</span>
+				</div>
+				
+				<div class="card-item emphasized short">
+					<span class="card-field-header">Armure*</span>
+				</div>
+				<div class="card-item">
+					<span class="card-field-value" style="font-size: 0.85em;">Armure - PA</span>
+				</div>
+				
+				<div class="card-item emphasized short">
+					<span class="card-field-header">Type de dégâts</span>
+				</div>
+				<div class="card-item" style="font-size: 0.85em;">
+					<ul>
+						<li>Armure* - Dégâts* >= 0 :<br>&nbsp;&nbsp;&nbsp;&nbsp;Dégâts physiques</li>
+						<li>Armure* - Dégâts* < 0 :<br>&nbsp;&nbsp;&nbsp;&nbsp;Dégâts étourdissants</li>
+					</ul>
+				</div>
+				<div class="card-item card-long-text " style="font-size: 0.85em;">
+					<ul>
+						<li>Certaines armes n'infligent que des dégâts étourdissants</li>
+						<li>Lorsque le moniteur de condition étourdissant est plein, tous les dégâts sont physiques.</li>
+					</ul>
+				</div>
+				
+				<div class="card-item emphasized short">
+					<span class="card-field-header">Résoudre</span>
+					<span class="card-field-value" style="font-size: 0.85em;">Dégâts* - {Armure* + CON}</span>
+				</div>
+			</div>
+		</div>
+		
+		<div class="card-shape gray">
+			<div class="card">
+				<div class="card-item emphasized short">
+					<span class="card-header-name">Lancer un sort</span>
+				</div>
+				<div class="card-item short">
+					<span class="card-field-value" style="font-size: 0.85em;">{Lancement de sort + Magie} [Puissance]</span>
+				</div>
+				<div class="card-item emphasized short">
+					<span class="card-field-header">Résister au Drain</span>
+				</div>
+				<div class="card-item no-padding">
+					<div class="card-field-container">
+						<div class="card-field">
+							<span class="card-field-value" style="font-size: 0.85em;">{LOG + VOL}</span>
+						</div>
+						<div class="card-field">
+							<span class="card-field-value" style="font-size: 0.85em;">{LOG + CHA}</span>
+						</div>
+					</div>
+				</div>
+				<div class="card-item emphasized short">
+					<span class="card-field-header">Détails (p.)</span>
+				</div>
+				<div class="card-item card-long-text">
+					<ul>
+						<li>Choix du sort</li>
+						<li>Choix de la cible
+							<ul>
+								<li>Contact (C)</li>
+								<li>Champ de vision (CdV)</li>
+							</ul>
+						</li>
+						<li>Choix de la puissance (P)</li>
+						<li>Lancer le sort</li>
+						<li>Résister au Drain
+							<ul>
+								<li>Le Drain est fonction du sort et de sa Puissance</li>
+								<li>Résistance <br> LOG+VOL ou CHA+VOL</li>
+							</ul>
+						</li>
+					</ul>
+				</div>
+			</div>
+		</div>
+	
+	</div>
+	<div class="card-container">
+		
+		<!--
+		  -	Panther
+		  -->
+		<div class="card-shape graygray">
+			<div class="card">
+				<div class="card-item emphasized short">
+					<span class="card-header-name">Lancer un sort</span>
+				</div>
+				<div class="card-item short">
+					<span class="card-field-value" style="font-size: 0.85em;">{Lancement de sort + Magie} [Puissance]</span>
+				</div>
+				<div class="card-item emphasized short">
+					<span class="card-field-header">Résister au Drain</span>
+				</div>
+				<div class="card-item no-padding">
+					<div class="card-field-container">
+						<div class="card-field">
+							<span class="card-field-value" style="font-size: 0.85em;">{LOG + VOL}</span>
+						</div>
+						<div class="card-field">
+							<span class="card-field-value" style="font-size: 0.85em;">{LOG + CHA}</span>
+						</div>
+					</div>
+				</div>
+				<div class="card-item emphasized short">
+					<span class="card-field-header">Détails (p.)</span>
+				</div>
+				<div class="card-item card-long-text">
+					<ul>
+						<li>Choix du sort</li>
+						<li>Choix de la cible
+							<ul>
+								<li>Contact (C)</li>
+								<li>Champ de vision (CdV)</li>
+							</ul>
+						</li>
+						<li>Choix de la puissance (P)</li>
+						<li>Lancer le sort</li>
+						<li>Résister au Drain
+							<ul>
+								<li>Le Drain est fonction du sort et de sa Puissance</li>
+								<li>Résistance <br> LOG+VOL ou CHA+VOL</li>
+							</ul>
+						</li>
+					</ul>
+				</div>
+			</div>
+		</div>
+		  
+		<!--
+		  -	Druide
+		  -->
+
+		<div class="card-shape gray">
+			<div class="card">
+				<div class="card-item emphasized short">
+					<span class="card-header-name">Lancer un sort</span>
+				</div>
+				<div class="card-item short">
+					<span class="card-field-value" style="font-size: 0.85em;">{Lancement de sort + Magie} [Puissance]</span>
+				</div>
+				<div class="card-item emphasized short">
+					<span class="card-field-header">Résister au Drain</span>
+				</div>
+				<div class="card-item no-padding">
+					<div class="card-field-container">
+						<div class="card-field">
+							<span class="card-field-value" style="font-size: 0.85em;">{LOG + VOL}</span>
+						</div>
+						<div class="card-field">
+							<span class="card-field-value" style="font-size: 0.85em;">{LOG + CHA}</span>
+						</div>
+					</div>
+				</div>
+				<div class="card-item emphasized short">
+					<span class="card-field-header">Détails (p.)</span>
+				</div>
+				<div class="card-item card-long-text">
+					<ul>
+						<li>Choix du sort</li>
+						<li>Choix de la cible
+							<ul>
+								<li>Contact (C)</li>
+								<li>Champ de vision (CdV)</li>
+							</ul>
+						</li>
+						<li>Choix de la puissance (P)</li>
+						<li>Lancer le sort</li>
+						<li>Résister au Drain
+							<ul>
+								<li>Le Drain est fonction du sort et de sa Puissance</li>
+								<li>Résistance <br> LOG+VOL ou CHA+VOL</li>
+							</ul>
+						</li>
+					</ul>
+				</div>
+			</div>
+		</div>
+		
+		<!--
+		  -	Autres
+		  -->
+
+		<div class="card-shape gray">
+			<div class="card">
+				<div class="card-item emphasized short">
+					<span class="card-header-name">Déplacement (p.58)</span>
+				</div>
+				<div class="card-item short">
+					<span class=""><i>Décompté sur un tour de combat</i></span>
+				</div>
+				<div class="card-item emphasized short">
+					<span class="card-field-header">Marche</span>
+					<span class="card-field-value card-field-right " style="font-size: 0.75em;"><i>Pas d'action</i></span>
+				</div>
+				<div class="card-item short">
+					<span class="card-field-value">Distance < Vitesse</span>
+				</div>
+				
+				<div class="card-item emphasized short">
+					<span class="card-field-header">Course</span>
+					<span class="card-field-value card-field-right" style="font-size: 0.75em;"><i>Action gratuite</i></span>
+				</div>
+				<div class="card-item short">
+					<span class="card-field-value">Vitesse < distance < Vitesse x2/span>
+				</div>
+				<div class="card-item">
+					<span class="card-field-value">+2 en Défense<br>-2 à tous les autres jets</span>
+				</div>
+				
+				<div class="card-item emphasized short">
+					<span class="card-field-header">Sprint</span>
+					<span class="card-field-value card-field-right" style="font-size: 0.75em;"><i>Action complexe</i></span>
+				</div>
+				<div class="card-item short">
+					<span class="card-field-value">Pour dépasser Vitesse x2</span>
+				</div>
+				<div class="card-item">
+					<span class="card-field-value">{Course + FOR}[Physique],<br> +1m /succès</span>
+				</div>
+				
+				<div class="card-item card-long-text gray" style="font-size: 0.90em;">
+					<ul>
+						<li>Décompté sur un tour de combat</li>
+						<li>3 Types :</li>
+							<ul>
+								<li>Marche :<br> tant que distance < Vitesse,<br> pas d'action</li>
+								<li>Course :<br> Vitesse < distance < Vitesse x2 ,<br> action gratuite, +2 en Défense, -2 à tous les autres jets</li>
+								<li>Sprint :<br> {Course + FOR}[Physique]<br> Pour dépasser Vitesse x2, chaque succès : +1m, action complexe</li>
+						</ul>
+					</ul>
+				</div>
+			</div>
+		</div>
+
+		<div class="card-shape gray">
+			<div class="card">
+				<div class="card-item emphasized short">
+					<span class="card-header-name">Déplacement (p.58)</span>
+				</div>
+				<div class="card-item short">
+					<span class=""><i>Décompté sur un tour de combat</i></span>
+				</div>
+				<div class="card-item emphasized short">
+					<span class="card-field-header">Marche</span>
+					<span class="card-field-value card-field-right " style="font-size: 0.75em;"><i>Pas d'action</i></span>
+				</div>
+				<div class="card-item short">
+					<span class="card-field-value">Distance < Vitesse</span>
+				</div>
+				
+				<div class="card-item emphasized short">
+					<span class="card-field-header">Course</span>
+					<span class="card-field-value card-field-right" style="font-size: 0.75em;"><i>Action gratuite</i></span>
+				</div>
+				<div class="card-item short">
+					<span class="card-field-value">Vitesse < distance < Vitesse x2/span>
+				</div>
+				<div class="card-item">
+					<span class="card-field-value">+2 en Défense<br>-2 à tous les autres jets</span>
+				</div>
+				
+				<div class="card-item emphasized short">
+					<span class="card-field-header">Sprint</span>
+					<span class="card-field-value card-field-right" style="font-size: 0.75em;"><i>Action complexe</i></span>
+				</div>
+				<div class="card-item short">
+					<span class="card-field-value">Pour dépasser Vitesse x2</span>
+				</div>
+				<div class="card-item">
+					<span class="card-field-value">{Course + FOR}[Physique],<br> +1m /succès</span>
+				</div>
+				
+				<div class="card-item card-long-text gray" style="font-size: 0.90em;">
+					<ul>
+						<li>Décompté sur un tour de combat</li>
+						<li>3 Types :</li>
+							<ul>
+								<li>Marche :<br> tant que distance < Vitesse,<br> pas d'action</li>
+								<li>Course :<br> Vitesse < distance < Vitesse x2 ,<br> action gratuite, +2 en Défense, -2 à tous les autres jets</li>
+								<li>Sprint :<br> {Course + FOR}[Physique]<br> Pour dépasser Vitesse x2, chaque succès : +1m, action complexe</li>
+						</ul>
+					</ul>
+				</div>
+			</div>
+		</div>
+
+		<div class="card-shape gray">
+			<div class="card">
+				<div class="card-item emphasized short">
+					<span class="card-header-name">Déplacement (p.58)</span>
+				</div>
+				<div class="card-item short">
+					<span class=""><i>Décompté sur un tour de combat</i></span>
+				</div>
+				<div class="card-item emphasized short">
+					<span class="card-field-header">Marche</span>
+					<span class="card-field-value card-field-right " style="font-size: 0.75em;"><i>Pas d'action</i></span>
+				</div>
+				<div class="card-item short">
+					<span class="card-field-value">Distance < Vitesse</span>
+				</div>
+				
+				<div class="card-item emphasized short">
+					<span class="card-field-header">Course</span>
+					<span class="card-field-value card-field-right" style="font-size: 0.75em;"><i>Action gratuite</i></span>
+				</div>
+				<div class="card-item short">
+					<span class="card-field-value">Vitesse < distance < Vitesse x2/span>
+				</div>
+				<div class="card-item">
+					<span class="card-field-value">+2 en Défense<br>-2 à tous les autres jets</span>
+				</div>
+				
+				<div class="card-item emphasized short">
+					<span class="card-field-header">Sprint</span>
+					<span class="card-field-value card-field-right" style="font-size: 0.75em;"><i>Action complexe</i></span>
+				</div>
+				<div class="card-item short">
+					<span class="card-field-value">Pour dépasser Vitesse x2</span>
+				</div>
+				<div class="card-item">
+					<span class="card-field-value">{Course + FOR}[Physique],<br> +1m /succès</span>
+				</div>
+				
+				<div class="card-item card-long-text gray" style="font-size: 0.90em;">
+					<ul>
+						<li>Décompté sur un tour de combat</li>
+						<li>3 Types :</li>
+							<ul>
+								<li>Marche :<br> tant que distance < Vitesse,<br> pas d'action</li>
+								<li>Course :<br> Vitesse < distance < Vitesse x2 ,<br> action gratuite, +2 en Défense, -2 à tous les autres jets</li>
+								<li>Sprint :<br> {Course + FOR}[Physique]<br> Pour dépasser Vitesse x2, chaque succès : +1m, action complexe</li>
+						</ul>
+					</ul>
+				</div>
+			</div>
+		</div>
+
+	</div>
+</body>
+
+</html>
