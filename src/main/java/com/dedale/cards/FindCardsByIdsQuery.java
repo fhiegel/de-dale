@@ -3,6 +3,8 @@ package com.dedale.cards;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.Spliterators;
+import java.util.stream.Collectors;
 
 import lombok.Getter;
 
@@ -11,15 +13,16 @@ public class FindCardsByIdsQuery implements Query {
     
     private static final String ID_SEPARATOR = ",";
     
-    private List<String> cardIds = Collections.emptyList();
+    private List<Long> cardIds = Collections.emptyList();
     
-    private FindCardsByIdsQuery(List<String> cardIds) {
+    private FindCardsByIdsQuery(List<Long> cardIds) {
         this.cardIds = Collections.unmodifiableList(cardIds);
     }
     
     public static FindCardsByIdsQuery parse(String cardIds) {
-        return new FindCardsByIdsQuery(Arrays.asList(cardIds.split(ID_SEPARATOR)));
-        
+        return new FindCardsByIdsQuery(Arrays.asList(cardIds.split(ID_SEPARATOR)).stream()
+                .map(Long::valueOf)
+                .collect(Collectors.toList()));
     }
     
     @Override

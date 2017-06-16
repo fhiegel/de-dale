@@ -12,14 +12,13 @@ public class FindCardsByIdsQueryHandler implements QueryHandler<CardContainer, F
     
     @Override
     public CardContainer handle(FindCardsByIdsQuery query) {
-        return getFormCache(query, cardsByIds, this::getContainer);
+        return getFromCache(query, cardsByIds, this::getContainer);
     }
     
-    private static <R, Q extends Query> R getFormCache(Q query, Map<Q, R> cache, Function<Q, R> cacheFiller) {
+    private static <R, Q extends Query> R getFromCache(Q query, Map<Q, R> cache, Function<Q, R> cacheFiller) {
         if (cache.containsKey(query)) {
             return cache.get(query);
         }
-        
         R container = cacheFiller.apply(query);
         cache.put(query, container);
         return container;
@@ -30,7 +29,7 @@ public class FindCardsByIdsQueryHandler implements QueryHandler<CardContainer, F
         return new CardContainer(cardList);
     }
     
-    private Card getCardById(String cardId) {
+    private Card getCardById(Long cardId) {
         return new Card(cardId);
     }
     

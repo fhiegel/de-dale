@@ -1,14 +1,26 @@
 package com.dedale.cards;
 
+import com.dedale.common.Identifiable;
+
 import lombok.Getter;
+import lombok.ToString;
 
 @Getter
-public class Card {
+@ToString
+public class Card implements Identifiable {
     
-    private String cardId;
+    private long id;
     
-    public Card(String cardId) {
-        this.cardId = cardId;
+    Card() {
+    }
+    
+    public Card(long cardId) {
+        this.id = cardId;
+    }
+    
+    @Override
+    public void setId(long id) {
+        this.id = id;
     }
     
 }

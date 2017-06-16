@@ -15,7 +15,7 @@ public class CardFeature implements Feature {
             @Override
             protected void configure() {
                 bind(FindCardsByIdsQueryHandler.class).to(FindCardsByIdsQueryHandler.class);
-                
+                bind(AddCardCommandHandler.class).to(AddCardCommandHandler.class);
             }
         });
         return true;
