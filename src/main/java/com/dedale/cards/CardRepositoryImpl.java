@@ -2,9 +2,12 @@ package com.dedale.cards;
 
 import java.util.List;
 
+import javax.inject.Singleton;
+
 import com.dedale.common.InMemoryRepository;
 import com.dedale.common.Repository;
 
+@Singleton
 public class CardRepositoryImpl implements CardRepository {
     
     private Repository<Card> delegate = new InMemoryRepository<>();

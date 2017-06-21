@@ -3,53 +3,61 @@ package com.dedale.cards;
 import static com.dedale.cards.CardResource.PATH;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
 
 import javax.ws.rs.client.Entity;
 import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.Response;
 
-import org.glassfish.jersey.test.JerseyTest;
+import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
-import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnit;
-import org.mockito.junit.MockitoRule;
 
 import com.dedale.utils.FileTestUtils;
 import com.dedale.utils.jersey.ApplicationRule;
 
 public class CardResourceTest {
 
-    @Rule
-    public MockitoRule rule = MockitoJUnit.rule();
+    private CardRepository repository = spy(new CardRepositoryInMemory());
 
-    @Mock
-    private AddCardCommandHandler addCard;
+    private AddCardCommandHandler addCard = spy(new AddCardCommandHandler(repository));
 
     @Rule
-    public ApplicationRule jersey = ApplicationRule
-            .dedale()
-            .configureBinding(binder -> binder.bind(addCard).to(AddCardCommandHandler.class));
+    public ApplicationRule jersey = ApplicationRule.dedale().configureBinding(binder -> {
+        binder.bind(addCard).to(AddCardCommandHandler.class);
+        binder.bind(repository).to(CardRepository.class);
+    });
+
+    @Before
+    public void beforeName() throws Exception {
+        repository.add(new Card(12));
+        repository.add(new Card(14));
+    }
 
     @Test
     public void should_return_200_for_getting_all_cards() throws Exception {
         Response response = target(PATH + "/all").request().get();
-        responseHasStatus(response);
+        responseHasStatus(response, 200);
+    }
+
+    @Test
+    public void should_getting_all_cards_call_repository() throws Exception {
+        target(PATH + "/all").request().get();
+        verify(repository).getAll();
     }
 
     @Test
     public void should_getting_all_cards_equals_file() throws Exception {
         Response response = target(PATH + "/all").request().get();
-        assertResponseEqualsFile(response, "container_empty.json");
+        assertResponseEqualsFile(response, "container_with_all_cards.json");
     }
 
     @Test
     public void should_return_200_for_getting_single_card_with_path() throws Exception {
         Response response = target(PATH + "/12").request().get();
-        responseHasStatus(response);
+        responseHasStatus(response, 200);
     }
 
     @Test
@@ -61,7 +69,7 @@ public class CardResourceTest {
     @Test
     public void should_return_200_for_getting_multiple_cards_with_path() throws Exception {
         Response response = target(PATH + "/12,14").request().get();
-        responseHasStatus(response);
+        responseHasStatus(response, 200);
     }
 
     @Test
@@ -72,20 +80,26 @@ public class CardResourceTest {
 
     @Test
     public void should_return_200_when_add_a_card() throws Exception {
-        when(addCard.handle(any(AddCardCommand.class))).thenReturn(new Card());
-
         Response response = target(PATH).request().post(Entity.json(new Card()));
-        responseHasStatus(response);
+        responseHasStatus(response, 200);
     }
 
     @Test
     public void should_getting_card_with_id_when_add_a_card() throws Exception {
-        givenNextCardIdIs(12);
-
         Response response = target(PATH).request().post(Entity.json(new Card()));
 
         assertResponseEqualsFile(response, "single_card.json");
         verify(addCard, times(1)).handle(any(AddCardCommand.class));
+    }
+
+    @Test
+    public void should_getting_all_cards_returns_initial_cards_with_added_ones() throws Exception {
+
+        target(PATH).request().post(Entity.json(new Card()));
+        target(PATH).request().post(Entity.json(new Card()));
+
+        Response response = target(PATH + "/all").request().get();
+        assertResponseEqualsFile(response, "container_with_all_cards_and_added_ones.json");
     }
 
     //
@@ -96,16 +110,12 @@ public class CardResourceTest {
         return jersey.target(path);
     }
 
-    private void responseHasStatus(Response response) {
-        assertThat(response.getStatus()).as(response.readEntity(String.class)).isEqualTo(200);
+    private void responseHasStatus(Response response, int expectedResponseStatus) {
+        assertThat(response.getStatus()).as(response.readEntity(String.class)).isEqualTo(expectedResponseStatus);
     }
 
     private void assertResponseEqualsFile(Response response, String fileName) {
         assertThat(response.readEntity(String.class)).isEqualTo(getFileAsJson(fileName));
-    }
-
-    private void givenNextCardIdIs(long nextCardId) {
-        when(addCard.handle(any(AddCardCommand.class))).thenReturn(new Card(nextCardId));
     }
 
     private String getFileAsJson(String filePath) {

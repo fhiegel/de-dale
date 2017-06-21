@@ -6,31 +6,35 @@ import java.util.Map;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
-public class FindCardsByIdsQueryHandler implements QueryHandler<CardContainer, FindCardsByIdsQuery> {
+import javax.inject.Inject;
+
+public class FindCardsByIdsQueryHandler implements QueryHandler<List<Card>, FindCardsByIdsQuery> {
     
-    private Map<FindCardsByIdsQuery, CardContainer> cardsByIds = new HashMap<>();
+    private Map<FindCardsByIdsQuery, List<Card>> cardsByIds = new HashMap<>();
+    
+    @Inject
+    private CardRepository repository;
     
     @Override
-    public CardContainer handle(FindCardsByIdsQuery query) {
-        return getFromCache(query, cardsByIds, this::getContainer);
+    public List<Card> handle(FindCardsByIdsQuery query) {
+        return getFromCache(query, cardsByIds, this::getCardList);
     }
     
     private static <R, Q extends Query> R getFromCache(Q query, Map<Q, R> cache, Function<Q, R> cacheFiller) {
         if (cache.containsKey(query)) {
             return cache.get(query);
         }
-        R container = cacheFiller.apply(query);
-        cache.put(query, container);
-        return container;
+        R result = cacheFiller.apply(query);
+        cache.put(query, result);
+        return result;
     }
     
-    private CardContainer getContainer(FindCardsByIdsQuery query) {
-        List<Card> cardList = query.getCardIds().stream().map(this::getCardById).collect(Collectors.toList());
-        return new CardContainer(cardList);
+    private List<Card> getCardList(FindCardsByIdsQuery query) {
+        return query.getCardIds().stream().map(this::getCardById).collect(Collectors.toList());
     }
     
     private Card getCardById(Long cardId) {
-        return new Card(cardId);
+        return repository.getById(cardId);
     }
     
 }

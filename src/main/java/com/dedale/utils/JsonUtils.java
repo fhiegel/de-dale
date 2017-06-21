@@ -34,7 +34,7 @@ public class JsonUtils {
             JsonNode tree = objectMapper.readTree(file);
             return asJson(tree);
         } catch (IOException e) {
-            throw new JsonUtilsException("Cannot write file as JSON : " + file.getPath(), e);
+            throw new JsonUtilsException("Cannot read file as JSON : " + file.getPath(), e);
         }
     }
     
