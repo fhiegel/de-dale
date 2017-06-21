@@ -1,4 +1,4 @@
-package com.dedale.utils.jersey;
+package com.dedale.utils.jersey.configuration;
 
 import org.glassfish.hk2.utilities.binding.AbstractBinder;
 

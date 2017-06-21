@@ -9,43 +9,43 @@ import org.junit.runners.model.FrameworkMethod;
 import org.junit.runners.model.Statement;
 
 import com.dedale.DeDaleResourceConfig;
+import com.dedale.utils.jersey.configuration.BinderConfiguration;
+import com.dedale.utils.jersey.configuration.ConfigurationBuilder;
 
 public class ApplicationInjectionRule implements MethodRule {
-    
-    private ResourceConfigBuilder configurable;
-    
-    public static ApplicationInjectionRule rule() {
+
+    private ConfigurationBuilder<ResourceConfig> configurationBuilder;
+
+    public static ApplicationInjectionRule dedaleRule() {
         return app(new DeDaleResourceConfig());
     }
-    
-    public static ApplicationInjectionRule app(ResourceConfig application) {
-        return new ApplicationInjectionRule(application);
+
+    public static ApplicationInjectionRule app(ResourceConfig configuration) {
+        return new ApplicationInjectionRule(configuration);
     }
-    
-    private ApplicationInjectionRule(ResourceConfig application) {
-        this.configurable = new ResourceConfigBuilder(application);
+
+    private ApplicationInjectionRule(ResourceConfig configuration) {
+        this.configurationBuilder = new ConfigurationBuilder<>(configuration);
     }
-    
+
     @Override
     public Statement apply(Statement base, FrameworkMethod method, Object target) {
-        injectInto(target);
-        return base;
+        return new InjectionStatement(base, getServiceLocator(), target);
     }
-    
-    private void injectInto(Object target) {
-        ApplicationHandler applicationHandler = new ApplicationHandler(configurable.build());
-        ServiceLocator serviceLocator = applicationHandler.getServiceLocator();
-        serviceLocator.inject(target);
+
+    private ServiceLocator getServiceLocator() {
+        ApplicationHandler applicationHandler = new ApplicationHandler(configurationBuilder.build());
+        return applicationHandler.getServiceLocator();
     }
-    
+
     public <B extends AbstractBinder> ApplicationInjectionRule addBinder(B binder) {
-        configurable.addBinder(binder);
+        configurationBuilder.addBinder(binder);
         return this;
     }
-    
+
     public ApplicationInjectionRule configureBinding(BinderConfiguration configuration) {
-        configurable.configureBinding(configuration);
+        configurationBuilder.configureBinding(configuration);
         return this;
     }
-    
+
 }

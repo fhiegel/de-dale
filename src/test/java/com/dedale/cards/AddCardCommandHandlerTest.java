@@ -14,7 +14,7 @@ public class AddCardCommandHandlerTest {
     
     @Rule
     public ApplicationInjectionRule rule = ApplicationInjectionRule
-            .rule()
+            .dedaleRule()
             .configureBinding(binder -> binder.bind(CardRepositoryInMemory.class).to(CardRepository.class).in(Singleton.class));
     
     @Inject
