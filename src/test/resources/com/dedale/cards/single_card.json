@@ -1,3 +1,5 @@
 {
-	"id": 1
+    "description" : "Cet item est nouveau",
+    "id" : 1,
+    "title" : "Nouvel item"
 }

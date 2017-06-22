@@ -39,7 +39,7 @@ public class CardResource {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Card addCard(Card card) {
-        return addCard.handle(new AddCardCommand());
+        return addCard.handle(AddCardCommand.from(card));
     }
 
     @POST

@@ -34,8 +34,8 @@ public class CardResourceTest {
 
     @Before
     public void beforeName() throws Exception {
-        repository.add(new Card(12));
-        repository.add(new Card(14));
+        repository.add(Card.builder().id(12).title("Titre 12").build());
+        repository.add(Card.builder().id(14).description("Description 14").build());
     }
 
     @Test
@@ -82,13 +82,13 @@ public class CardResourceTest {
 
     @Test
     public void should_return_200_when_add_a_card() throws Exception {
-        Response response = target(PATH).request().post(Entity.json(new Card()));
+        Response response = target(PATH).request().post(Entity.json(newCard()));
         responseHasStatus(response, 200);
     }
 
     @Test
     public void should_getting_card_with_id_when_add_a_card() throws Exception {
-        Response response = target(PATH).request().post(Entity.json(new Card()));
+        Response response = target(PATH).request().post(Entity.json(newCard()));
 
         assertResponseEqualsFile(response, "single_card.json");
         verify(addCard, times(1)).handle(any(AddCardCommand.class));
@@ -97,8 +97,8 @@ public class CardResourceTest {
     @Test
     public void should_getting_all_cards_returns_initial_cards_with_added_ones() throws Exception {
 
-        target(PATH).request().post(Entity.json(new Card()));
-        target(PATH).request().post(Entity.json(new Card()));
+        target(PATH).request().post(Entity.json(newCard()));
+        target(PATH).request().post(Entity.json(existingitem()));
 
         Response response = target(PATH + "/all").request().get();
         assertResponseEqualsFile(response, "container_with_all_cards_and_added_ones.json");
@@ -106,7 +106,7 @@ public class CardResourceTest {
 
     @Test
     public void should_add_multiple_cards_returns_initial_cards_with_added_ones() throws Exception {
-        CardContainer cardContainer = new CardContainer(Arrays.asList(new Card(), new Card()));
+        CardContainer cardContainer = new CardContainer(Arrays.asList(newCard(), existingitem()));
         target(PATH + "/list").request().post(Entity.json(cardContainer));
 
         Response response = target(PATH + "/all").request().get();
@@ -119,6 +119,14 @@ public class CardResourceTest {
 
     private WebTarget target(String path) {
         return jersey.target(path);
+    }
+
+    private Card existingitem() {
+        return Card.builder().id(5).title("Item existant").description("Cette carte était déjà existante").build();
+    }
+
+    private Card newCard() {
+        return Card.builder().title("Nouvel item").description("Cet item est nouveau").build();
     }
 
     private void responseHasStatus(Response response, int expectedResponseStatus) {

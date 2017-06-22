@@ -13,7 +13,7 @@ public class AddCardCommandHandler implements QueryHandler<Card, AddCardCommand>
 
     @Override
     public Card handle(AddCardCommand query) {
-        Card card = new Card();
+        Card card = query.getCard();
         repository.add(card);
         return card;
     }
