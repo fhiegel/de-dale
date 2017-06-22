@@ -7,6 +7,8 @@ import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
+import java.util.Arrays;
+
 import javax.ws.rs.client.Entity;
 import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.Response;
@@ -97,6 +99,15 @@ public class CardResourceTest {
 
         target(PATH).request().post(Entity.json(new Card()));
         target(PATH).request().post(Entity.json(new Card()));
+
+        Response response = target(PATH + "/all").request().get();
+        assertResponseEqualsFile(response, "container_with_all_cards_and_added_ones.json");
+    }
+
+    @Test
+    public void should_add_multiple_cards_returns_initial_cards_with_added_ones() throws Exception {
+        CardContainer cardContainer = new CardContainer(Arrays.asList(new Card(), new Card()));
+        target(PATH + "/list").request().post(Entity.json(cardContainer));
 
         Response response = target(PATH + "/all").request().get();
         assertResponseEqualsFile(response, "container_with_all_cards_and_added_ones.json");

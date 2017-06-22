@@ -42,4 +42,15 @@ public class CardResource {
         return addCard.handle(new AddCardCommand());
     }
 
+    @POST
+    @Path("list")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public CardContainer addContainer(CardContainer cardContainer) {
+        for (Card card : cardContainer.getCards()) {
+            addCard(card);
+        }
+        return all();
+    }
+
 }
