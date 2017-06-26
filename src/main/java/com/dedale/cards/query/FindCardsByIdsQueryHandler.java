@@ -1,4 +1,4 @@
-package com.dedale.cards;
+package com.dedale.cards.query;
 
 import java.util.HashMap;
 import java.util.List;
@@ -8,6 +8,11 @@ import java.util.stream.Collectors;
 
 import javax.inject.Inject;
 
+import com.dedale.cards.Card;
+import com.dedale.cards.CardRepository;
+import com.dedale.common.Query;
+import com.dedale.common.QueryHandler;
+
 public class FindCardsByIdsQueryHandler implements QueryHandler<List<Card>, FindCardsByIdsQuery> {
     
     private Map<FindCardsByIdsQuery, List<Card>> cardsByIds = new HashMap<>();
@@ -16,11 +21,16 @@ public class FindCardsByIdsQueryHandler implements QueryHandler<List<Card>, Find
     private CardRepository repository;
     
     @Override
+    public Class<FindCardsByIdsQuery> listenTo() {
+        return FindCardsByIdsQuery.class;
+    }
+    
+    @Override
     public List<Card> handle(FindCardsByIdsQuery query) {
         return getFromCache(query, cardsByIds, this::getCardList);
     }
     
-    private static <R, Q extends Query> R getFromCache(Q query, Map<Q, R> cache, Function<Q, R> cacheFiller) {
+    private static <R, Q extends Query<R>> R getFromCache(Q query, Map<Q, R> cache, Function<Q, R> cacheFiller) {
         if (cache.containsKey(query)) {
             return cache.get(query);
         }

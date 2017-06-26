@@ -1,9 +1,12 @@
-package com.dedale.cards;
+package com.dedale.cards.query;
+
+import com.dedale.cards.Card;
+import com.dedale.common.Query;
 
 import lombok.Getter;
 
 @Getter
-public class AddCardCommand implements Query {
+public class AddCardCommand implements Query<Card> {
 
     private Card card;
 

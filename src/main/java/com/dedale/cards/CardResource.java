@@ -9,6 +9,13 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
+import com.dedale.cards.query.AddCardCommand;
+import com.dedale.cards.query.AddCardCommandHandler;
+import com.dedale.cards.query.FindCardsByIdsQuery;
+import com.dedale.cards.query.FindCardsByIdsQueryHandler;
+import com.dedale.cards.query.GetAllCardsQuery;
+import com.dedale.cards.query.GetAllCardsQueryHandler;
+
 @Path(CardResource.PATH)
 public class CardResource {
 
@@ -22,7 +29,6 @@ public class CardResource {
     private AddCardCommandHandler addCard;
 
     @GET
-    @Path("all")
     @Produces(MediaType.APPLICATION_JSON)
     public CardContainer all() {
         return new CardContainer(getCards.handle(new GetAllCardsQuery()));

@@ -6,6 +6,10 @@ import javax.ws.rs.core.FeatureContext;
 
 import org.glassfish.hk2.utilities.binding.AbstractBinder;
 
+import com.dedale.cards.query.AddCardCommandHandler;
+import com.dedale.cards.query.FindCardsByIdsQueryHandler;
+import com.dedale.cards.query.GetAllCardsQueryHandler;
+
 public class CardFeature implements Feature {
 
     @Override

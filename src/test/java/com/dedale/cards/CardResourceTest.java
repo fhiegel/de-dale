@@ -17,6 +17,8 @@ import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 
+import com.dedale.cards.query.AddCardCommand;
+import com.dedale.cards.query.AddCardCommandHandler;
 import com.dedale.utils.FileTestUtils;
 import com.dedale.utils.jersey.ApplicationRule;
 
@@ -40,19 +42,19 @@ public class CardResourceTest {
 
     @Test
     public void should_return_200_for_getting_all_cards() throws Exception {
-        Response response = target(PATH + "/all").request().get();
+        Response response = target(PATH).request().get();
         responseHasStatus(response, 200);
     }
 
     @Test
     public void should_getting_all_cards_call_repository() throws Exception {
-        target(PATH + "/all").request().get();
+        target(PATH).request().get();
         verify(repository).getAll();
     }
 
     @Test
     public void should_getting_all_cards_equals_file() throws Exception {
-        Response response = target(PATH + "/all").request().get();
+        Response response = target(PATH).request().get();
         assertResponseEqualsFile(response, "container_with_all_cards.json");
     }
 
@@ -98,18 +100,18 @@ public class CardResourceTest {
     public void should_getting_all_cards_returns_initial_cards_with_added_ones() throws Exception {
 
         target(PATH).request().post(Entity.json(newCard()));
-        target(PATH).request().post(Entity.json(existingitem()));
+        target(PATH).request().post(Entity.json(existingItem()));
 
-        Response response = target(PATH + "/all").request().get();
+        Response response = target(PATH).request().get();
         assertResponseEqualsFile(response, "container_with_all_cards_and_added_ones.json");
     }
 
     @Test
     public void should_add_multiple_cards_returns_initial_cards_with_added_ones() throws Exception {
-        CardContainer cardContainer = new CardContainer(Arrays.asList(newCard(), existingitem()));
+        CardContainer cardContainer = new CardContainer(Arrays.asList(newCard(), existingItem()));
         target(PATH + "/list").request().post(Entity.json(cardContainer));
 
-        Response response = target(PATH + "/all").request().get();
+        Response response = target(PATH).request().get();
         assertResponseEqualsFile(response, "container_with_all_cards_and_added_ones.json");
     }
 
@@ -121,7 +123,7 @@ public class CardResourceTest {
         return jersey.target(path);
     }
 
-    private Card existingitem() {
+    private Card existingItem() {
         return Card.builder().id(5).title("Item existant").description("Cette carte était déjà existante").build();
     }
 

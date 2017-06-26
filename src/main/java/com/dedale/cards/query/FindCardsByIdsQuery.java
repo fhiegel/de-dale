@@ -1,15 +1,17 @@
-package com.dedale.cards;
+package com.dedale.cards.query;
 
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-import java.util.Spliterators;
 import java.util.stream.Collectors;
+
+import com.dedale.cards.Card;
+import com.dedale.common.Query;
 
 import lombok.Getter;
 
 @Getter
-public class FindCardsByIdsQuery implements Query {
+public class FindCardsByIdsQuery implements Query<List<Card>> {
     
     private static final String ID_SEPARATOR = ",";
     
