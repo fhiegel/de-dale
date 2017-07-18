@@ -1,25 +1,27 @@
 package com.dedale.cards.query;
 
-import java.util.List;
-
 import javax.inject.Inject;
 
-import com.dedale.cards.Card;
+import org.jvnet.hk2.annotations.Service;
+
+import com.dedale.cards.CardContainer;
 import com.dedale.cards.CardRepository;
 import com.dedale.common.QueryHandler;
 
-public class GetAllCardsQueryHandler implements QueryHandler<List<Card>, GetAllCardsQuery> {
+@Service
+public class GetAllCardsQueryHandler implements QueryHandler<CardContainer, GetAllCardsQuery> {
 
     @Inject
     private CardRepository repository;
-
-    public List<Card> handle(GetAllCardsQuery getAllCardsCommand) {
-        return repository.getAll();
-    }
 
     @Override
     public Class<GetAllCardsQuery> listenTo() {
         return GetAllCardsQuery.class;
     }
+
+    public CardContainer handle(GetAllCardsQuery getAllCardsCommand) {
+        return new CardContainer(repository.getAll());
+    }
+
 
 }

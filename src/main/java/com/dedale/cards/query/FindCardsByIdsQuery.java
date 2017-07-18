@@ -5,13 +5,13 @@ import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import com.dedale.cards.Card;
+import com.dedale.cards.CardContainer;
 import com.dedale.common.Query;
 
 import lombok.Getter;
 
 @Getter
-public class FindCardsByIdsQuery implements Query<List<Card>> {
+public class FindCardsByIdsQuery implements Query<CardContainer> {
     
     private static final String ID_SEPARATOR = ",";
     

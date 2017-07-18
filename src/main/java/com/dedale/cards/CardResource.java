@@ -10,11 +10,9 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
 import com.dedale.cards.query.AddCardCommand;
-import com.dedale.cards.query.AddCardCommandHandler;
 import com.dedale.cards.query.FindCardsByIdsQuery;
-import com.dedale.cards.query.FindCardsByIdsQueryHandler;
 import com.dedale.cards.query.GetAllCardsQuery;
-import com.dedale.cards.query.GetAllCardsQueryHandler;
+import com.dedale.common.Dispatcher;
 
 @Path(CardResource.PATH)
 public class CardResource {
@@ -22,30 +20,26 @@ public class CardResource {
     static final String PATH = "cards";
 
     @Inject
-    private GetAllCardsQueryHandler getCards;
-    @Inject
-    private FindCardsByIdsQueryHandler findById;
-    @Inject
-    private AddCardCommandHandler addCard;
+    private Dispatcher dispatcher;
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public CardContainer all() {
-        return new CardContainer(getCards.handle(new GetAllCardsQuery()));
+        return dispatcher.dispatch(new GetAllCardsQuery());
     }
 
     @GET
     @Path("{cardIds}")
     @Produces(MediaType.APPLICATION_JSON)
     public CardContainer getByIds(@PathParam("cardIds") String cardIds) {
-        return new CardContainer(findById.handle(FindCardsByIdsQuery.parse(cardIds)));
+        return dispatcher.dispatch(FindCardsByIdsQuery.parse(cardIds));
     }
 
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Card addCard(Card card) {
-        return addCard.handle(AddCardCommand.from(card));
+        return dispatcher.dispatch(AddCardCommand.from(card));
     }
 
     @POST

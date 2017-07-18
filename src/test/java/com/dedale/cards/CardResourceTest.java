@@ -19,6 +19,7 @@ import org.junit.Test;
 
 import com.dedale.cards.query.AddCardCommand;
 import com.dedale.cards.query.AddCardCommandHandler;
+import com.dedale.common.QueryHandler;
 import com.dedale.utils.FileTestUtils;
 import com.dedale.utils.jersey.ApplicationRule;
 
@@ -30,7 +31,7 @@ public class CardResourceTest {
 
     @Rule
     public ApplicationRule jersey = ApplicationRule.dedale().configureBinding(binder -> {
-        binder.bind(addCard).to(AddCardCommandHandler.class);
+        binder.bind(addCard).to(AddCardCommandHandler.class).to(QueryHandler.class);
         binder.bind(repository).to(CardRepository.class);
     });
 
