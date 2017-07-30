@@ -9,6 +9,8 @@ import com.dedale.builder.AbstractFluentBuilder;
 public class SlackResponseAttachmentBuilder<NB>
         extends AbstractFluentBuilder<SlackResponseAttachment, NB, SlackResponseAttachmentBuilder<NB>> {
 
+    private static final String ERROR_COLOR = "#ff0000";
+
     SlackResponseAttachmentBuilder(Consumer<? super SlackResponseAttachment> beanConsumer, NB nextBuilder) {
         super(defaultAttachment(), beanConsumer, nextBuilder);
     }
@@ -30,6 +32,11 @@ public class SlackResponseAttachmentBuilder<NB>
     public SlackResponseAttachmentBuilder<NB> withAuthorName(String authorName) {
         bean.setAuthorName(authorName);
         return this;
+    }
+    
+
+    public SlackResponseAttachmentBuilder<NB> asError() {
+        return withColor(ERROR_COLOR);
     }
 
     public SlackResponseAttachmentBuilder<NB> withColor(String color) {
