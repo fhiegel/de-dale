@@ -1,61 +1,33 @@
 package com.dedale.calculator;
 
-import static com.dedale.calculator.OperandReader.LEFT_TO_RIGHT;
-import static com.dedale.calculator.OperandReader.RIGHT_TO_LEFT;
-import static java.lang.Math.pow;
-
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 
+import org.glassfish.jersey.spi.Contract;
+
+@Contract
 public class StringCalculator {
-    
-    private Collection<StringToIntegerOperation> operations;
-    
-    public StringCalculator() {
-        this(beginBuildOperations().build());
+
+    private final Collection<StringToIntegerOperation> operations;
+
+    private StringCalculator(Collection<StringToIntegerOperation> operations) {
+        this.operations = Collections.unmodifiableCollection(operations);
     }
-    
-    public StringCalculator(Collection<StringToIntegerOperation> operations) {
-        this.operations = operations;
-    }
-    
+
     Collection<StringToIntegerOperation> getOperations() {
         return operations;
     }
 
-    static OperationListBuilder beginBuildOperations() {
-        return new OperationListBuilder()
-                
-                .addOperation()
-                .withSymbol("+")
-                .withOperandReader(LEFT_TO_RIGHT)
-                .withOperation((left, right) -> left + right)
-                .endOperation()
-                
-                .addOperation()
-                .withSymbol("-")
-                .withOperandReader(LEFT_TO_RIGHT)
-                .withOperation((left, right) -> left - right)
-                .endOperation()
-                
-                .addOperation()
-                .withSymbol("*")
-                .withOperandReader(LEFT_TO_RIGHT)
-                .withOperation((left, right) -> left * right)
-                .endOperation()
-                
-                .addOperation()
-                .withSymbol("^")
-                .withOperandReader(RIGHT_TO_LEFT)
-                .withOperation((left, right) -> (int) pow(left, right))
-                .endOperation()
-                
-                .addOperation()
-                .withSymbol("d")
-                .withOperandReader(LEFT_TO_RIGHT)
-                .withOperation(SumDiceRollsOperation::sumDices)
-                .endOperation();
+    static StringCalculator empty() {
+        return new StringCalculator(Collections.emptyList());
     }
-    
+
+    public static StringCalculator arithmeticOperations() {
+        return empty().addOperation(ArithmeticOperations.ADD).addOperation(ArithmeticOperations.MINUS)
+                .addOperation(ArithmeticOperations.MULTIPLY).addOperation(ArithmeticOperations.POWER);
+    }
+
     public Integer calculate(String sentence) {
         for (StringToIntegerOperation operation : operations) {
             if (operation.mayApplyOperation(sentence)) {
@@ -64,5 +36,15 @@ public class StringCalculator {
         }
         return Integer.parseInt(sentence.trim());
     }
-    
+
+    public StringCalculator addOperation(StringToIntegerOperation operation) {
+        Collection<StringToIntegerOperation> operations = new ArrayList<>(this.operations);
+        Collections.addAll(operations, operation);
+        return new StringCalculator(operations);
+    }
+
+    public OperationBuilder<StringCalculator> addOperation() {
+        return new OperationBuilder<>(this::addOperation);
+    }
+
 }

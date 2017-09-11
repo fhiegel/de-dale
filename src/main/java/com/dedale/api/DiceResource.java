@@ -14,11 +14,14 @@ import com.dedale.calculator.StringCalculatorInputValidator;
 @Path("dices")
 public class DiceResource {
 
-    @Inject
     private StringCalculator calculator;
+    private StringCalculatorInputValidator validator;
 
     @Inject
-    private StringCalculatorInputValidator validator;
+    public DiceResource(StringCalculator calculator) {
+        this.calculator = calculator;
+        this.validator = new StringCalculatorInputValidator(calculator);
+    }
 
     @POST
     @Produces(MediaType.TEXT_PLAIN)

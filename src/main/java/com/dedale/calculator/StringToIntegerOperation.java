@@ -4,7 +4,7 @@ import java.util.function.Function;
 
 import org.apache.commons.lang3.StringUtils;
 
-class StringToIntegerOperation {
+public class StringToIntegerOperation {
     
     private static final String ESCAPE_PREFIX = "\\";
     private static final String REGEXP_SYMBOLS = "+-*^";

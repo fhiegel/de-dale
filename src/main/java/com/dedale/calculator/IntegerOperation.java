@@ -1,6 +1,6 @@
 package com.dedale.calculator;
 
 @FunctionalInterface
-interface IntegerOperation {
+public interface IntegerOperation {
     Integer apply(Integer left, Integer right);
 }

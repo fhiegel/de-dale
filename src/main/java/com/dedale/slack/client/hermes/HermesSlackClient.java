@@ -1,14 +1,12 @@
 package com.dedale.slack.client.hermes;
 
-import static com.dedale.markdown.MarkdownTags.MARKDOWN_BOLD;
-import static com.dedale.markdown.MarkdownTags.MARKDOWN_CODE;
-
 import javax.inject.Inject;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 
-import com.dedale.calculator.StringCalculator;
-import com.dedale.calculator.StringCalculatorInputValidator;
+import com.dedale.hermes.HermesEngine;
+import com.dedale.hermes.HermesResponse;
+import com.dedale.hermes.HermesTokenizer;
 import com.dedale.slack.client.request.SlackRequest;
 import com.dedale.slack.client.response.SlackResponse;
 import com.dedale.slack.client.response.SlackResponseBuilder;
@@ -16,40 +14,27 @@ import com.dedale.slack.client.response.SlackResponseBuilder;
 @Path("slack/hermes")
 public class HermesSlackClient {
     
+    private HermesEngine hermes;
+
     @Inject
-    private StringCalculator calculator;
-    
-    @Inject
-    private StringCalculatorInputValidator validator;
+    public HermesSlackClient(HermesEngine hermes) {
+        this.hermes = hermes;
+    }
 
     @POST
     public SlackResponse slackRoll(SlackRequest slackRequest) {
-        String diceSentence = slackRequest.getText();
-        if (!validator.validate(diceSentence)) {
-            String responseText = "Impossible de lancer la définition de dé suivante : "+ MARKDOWN_CODE + slackRequest.getText() + MARKDOWN_CODE;
-            return SlackResponseBuilder
-                    .beginResponse()
-                    .inChannel()
-                        .addAttachment()
-                            .asError()
-                            .withColor("#ff0000")
-                            .withAuthorName(slackRequest.getUserName())
-                            .withMarkdownText(responseText)
-                        .endAttachment()
-                    .build();
-        }
-        String diceResult = calculator.calculate(diceSentence).toString();
+        HermesTokenizer command = mapToHermesCommand(slackRequest);
+        HermesResponse response = hermes.dispatch(command);
+        return mapFromHermesResponse(response);
+    }
 
-        String responseText = slackRequest.getText() + "= " + MARKDOWN_BOLD + diceResult + MARKDOWN_BOLD;
+    private SlackResponse mapFromHermesResponse(HermesResponse response) {
+        SlackResponseBuilder slackResponse = SlackResponseBuilder.beginResponse();
+        return response.accept(slackResponse);
+    }
 
-        return SlackResponseBuilder
-                .beginResponse()
-                .inChannel()
-                    .addAttachment()
-                        .withAuthorName(slackRequest.getUserName())
-                        .withMarkdownText(responseText)
-                    .endAttachment()
-                .build();
+    private HermesTokenizer mapToHermesCommand(SlackRequest slackRequest) {
+        return new HermesTokenizer(slackRequest.getText(), slackRequest.getUserName());
     }
     
 }

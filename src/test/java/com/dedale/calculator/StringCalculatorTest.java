@@ -1,13 +1,10 @@
 package com.dedale.calculator;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.ArgumentMatchers.anyInt;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-import java.util.Arrays;
-
-import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 
@@ -15,12 +12,7 @@ import com.dedale.dice.DiceSum;
 
 public class StringCalculatorTest {
     
-    private StringCalculator calculator;
-    
-    @Before
-    public void initializeCalculator() throws Exception {
-        calculator = new StringCalculator();
-    }
+    private StringCalculator calculator = StringCalculator.arithmeticOperations();
     
     @Test
     public void returns_one_when_string_one_given() throws Exception {
@@ -230,10 +222,9 @@ public class StringCalculatorTest {
     public void returns_3_for_throwing_1d4() throws Exception {
         // Given
         DiceSum adaptee = mock(DiceSum.class);
-        when(adaptee.rollKindOf(anyInt(), anyInt())).thenReturn(3);
+        when(adaptee.rollKindOf(eq(1), eq(4))).thenReturn(3);
         
-        StringToIntegerOperation dice = new StringToIntegerOperation("d", OperandReader.LEFT_TO_RIGHT, (l,r) -> SumDiceRollsOperation.sumDices(adaptee, l, r));
-        calculator = new StringCalculator(Arrays.asList(dice));
+        calculator = calculator.addOperation(DiceRollsOperations.dicesOperation(adaptee));
         
         String sentence = "1d4";
         

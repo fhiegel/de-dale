@@ -3,23 +3,40 @@ package com.dedale.slack.client.hermes;
 import static com.dedale.slack.client.SlackTestUtils.getResponseContentAsString;
 import static com.dedale.utils.FileTestUtils.getResourceFileAsJson;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.spy;
 
 import javax.ws.rs.client.Entity;
 import javax.ws.rs.core.Application;
 import javax.ws.rs.core.Form;
 import javax.ws.rs.core.Response;
 
+import org.glassfish.jersey.server.ResourceConfig;
 import org.glassfish.jersey.test.JerseyTest;
 import org.junit.Test;
+import org.mockito.Mockito;
 
-import com.dedale.DeDaleResourceConfig;
+import com.dedale.hermes.HermesEngine;
+import com.dedale.hermes.HermesTokenizer;
 import com.dedale.slack.client.SlackTestUtils;
+import com.dedale.slack.client.request.SlackRequestReader;
+import com.dedale.slack.client.response.SlackResponseWriter;
 
 public class HermesSlackClientTest extends JerseyTest {
 
+    private HermesEngine hermes;
+
     @Override
     protected Application configure() {
-        return new DeDaleResourceConfig();
+        return new ResourceConfig() {
+            {
+                hermes = spy(HermesEngine.class);
+                
+                register(SlackRequestReader.class);
+                register(SlackResponseWriter.class);
+                register(new HermesSlackClient(hermes));
+            }
+        };
     }
 
     @Test
@@ -31,6 +48,18 @@ public class HermesSlackClientTest extends JerseyTest {
 
         // Then
         assertThat(response.getStatus()).isEqualTo(200);
+    }
+
+    @Test
+    public void should_ask_hermes_engine() throws Exception {
+        // Given
+        Form form = SlackTestUtils.defaultSlackRequest();
+
+        // When
+        postHermes(form);
+
+        // Then
+        Mockito.verify(hermes).dispatch(any(HermesTokenizer.class));
     }
 
     @Test
