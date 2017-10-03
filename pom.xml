@@ -1,4 +1,5 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<project xmlns="http://maven.apache.org/POM/4.0.0" 
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 
 	<modelVersion>4.0.0</modelVersion>
@@ -79,8 +80,6 @@
 			<artifactId>jersey-media-json-jackson</artifactId>
 		</dependency>
 
-
-
 		<!-- APACHE -->
 		<dependency>
 			<groupId>org.apache.commons</groupId>
@@ -91,18 +90,6 @@
 			<groupId>commons-io</groupId>
 			<artifactId>commons-io</artifactId>
 			<version>${apache.common.io.version}</version>
-		</dependency>
-
-		<!-- LOG4J -->
-		<dependency>
-			<groupId>org.apache.logging.log4j</groupId>
-			<artifactId>log4j-api</artifactId>
-			<version>2.7</version>
-		</dependency>
-		<dependency>
-			<groupId>org.apache.logging.log4j</groupId>
-			<artifactId>log4j-core</artifactId>
-			<version>2.7</version>
 		</dependency>
 
 		<!-- JACKSON -->
@@ -156,24 +143,28 @@
 			<groupId>org.assertj</groupId>
 			<artifactId>assertj-core</artifactId>
 			<version>${assertj.version}</version>
+			<scope>test</scope>
 		</dependency>
 
 		<dependency>
 			<groupId>com.pholser</groupId>
 			<artifactId>junit-quickcheck-core</artifactId>
 			<version>${quickcheck-all.version}</version>
+			<scope>test</scope>
 		</dependency>
 		<dependency>
 			<groupId>com.pholser</groupId>
 			<artifactId>junit-quickcheck-generators</artifactId>
 			<version>${quickcheck-all.version}</version>
+			<scope>test</scope>
 		</dependency>
 
 		<dependency>
 			<groupId>org.hamcrest</groupId>
 			<artifactId>hamcrest-all</artifactId>
 			<version>${hamcrest-all.version}</version>
+			<scope>test</scope>
 		</dependency>
 	</dependencies>
-
+	
 </project>
