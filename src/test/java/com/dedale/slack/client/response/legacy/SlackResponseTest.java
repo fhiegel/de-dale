@@ -1,4 +1,4 @@
-package com.dedale.slack.client.response;
+package com.dedale.slack.client.response.legacy;
 
 import static com.dedale.utils.JsonUtils.asJson;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -7,6 +7,8 @@ import java.util.Date;
 
 import org.junit.Test;
 
+import com.dedale.slack.client.response.legacy.SlackResponse;
+import com.dedale.slack.client.response.legacy.SlackResponseBuilder;
 import com.dedale.utils.FileTestUtils;
 
 public class SlackResponseTest {

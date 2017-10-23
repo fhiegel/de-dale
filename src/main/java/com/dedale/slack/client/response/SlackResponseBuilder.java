@@ -1,55 +1,86 @@
 package com.dedale.slack.client.response;
 
-import java.util.List;
-
 public class SlackResponseBuilder {
 
-    private SlackResponse bean = new SlackResponse();
+    private SlackResponse bean;
 
-    public static SlackResponseBuilder beginResponse() {
-        return new SlackResponseBuilder();
+    public SlackResponseBuilder() {
+        this.bean = defaultSlackResponse();
     }
 
-    // Text
+    private static SlackResponse defaultSlackResponse() {
+        return new SlackResponse();
+    }
+
+    public SlackResponseBuilder withToken(String token) {
+        bean.setToken(token);
+        return this;
+    }
+
+    public SlackResponseBuilder withChannel(String channel) {
+        bean.setChannel(channel);
+        return this;
+    }
 
     public SlackResponseBuilder withText(String text) {
         bean.setText(text);
         return this;
     }
 
-    // ResponseType
-
-    public SlackResponseBuilder inChannel() {
-        return withResponseType(SlackResponseType.IN_CHANNEL);
-    }
-
-    public SlackResponseBuilder ephemeralResponse() {
-        return withResponseType(SlackResponseType.EPHEMERAL);
-    }
-
-    private SlackResponseBuilder withResponseType(SlackResponseType responseType) {
-        bean.setResponseType(responseType);
+    public SlackResponseBuilder withAs_user(boolean as_user) {
+        bean.setAsUser(as_user);
         return this;
     }
 
-    // Attachments
-
-    public SlackResponseAttachmentBuilder<SlackResponseBuilder> addAttachment() {
-        return new SlackResponseAttachmentBuilder<>(this::addAttachment, this);
-        
-    }
-
-    private SlackResponseBuilder addAttachment(SlackResponseAttachment attachment) {
-        bean.addAttachment(attachment);
-        return this;
-    }
-
-    public SlackResponseBuilder withAttachments(List<SlackResponseAttachment> attachments) {
+    public SlackResponseBuilder withAttachments(String attachments) {
         bean.setAttachments(attachments);
         return this;
     }
 
-    // Build in methods
+    public SlackResponseBuilder withIcon_emoji(String icon_emoji) {
+        bean.setIconEmoji(icon_emoji);
+        return this;
+    }
+
+    public SlackResponseBuilder withIcon_url(String icon_url) {
+        bean.setIconUrl(icon_url);
+        return this;
+    }
+
+    public SlackResponseBuilder withLink_names(boolean link_names) {
+        bean.setLinkNames(link_names);
+        return this;
+    }
+
+    public SlackResponseBuilder withParse(String parse) {
+        bean.setParse(parse);
+        return this;
+    }
+
+    public SlackResponseBuilder withReply_broadcast(boolean reply_broadcast) {
+        bean.setReplyBroadcast(reply_broadcast);
+        return this;
+    }
+
+    public SlackResponseBuilder withThread_ts(String thread_ts) {
+        bean.setThreadTimestamp(thread_ts);
+        return this;
+    }
+
+    public SlackResponseBuilder withUnfurl_links(boolean unfurl_links) {
+        bean.setUnfurlLinks(unfurl_links);
+        return this;
+    }
+
+    public SlackResponseBuilder withUnfurl_media(boolean unfurl_media) {
+        bean.setUnfurlMedia(unfurl_media);
+        return this;
+    }
+
+    public SlackResponseBuilder withUsername(String username) {
+        bean.setUsername(username);
+        return this;
+    }
 
     public SlackResponse build() {
         return bean;

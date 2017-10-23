@@ -6,6 +6,7 @@ public class SlackRequest {
 
 	static final String TOKEN_PARAM = "token";
 	static final String TEAM_ID_PARAM = "team_id";
+	static final String API_APP_ID = "api_app_id";
 	static final String TEAM_DOMAIN_PARAM = "team_domain";
 	static final String CHANNEL_ID_PARAM = "channel_id";
 	static final String CHANNEL_NAME_PARAM = "channel_name";
@@ -24,6 +25,20 @@ public class SlackRequest {
 	private String userName;
 	private String command;
 	private String responseUrl;
+	
+    String event; /*{
+                  //        "type": "name_of_event",
+                  //        "event_ts": "1234567890.123456",
+                  //        "user": "UXXXXXXX1",
+                  //        ...
+                  },*/
+    String type; // "event_callback",
+    String authed_users; /*[
+                         "UXXXXXXX1",
+                         "UXXXXXXX2"
+                         ],*/
+    String event_id; // "Ev08MFMKH6",
+    String event_time;// 1234567890
 
 	public String getText() {
 		return text;
@@ -101,7 +116,7 @@ public class SlackRequest {
 	
     @Override
     public String toString() {
-        return getClass().getName() + " " + JsonUtils.asJson(this);
+        return getClass().getSimpleName() + " " + JsonUtils.asJson(this);
     }
 
 }

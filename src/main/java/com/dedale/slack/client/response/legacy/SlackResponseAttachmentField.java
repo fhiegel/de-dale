@@ -1,4 +1,4 @@
-package com.dedale.slack.client.response;
+package com.dedale.slack.client.response.legacy;
 
 import com.dedale.utils.JsonUtils;
 import com.fasterxml.jackson.annotation.JsonProperty;

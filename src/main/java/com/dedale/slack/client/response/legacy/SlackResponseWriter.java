@@ -1,4 +1,4 @@
-package com.dedale.slack.client.response;
+package com.dedale.slack.client.response.legacy;
 
 import java.io.IOException;
 import java.io.OutputStream;

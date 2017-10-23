@@ -1,4 +1,4 @@
-package com.dedale.slack.client.response;
+package com.dedale.slack.client.response.legacy;
 
 import java.util.function.Consumer;
 
