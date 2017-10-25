@@ -2,7 +2,7 @@ package com.dedale.slack.client.response;
 
 public class SlackResponse {
 
-    private String token;// xxxx-xxxxxxxxx-xxxx Required
+    private String token;// xxxx-xxxxxxxxx-xxxx Required 
     private String channel;// C1234567890 Required
     private String text;// Hello world Required
 
