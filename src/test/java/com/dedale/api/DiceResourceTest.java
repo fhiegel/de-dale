@@ -53,6 +53,30 @@ public class DiceResourceTest extends JerseyTest {
         // Then
         assertThat(responseMsg.readEntity(String.class)).isEqualTo("2");
     }
+    
+    @Test
+    public void should_roll_a_dice_twice() throws Exception {
+        // Given
+        String wellFormedQuery = "1+2 3+4";
+        
+        // When
+        Response responseMsg = target("dices").request().post(Entity.text(wellFormedQuery));
+        
+        // Then
+        assertThat(responseMsg.readEntity(String.class)).isEqualTo("3 7");
+    }
+    
+    @Test
+    public void should_roll_a_dice_twice_despite_spaces() throws Exception {
+        // Given
+        String wellFormedQuery = "1+ 2 3+ 4";
+        
+        // When
+        Response responseMsg = target("dices").request().post(Entity.text(wellFormedQuery));
+        
+        // Then
+        assertThat(responseMsg.readEntity(String.class)).isEqualTo("3 7");
+    }
 
     @Test
     public void should_return_400_for_malformed_dice_query() throws Exception {

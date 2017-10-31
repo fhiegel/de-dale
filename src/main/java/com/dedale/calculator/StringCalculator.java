@@ -1,68 +1,40 @@
 package com.dedale.calculator;
 
-import static com.dedale.calculator.OperandReader.LEFT_TO_RIGHT;
-import static com.dedale.calculator.OperandReader.RIGHT_TO_LEFT;
-import static java.lang.Math.pow;
-
-import java.util.Collection;
+import com.dedale.core.InterpreterEngine;
+import com.dedale.core.expression.AddOperation;
+import com.dedale.core.expression.Expression;
+import com.dedale.core.expression.IntegerExpression;
+import com.dedale.core.expression.MinusOperation;
+import com.dedale.core.expression.MultiplyOperation;
+import com.dedale.core.expression.PowerOperation;
+import com.dedale.core.parse.ExpressionParsers;
+import com.dedale.dice.DiceOperation;
 
 public class StringCalculator {
-    
-    private Collection<StringToIntegerOperation> operations;
-    
+
+    private InterpreterEngine delegateInterpreter;
+
     public StringCalculator() {
-        this(beginBuildOperations().build());
+        this(calculatorStatements());
     }
-    
-    public StringCalculator(Collection<StringToIntegerOperation> operations) {
-        this.operations = operations;
-    }
-    
-    Collection<StringToIntegerOperation> getOperations() {
-        return operations;
+    public StringCalculator(ExpressionParsers statements) {
+        delegateInterpreter = new InterpreterEngine(statements);
     }
 
-    static OperationListBuilder beginBuildOperations() {
-        return new OperationListBuilder()
-                
-                .addOperation()
-                .withSymbol("+")
-                .withOperandReader(LEFT_TO_RIGHT)
-                .withOperation((left, right) -> left + right)
-                .endOperation()
-                
-                .addOperation()
-                .withSymbol("-")
-                .withOperandReader(LEFT_TO_RIGHT)
-                .withOperation((left, right) -> left - right)
-                .endOperation()
-                
-                .addOperation()
-                .withSymbol("*")
-                .withOperandReader(LEFT_TO_RIGHT)
-                .withOperation((left, right) -> left * right)
-                .endOperation()
-                
-                .addOperation()
-                .withSymbol("^")
-                .withOperandReader(RIGHT_TO_LEFT)
-                .withOperation((left, right) -> (int) pow(left, right))
-                .endOperation()
-                
-                .addOperation()
-                .withSymbol("d")
-                .withOperandReader(LEFT_TO_RIGHT)
-                .withOperation(SumDiceRollsOperation::sumDices)
-                .endOperation();
+    public String calculate(String sentence) {
+        Expression result = delegateInterpreter.interpret(sentence);
+        return result.print();
     }
-    
-    public Integer calculate(String sentence) {
-        for (StringToIntegerOperation operation : operations) {
-            if (operation.mayApplyOperation(sentence)) {
-                return operation.apply(sentence, this::calculate);
-            }
-        }
-        return Integer.parseInt(sentence.trim());
+
+    public static ExpressionParsers calculatorStatements() {
+        ExpressionParsers statements = new ExpressionParsers();
+        return statements
+                .when("\\d+", e -> new IntegerExpression(Integer.valueOf(e)))
+                .when("[+]", e -> AddOperation.EMPTY)
+                .when("([-])(?!-)", e -> MinusOperation.EMPTY)
+                .when("[*]", e -> MultiplyOperation.EMPTY)
+                .when("[\\^]", e -> PowerOperation.EMPTY)
+                .when("([dD])", e -> new DiceOperation());
     }
-    
+
 }
