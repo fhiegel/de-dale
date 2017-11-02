@@ -19,7 +19,7 @@ public class AbstractArithmeticOperation extends AbstractCommand implements Arit
     }
 
     @Override
-    protected ExpressionVisitor configure(ExpressionVisitor visitor) {
+    protected ExpressionVisitor<Expression> configure(ExpressionVisitor<Expression> visitor) {
         return visitor
                 .when(AddOperation.class, add -> add.assignLeft(this))
                 .when(MinusOperation.class, minus -> minus.assignLeft(this))
@@ -29,11 +29,6 @@ public class AbstractArithmeticOperation extends AbstractCommand implements Arit
 
                 .when(ArithmeticExpression.class, arithmetic -> this.assignRightWhenNotFull(arithmetic))
                 .when(Expression.class, any -> ConcatCommand.concat(this, any));
-    }
-
-    @Override
-    public String print() {
-        return printDelegate(left) + "?" + printDelegate(right);
     }
 
     @Override

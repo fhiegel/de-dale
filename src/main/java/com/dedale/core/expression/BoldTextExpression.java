@@ -1,31 +1,34 @@
 package com.dedale.core.expression;
 
-public class BoldTextExpression extends TextExpression {
+public class BoldTextExpression extends AbstractExpression {
 
     public static final BoldTextExpression EMPTY = new BoldTextExpression(null);
 
     private Expression text;
 
     private BoldTextExpression(Expression text) {
-        super("*");
         this.text = text;
     }
 
     @Override
-    public TextExpression evaluate() {
-        ValuedExpression<String> evaluate = (ValuedExpression<String>) text.evaluate();
-        return new TextExpression(value() + evaluate.value() + value());
+    public Expression evaluate() {
+        return wrapText(text.evaluate());
     }
 
     @Override
-    protected ExpressionVisitor configure(ExpressionVisitor dispatcher) {
-        return super.configure(dispatcher)
-                .when(TextExpression.class, this::wrapText);
+    protected ExpressionVisitor<Expression> configure(ExpressionVisitor<Expression> dispatcher) {
+        return super.configure(dispatcher).when(TextExpression.class, this::wrapText);
     }
 
-    TextExpression wrapText(Expression text) {
-        Expression effectiveText = this.text == null ? text : (TextExpression) this.text.then(text);
-        return new BoldTextExpression(effectiveText);
+    Expression wrapText(Expression text) {
+        return new BoldTextExpression(text);
+    }
+
+    @Override
+    public <R> void accept(ExpressionVisitor<R> visitor) {
+        super.accept(visitor);
+        if (text != null) text.accept(visitor);
+        super.accept(visitor);
     }
 
 }

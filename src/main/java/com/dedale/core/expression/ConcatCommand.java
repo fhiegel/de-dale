@@ -3,28 +3,23 @@ package com.dedale.core.expression;
 public class ConcatCommand extends AbstractCommand {
 
     public static final ConcatCommand CONCAT = new ConcatCommand();
-    private static final String CONCAT_SEPARATOR = " ";
+    static final String CONCAT_SEPARATOR = " ";
 
     private ConcatCommand() {
-        super((l, r) -> new TextExpression(l.print() + CONCAT_SEPARATOR + r.print()));
+        super(ConcatCommand::concat);
     }
 
     private ConcatCommand(Expression left, Expression right) {
-        super((l, r) -> new TextExpression(l.print() + CONCAT_SEPARATOR + r.print()), left, right);
+        super(ConcatCommand::concat, left, right);
     }
 
     @Override
-    protected ExpressionVisitor configure(ExpressionVisitor dispatcher) {
+    protected ExpressionVisitor<Expression> configure(ExpressionVisitor<Expression> dispatcher) {
         return dispatcher.when(BoldTextExpression.class, bold -> bold.wrapText(this)).when(Expression.class, this::assignRight);
     }
 
     static ConcatCommand concat(Expression left, Expression right) {
         return new ConcatCommand(left, right);
-    }
-
-    @Override
-    public String print() {
-        return printDelegate(left) + CONCAT_SEPARATOR + printDelegate(right);
     }
 
     @Override

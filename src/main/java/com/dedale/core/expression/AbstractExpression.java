@@ -3,27 +3,25 @@ package com.dedale.core.expression;
 public abstract class AbstractExpression implements Expression {
 
     public final Expression then(Expression after) {
-        ExpressionVisitor dispatcher = defaultDispatcher();
-        dispatcher = configure(dispatcher);
-        return after.accept(dispatcher);
+        ExpressionVisitor<Expression> dispatcher = defaultDispatcher();
+        configure(dispatcher);
+        return dispatcher.visit(after);
     }
     
-    protected ExpressionVisitor configure(ExpressionVisitor dispatcher) {
+    protected ExpressionVisitor<Expression> configure(ExpressionVisitor<Expression> dispatcher) {
         return dispatcher;
     }
 
-    private ExpressionVisitor defaultDispatcher() {
+    private ExpressionVisitor<Expression> defaultDispatcher() {
         return new OriginStatementVisitor(this)
                 .when(Neutral.class, neutral -> this);
     }
 
-    protected final String printDelegate(Expression delegate) {
-        return delegate != null ? delegate.print() : "null";
-    }
-
     @Override
     public String toString() {
-        return getClass().getSimpleName() + "{" + print() + "}";
+        ExpressionPrinter printer = new ExpressionPrinter();
+        accept(printer);
+        return getClass().getSimpleName() + "{" + printer.print() + "}";
     }
 
 }

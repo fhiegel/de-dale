@@ -8,14 +8,8 @@ public interface Expression {
 
     Expression evaluate();
 
-    /**
-     * On devrait utiliser un Visitor à la place.
-     */
-    @Deprecated
-    String print();
-
-    default Expression accept(ExpressionVisitor visitor) {
-        return visitor.visit(this);
+    default <R> void accept(ExpressionVisitor<R> visitor) {
+        visitor.visit(this);
     }
 
 }

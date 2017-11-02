@@ -20,9 +20,4 @@ public class MultiplyOperation extends AbstractArithmeticOperation {
         return new MultiplyOperation(left, right);
     }
 
-    @Override
-    public String print() {
-        return printDelegate(left) + "*" + printDelegate(right);
-    }
-
 }

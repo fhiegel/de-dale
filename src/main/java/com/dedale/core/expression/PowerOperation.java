@@ -21,15 +21,10 @@ public class PowerOperation extends AbstractArithmeticOperation {
     }
 
     @Override
-    protected ExpressionVisitor configure(ExpressionVisitor dispatcher) {
+    protected ExpressionVisitor<Expression> configure(ExpressionVisitor<Expression> dispatcher) {
         return super.configure(dispatcher)
                 .when(PowerOperation.class, pow -> pow.assignLeft(this))
                 .when(MultiplyOperation.class, multiply -> multiply.assignLeft(this));
-    }
-
-    @Override
-    public String print() {
-        return printDelegate(left) + "^" + printDelegate(right);
     }
 
 }

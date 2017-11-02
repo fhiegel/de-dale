@@ -15,13 +15,8 @@ public abstract class ValuedExpression<T> extends AbstractExpression {
         return this;
     }
 
-    protected final T value() {
+    public final T value() {
         return value;
-    }
-
-    @Override
-    public String print() {
-        return String.valueOf(value);
     }
 
 }

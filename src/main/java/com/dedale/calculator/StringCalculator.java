@@ -3,6 +3,7 @@ package com.dedale.calculator;
 import com.dedale.core.InterpreterEngine;
 import com.dedale.core.expression.AddOperation;
 import com.dedale.core.expression.Expression;
+import com.dedale.core.expression.ExpressionPrinter;
 import com.dedale.core.expression.IntegerExpression;
 import com.dedale.core.expression.MinusOperation;
 import com.dedale.core.expression.MultiplyOperation;
@@ -23,7 +24,10 @@ public class StringCalculator {
 
     public String calculate(String sentence) {
         Expression result = delegateInterpreter.interpret(sentence);
-        return result.print();
+        
+        ExpressionPrinter printer = new ExpressionPrinter();
+        result.accept(printer);
+        return printer.print();
     }
 
     public static ExpressionParsers calculatorStatements() {

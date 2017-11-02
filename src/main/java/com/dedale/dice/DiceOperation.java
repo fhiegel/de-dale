@@ -29,9 +29,4 @@ public class DiceOperation extends AbstractArithmeticOperation {
         return new DiceOperation(this.command, left, right);
     }
 
-    @Override
-    public String print() {
-        return printDelegate(left) + "d" + printDelegate(right);
-    }
-
 }

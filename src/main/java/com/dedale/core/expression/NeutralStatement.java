@@ -17,11 +17,7 @@ final class Neutral implements Expression {
 
     @Override
     public String toString() {
-        return print();
-    }
-
-    @Override
-    public String print() {
         return "<neutral>";
     }
+
 }

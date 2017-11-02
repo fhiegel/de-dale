@@ -20,9 +20,4 @@ public class MinusOperation extends AbstractArithmeticOperation {
         return new MinusOperation(left, right);
     }
 
-    @Override
-    public String print() {
-        return printDelegate(left) + "-" + printDelegate(right);
-    }
-
 }

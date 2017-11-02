@@ -8,6 +8,7 @@ import java.util.regex.Pattern;
 import org.junit.Test;
 
 import com.dedale.core.expression.Expression;
+import com.dedale.core.expression.ExpressionPrinter;
 
 public class InterpreterEngineTest {
 
@@ -18,7 +19,7 @@ public class InterpreterEngineTest {
         String input = "Some text";
         Expression result1 = interpreter.interpret(input);
 
-        String result = result1.print();
+        String result = print(result1);
 
         assertThat(result).isEqualTo("Some text");
     }
@@ -28,17 +29,18 @@ public class InterpreterEngineTest {
         String input = "Some text --bold";
         Expression result1 = interpreter.interpret(input);
 
-        String result = result1.print();
+        String result = print(result1);
 
         assertThat(result).isEqualTo("*Some text*");
     }
+
 
     @Test
     public void should_show_some_stuff() throws Exception {
         String input = "show";
         Expression result1 = interpreter.interpret(input);
 
-        String result = result1.print();
+        String result = print(result1);
 
         assertThat(result).isEqualTo("...");
     }
@@ -48,7 +50,7 @@ public class InterpreterEngineTest {
         String input = "recursivesubcmd show --bold";
         Expression result1 = interpreter.interpret(input);
 
-        String result = result1.print();
+        String result = print(result1);
 
         assertThat(result).isEqualTo("*...*");
     }
@@ -58,7 +60,7 @@ public class InterpreterEngineTest {
         String input = "roll 1+2*3+4-5";
         Expression result1 = interpreter.interpret(input);
         
-        String result = result1.print();
+        String result = print(result1);
         
         assertThat(result).isEqualTo("6");
     }
@@ -72,5 +74,11 @@ public class InterpreterEngineTest {
         // When
         // Then
         assertThat(matcher.group(1).toString()).isEqualTo("some - text");
+    }
+
+    private String print(Expression expression) {
+        ExpressionPrinter printer = new ExpressionPrinter();
+        expression.accept(printer);
+        return printer.print();
     }
 }

@@ -5,15 +5,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import org.junit.Test;
 
-import com.dedale.core.expression.AddOperation;
-import com.dedale.core.expression.ConcatCommand;
-import com.dedale.core.expression.Expression;
-import com.dedale.core.expression.IntegerExpression;
-import com.dedale.core.expression.MinusOperation;
-import com.dedale.core.expression.MultiplyOperation;
-import com.dedale.core.expression.PowerOperation;
-import com.dedale.core.expression.TextExpression;
-
 public class ExpressionFeatures {
 
     static final Expression one = new IntegerExpression(1);
@@ -48,9 +39,10 @@ public class ExpressionFeatures {
 
         // When
         Expression expression = first.then(second);
+        String print = print(expression);
 
         // Then
-        assertThat(expression.print()).isEqualTo("one sentence");
+        assertThat(print).isEqualTo("one sentence");
     }
 
     @Test
@@ -59,25 +51,7 @@ public class ExpressionFeatures {
         Expression result = one.then(add).then(two);
 
         // Then
-        assertThat(result.print()).isEqualTo("1+2");
-    }
-
-    @Test
-    public void evaluate_two_integer_expressions_will_return_concat_result() throws Exception {
-        // When
-        Expression result = one.then(two).evaluate();
-
-        // Then
-        assertThat(result.print()).isEqualTo("1 2");
-    }
-    
-    @Test
-    public void evaluate_two_integer_expressions_will_return_concat_statement() throws Exception {
-        // When
-        Expression concat = one.then(two);
-        
-        // Then
-        assertThat(concat).isInstanceOf(ConcatCommand.class);
+        assertThat(print(result)).isEqualTo("1+2");
     }
 
     @Test
@@ -86,7 +60,25 @@ public class ExpressionFeatures {
         Expression result = one.then(add).then(two).evaluate();
 
         // Then
-        assertThat(result.print()).isEqualTo("3");
+        assertThat(print(result)).isEqualTo("3");
+    }
+
+    @Test
+    public void evaluate_two_integer_expressions_will_return_concat_result() throws Exception {
+        // When
+        Expression result = one.then(two).evaluate();
+
+        // Then
+        assertThat(print(result)).isEqualTo("1 2");
+    }
+
+    @Test
+    public void evaluate_two_integer_expressions_will_return_concat_statement() throws Exception {
+        // When
+        Expression concat = one.then(two);
+
+        // Then
+        assertThat(concat).isInstanceOf(ConcatCommand.class);
     }
 
     @Test
@@ -96,7 +88,7 @@ public class ExpressionFeatures {
         Expression result = one.then(add).then(two).then(add).then(four);
 
         // Then
-        assertThat(result.print()).isEqualTo("1+2+4");
+        assertThat(print(result)).isEqualTo("1+2+4");
     }
 
     @Test
@@ -107,8 +99,8 @@ public class ExpressionFeatures {
         Expression result = notEvaluated.evaluate();
 
         // Then
-        assertThat(notEvaluated.print()).isEqualTo("1+2+4");
-        assertThat(result.print()).isEqualTo("7");
+        assertThat(print(notEvaluated)).isEqualTo("1+2+4");
+        assertThat(print(result)).isEqualTo("7");
     }
 
     @Test
@@ -118,8 +110,8 @@ public class ExpressionFeatures {
         Expression result = notEvaluated.evaluate();
 
         // Then
-        assertThat(notEvaluated.print()).isEqualTo("1+2*3");
-        assertThat(result.print()).isEqualTo("7");
+        assertThat(print(notEvaluated)).isEqualTo("1+2*3");
+        assertThat(print(result)).isEqualTo("7");
     }
 
     @Test
@@ -129,8 +121,8 @@ public class ExpressionFeatures {
         Expression result = notEvaluated.evaluate();
 
         // Then
-        assertThat(notEvaluated.print()).isEqualTo("1+2*3*4");
-        assertThat(result.print()).isEqualTo("25");
+        assertThat(print(notEvaluated)).isEqualTo("1+2*3*4");
+        assertThat(print(result)).isEqualTo("25");
     }
 
     @Test
@@ -140,8 +132,8 @@ public class ExpressionFeatures {
         Expression result = notEvaluated.evaluate();
 
         // Then
-        assertThat(notEvaluated.print()).isEqualTo("1+2*3+4");
-        assertThat(result.print()).isEqualTo("11");
+        assertThat(print(notEvaluated)).isEqualTo("1+2*3+4");
+        assertThat(print(result)).isEqualTo("11");
     }
 
     @Test
@@ -151,8 +143,8 @@ public class ExpressionFeatures {
         Expression result = notEvaluated.evaluate();
 
         // Then
-        assertThat(notEvaluated.print()).isEqualTo("7-2*3");
-        assertThat(result.print()).isEqualTo("1");
+        assertThat(print(notEvaluated)).isEqualTo("7-2*3");
+        assertThat(print(result)).isEqualTo("1");
     }
 
     @Test
@@ -162,8 +154,14 @@ public class ExpressionFeatures {
         Expression result = notEvaluated.evaluate();
 
         // Then
-        assertThat(notEvaluated.print()).isEqualTo("2^3*2^2");
-        assertThat(result.print()).isEqualTo("32");
+        assertThat(print(notEvaluated)).isEqualTo("2^3*2^2");
+        assertThat(print(result)).isEqualTo("32");
+    }
+
+    private String print(Expression expression) {
+        ExpressionPrinter printer = new ExpressionPrinter();
+        expression.accept(printer);
+        return printer.print();
     }
 
 }

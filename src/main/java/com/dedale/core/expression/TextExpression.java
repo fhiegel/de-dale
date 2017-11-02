@@ -7,10 +7,10 @@ public class TextExpression extends ValuedExpression<String> {
     }
 
     @Override
-    protected ExpressionVisitor configure(ExpressionVisitor dispatcher) {
+    protected ExpressionVisitor<Expression> configure(ExpressionVisitor<Expression> dispatcher) {
         return dispatcher
                 .when(BoldTextExpression.class, bold -> bold.wrapText(this))
-                .when(Expression.class, e->ConcatCommand.concat(this, e));
+                .when(Expression.class, e -> ConcatCommand.concat(this, e));
     }
 
 }

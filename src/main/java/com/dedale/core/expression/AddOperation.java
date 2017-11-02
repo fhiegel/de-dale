@@ -19,9 +19,4 @@ public class AddOperation extends AbstractArithmeticOperation {
         return new AddOperation(left, right);
     }
 
-    @Override
-    public String print() {
-        return printDelegate(left) + "+" + printDelegate(right);
-    }
-
 }

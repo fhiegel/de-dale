@@ -46,5 +46,12 @@ public abstract class AbstractCommand extends AbstractExpression {
     }
 
     protected abstract Expression copy(Expression left, Expression right);
+    
+    @Override
+    public <R> void accept(ExpressionVisitor<R> visitor) {
+        if (left != null) left.accept(visitor);
+        super.accept(visitor);
+        if (right != null) right.accept(visitor);
+    }
 
 }

@@ -1,6 +1,6 @@
 package com.dedale.core.expression;
 
-class OriginStatementVisitor extends ExpressionVisitor {
+class OriginStatementVisitor extends ExpressionVisitor<Expression> {
 
     private final Expression origin;
 

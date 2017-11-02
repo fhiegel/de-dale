@@ -7,7 +7,7 @@ public class IntegerExpression extends ValuedExpression<Integer> implements Arit
     }
 
     @Override
-    protected ExpressionVisitor configure(ExpressionVisitor dispatcher) {
+    protected ExpressionVisitor<Expression> configure(ExpressionVisitor<Expression> dispatcher) {
         return dispatcher
                 .when(AbstractArithmeticOperation.class, operation -> operation.assignLeft(this))
                 .when(Expression.class, e -> ConcatCommand.concat(this, e));
