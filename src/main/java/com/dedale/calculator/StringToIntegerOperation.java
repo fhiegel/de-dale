@@ -2,6 +2,8 @@ package com.dedale.calculator;
 
 import java.util.function.Function;
 
+import org.apache.commons.lang3.StringUtils;
+
 class StringToIntegerOperation {
     
     private static final String ESCAPE_PREFIX = "\\";
@@ -17,14 +19,14 @@ class StringToIntegerOperation {
         this.operation = function;
     }
     
-    public boolean mayApplyOperation(String appliyableString) {
-        if (appliyableString == null || appliyableString.isEmpty()) {
+    public boolean mayApplyOperation(String statement) {
+        if (StringUtils.isBlank(statement)) {
             return false;
         }
         if (REGEXP_SYMBOLS.contains(symbol)) {
-            return appliyableString.matches(".*\\d+\\s*" + ESCAPE_PREFIX + symbol + "\\s*\\d+.*");
+            return statement.matches(".*\\d+\\s*" + ESCAPE_PREFIX + symbol + "\\s*\\d+.*");
         } else {
-            return appliyableString.matches(".*\\d+\\s*" + symbol + "\\s*\\d+.*");
+            return statement.matches(".*\\d+\\s*" + symbol + "\\s*\\d+.*");
         }
     }
     

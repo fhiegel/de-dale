@@ -1,6 +1,8 @@
 package com.dedale.utils;
 
-class JsonUtilsException extends RuntimeException {
+import com.dedale.utils.exceptions.TechnicalException;
+
+class JsonUtilsException extends TechnicalException {
 
     private static final long serialVersionUID = 1L;
     
