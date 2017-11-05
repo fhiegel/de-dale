@@ -13,9 +13,9 @@ import javax.ws.rs.core.Response;
 
 import com.dedale.calculator.StringCalculator;
 import com.dedale.calculator.StringCalculatorInputValidator;
-import com.dedale.slack.client.request.SlackRequest;
-import com.dedale.slack.client.response.legacy.SlackResponse;
-import com.dedale.slack.client.response.legacy.SlackResponseBuilder;
+import com.dedale.slack.message.SlackMessage;
+import com.dedale.slack.message.SlackMessageBuilder;
+import com.dedale.slack.request.SlackRequest;
 
 @Path("dices")
 public class DiceResource {
@@ -38,12 +38,12 @@ public class DiceResource {
     @POST
     @Path("/slack")
     @Deprecated
-    public SlackResponse slackRoll(SlackRequest slackRequest) {
+    public SlackMessage slackRoll(SlackRequest slackRequest) {
         String diceSentence = slackRequest.getText();
         if (!validator.validate(diceSentence)) {
             String responseText = "Impossible de lancer la définition de dé suivante : " + MARKDOWN_CODE + slackRequest.getText()
                     + MARKDOWN_CODE;
-            return SlackResponseBuilder
+            return SlackMessageBuilder
                     .beginResponse()
                     .inChannel()
                     .addAttachment()
@@ -58,7 +58,7 @@ public class DiceResource {
 
         String responseText = MARKDOWN_BOLD + slackRequest.getText() + "=" + MARKDOWN_BOLD + " " + diceResult;
 
-        return SlackResponseBuilder
+        return SlackMessageBuilder
                 .beginResponse()
                 .inChannel()
                 .addAttachment()

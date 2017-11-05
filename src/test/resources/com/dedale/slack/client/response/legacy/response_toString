@@ -1,5 +1,0 @@
-SlackResponse {
-  "mrkdwn" : true,
-  "response_type" : "ephemeral",
-  "text" : "some text here"
-}

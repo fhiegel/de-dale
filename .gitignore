@@ -3,5 +3,10 @@
 .settings
 .project
 
+# Credentials
+**.credentials*
+!**.credentials.sample*
+**.secrets*
+
 # Maven
 /target/

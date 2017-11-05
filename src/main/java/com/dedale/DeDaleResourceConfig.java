@@ -5,7 +5,7 @@ import org.glassfish.jersey.server.ResourceConfig;
 
 import com.dedale.calculator.StringCalculator;
 import com.dedale.calculator.StringCalculatorInputValidator;
-import com.dedale.slack.client.SlackClientFeature;
+import com.dedale.slack.SlackFeatures;
 
 public class DeDaleResourceConfig extends ResourceConfig {
     
@@ -20,7 +20,7 @@ public class DeDaleResourceConfig extends ResourceConfig {
             }
         });
         
-        register(SlackClientFeature.class);
+        register(SlackFeatures.class);
     }
     
 }

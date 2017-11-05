@@ -37,11 +37,18 @@ public class JsonUtils {
 
     public static <T> String asJson(InputStream inputStream, Class<T> valueType) {
         try {
-            T value = objectMapper.readValue(inputStream, valueType);
+            T value = loadAs(inputStream, valueType);
             return asJson(value);
+        } catch (JsonUtilsException e) {
+            throw new JsonUtilsException("Cannot write inputStream as JSON for class : input=" + inputStream + ", class=" + valueType, e);
+        }
+    }
+
+    public static <T> T loadAs(InputStream inputStream, Class<T> valueType) {
+        try {
+            return objectMapper.readValue(inputStream, valueType);
         } catch (IOException e) {
-            throw new JsonUtilsException(
-                    "Cannot write inputStream as JSON for class : input=" + inputStream + ", class=" + valueType, e);
+            throw new JsonUtilsException("Cannot read inputStream as JSON for class : input=" + inputStream + ", class=" + valueType, e);
         }
     }
 
