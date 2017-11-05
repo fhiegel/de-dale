@@ -22,7 +22,7 @@ public class SlackLifecycleListener implements ContainerLifecycleListener {
         System.out.println("### STARTED");
         System.out.println("###");
 
-        slack.chat().postMessage("DeDale Started").send();
+        slack.technicalChat().postMessage("DeDale Started").send();
     }
 
     @Override
