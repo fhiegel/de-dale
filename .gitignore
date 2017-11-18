@@ -3,6 +3,10 @@
 .settings
 .project
 
+# IntelliJ
+.idea
+*.iml
+
 # Credentials
 **.credentials*
 !**.credentials.sample*
