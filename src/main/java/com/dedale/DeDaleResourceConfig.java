@@ -14,7 +14,8 @@ public class DeDaleResourceConfig extends ResourceConfig {
         register(new AbstractBinder() {
             @Override
             protected void configure() {
-                bind(StringCalculator.class).to(StringCalculator.class);
+                StringCalculator stringCalculator = new StringCalculator(StringCalculator.calculatorStatements());
+                bind(stringCalculator).to(StringCalculator.class);
             }
         });
         

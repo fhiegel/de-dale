@@ -72,6 +72,13 @@ public class SlackClientTest {
     public void post_channel() throws Exception {
         slackClient.chat().postMessage("a message").send();
 
+        assertPostedParameterContainsExactly("channel", "general");
+    }
+
+    @Test
+    public void post_on_technical_channel() throws Exception {
+        slackClient.technicalChat().postMessage("a message").send();
+
         assertPostedParameterContainsExactly("channel", "a_technical_channel");
     }
 

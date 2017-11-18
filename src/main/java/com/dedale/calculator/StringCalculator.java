@@ -15,9 +15,6 @@ public class StringCalculator {
 
     private InterpreterEngine delegateInterpreter;
 
-    public StringCalculator() {
-        this(calculatorStatements());
-    }
     public StringCalculator(ExpressionParsers statements) {
         delegateInterpreter = new InterpreterEngine(statements);
     }
@@ -38,7 +35,7 @@ public class StringCalculator {
                 .when("([-])(?!-)", e -> MinusOperation.EMPTY)
                 .when("[*]", e -> MultiplyOperation.EMPTY)
                 .when("[\\^]", e -> PowerOperation.EMPTY)
-                .when("([dD])", e -> new DiceOperation());
+                .when("(?!\\S)([dD])(?!\\S)", e -> new DiceOperation());
     }
 
 }

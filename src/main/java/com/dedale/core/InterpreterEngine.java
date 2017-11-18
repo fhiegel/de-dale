@@ -9,7 +9,7 @@ import com.dedale.core.parse.ExpressionParsers;
 
 public class InterpreterEngine implements Interpreter {
 
-    private ExpressionParsers statementParsers;
+    private final ExpressionParsers statementParsers;
 
     public InterpreterEngine(ExpressionParsers statementParsers) {
         this.statementParsers = statementParsers;
@@ -25,14 +25,14 @@ public class InterpreterEngine implements Interpreter {
         return new CommandLine(input, statementParsers).expression();
     }
 
-    public static ExpressionParsers expressionParser() {
+    static ExpressionParsers expressionParser() {
         ExpressionParsers statements = new ExpressionParsers();
         return statements
                 .when("roll", StringCalculator.calculatorStatements())
                 .when("recursivesubcmd", statements)
                 .when("show", e -> new TextExpression("..."))
                 .when("--bold", e -> BoldTextExpression.EMPTY)
-                .when("\\S+", e -> new TextExpression(e));
+                .when("\\S+", TextExpression::new);
     }
 
 }

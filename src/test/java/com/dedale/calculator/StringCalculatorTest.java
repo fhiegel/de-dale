@@ -14,7 +14,7 @@ import com.dedale.dice.DiceSum;
 
 public class StringCalculatorTest {
 
-    private StringCalculator calculator = new StringCalculator();
+    private StringCalculator calculator = new StringCalculator(StringCalculator.calculatorStatements());
 
     @Test
     public void should_return_given_number() throws Exception {
