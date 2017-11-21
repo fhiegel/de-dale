@@ -10,11 +10,11 @@ public class AbstractArithmeticOperation extends AbstractCommand implements Arit
         this(toCommand(operation), left, right);
     }
 
-    protected AbstractArithmeticOperation(Command command, Expression left, Expression right) {
+    protected AbstractArithmeticOperation(CommandCombiner command, Expression left, Expression right) {
         super(command, left, right);
     }
 
-    private static Command toCommand(IntegerFunction operation) {
+    private static CommandCombiner toCommand(IntegerFunction operation) {
         return (l, r) -> new IntegerExpression(operation.apply(((IntegerExpression) l).value(), ((IntegerExpression) r).value()));
     }
 

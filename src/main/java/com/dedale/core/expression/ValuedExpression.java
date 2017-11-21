@@ -2,6 +2,8 @@ package com.dedale.core.expression;
 
 import java.util.Objects;
 
+import com.dedale.core.ExecutionContext;
+
 public abstract class ValuedExpression<T> extends AbstractExpression {
 
     private final T value;
@@ -11,7 +13,7 @@ public abstract class ValuedExpression<T> extends AbstractExpression {
     }
 
     @Override
-    public ValuedExpression<T> evaluate() {
+    public ValuedExpression<T> execute(ExecutionContext context) {
         return this;
     }
 

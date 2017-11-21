@@ -2,7 +2,7 @@ package com.dedale.dice;
 
 import com.dedale.core.expression.AbstractArithmeticOperation;
 import com.dedale.core.expression.ArithmeticExpression;
-import com.dedale.core.expression.Command;
+import com.dedale.core.expression.CommandCombiner;
 import com.dedale.core.expression.Expression;
 import com.dedale.core.expression.IntegerFunction;
 
@@ -20,7 +20,7 @@ public class DiceOperation extends AbstractArithmeticOperation {
         super(operation, left, right);
     }
 
-    private DiceOperation(Command command, Expression left, Expression right) {
+    private DiceOperation(CommandCombiner command, Expression left, Expression right) {
         super(command, left, right);
     }
 

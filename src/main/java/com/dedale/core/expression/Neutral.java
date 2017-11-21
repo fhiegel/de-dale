@@ -1,12 +1,14 @@
 package com.dedale.core.expression;
 
+import com.dedale.core.ExecutionContext;
+
 final class Neutral implements Expression {
     
     Neutral() {
     }
 
     @Override
-    public Neutral evaluate() {
+    public Neutral execute(ExecutionContext context) {
         return this;
     }
 

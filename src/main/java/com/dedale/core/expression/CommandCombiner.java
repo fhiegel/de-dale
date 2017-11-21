@@ -1,6 +1,6 @@
 package com.dedale.core.expression;
 
 @FunctionalInterface
-public interface Command {
+public interface CommandCombiner {
     Expression execute(Expression left, Expression right);
 }

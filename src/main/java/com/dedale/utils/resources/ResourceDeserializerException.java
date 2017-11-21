@@ -2,7 +2,7 @@ package com.dedale.utils.resources;
 
 import com.dedale.utils.exceptions.TechnicalException;
 
-public class ResourceDeserializerException extends TechnicalException {
+class ResourceDeserializerException extends TechnicalException {
 
     private static final long serialVersionUID = 1L;
 

@@ -1,6 +1,9 @@
 package com.dedale.calculator;
 
+import com.dedale.core.CommandDefinitions;
+import com.dedale.core.ExecutionContext;
 import com.dedale.core.InterpreterEngine;
+import com.dedale.core.InterpreterModule;
 import com.dedale.core.expression.AddOperation;
 import com.dedale.core.expression.Expression;
 import com.dedale.core.expression.ExpressionPrinter;
@@ -8,34 +11,41 @@ import com.dedale.core.expression.IntegerExpression;
 import com.dedale.core.expression.MinusOperation;
 import com.dedale.core.expression.MultiplyOperation;
 import com.dedale.core.expression.PowerOperation;
-import com.dedale.core.parse.ExpressionParsers;
 import com.dedale.dice.DiceOperation;
 
-public class StringCalculator {
+public class StringCalculator implements InterpreterModule {
 
-    private InterpreterEngine delegateInterpreter;
+    private final CommandDefinitions commandDefinitions;
 
-    public StringCalculator(ExpressionParsers statements) {
-        delegateInterpreter = new InterpreterEngine(statements);
+    public StringCalculator(CommandDefinitions statements) {
+        this.commandDefinitions = statements;
     }
 
     public String calculate(String sentence) {
-        Expression result = delegateInterpreter.interpret(sentence);
+        InterpreterEngine engine = new InterpreterEngine(this);
+        ExecutionContext context = ExecutionContext.from(engine);
         
+        Expression expression = engine.interpret(context, sentence);
+
         ExpressionPrinter printer = new ExpressionPrinter();
-        result.accept(printer);
+        expression.accept(printer);
         return printer.print();
     }
 
-    public static ExpressionParsers calculatorStatements() {
-        ExpressionParsers statements = new ExpressionParsers();
-        return statements
-                .when("\\d+", e -> new IntegerExpression(Integer.valueOf(e)))
-                .when("[+]", e -> AddOperation.EMPTY)
-                .when("([-])(?!-)", e -> MinusOperation.EMPTY)
-                .when("[*]", e -> MultiplyOperation.EMPTY)
-                .when("[\\^]", e -> PowerOperation.EMPTY)
-                .when("(?!\\S)([dD])(?!\\S)", e -> new DiceOperation());
+    @Override
+    public CommandDefinitions configure(ExecutionContext context) {
+        return commandDefinitions;
+    }
+
+    public static CommandDefinitions calculatorStatements() {
+        return CommandDefinitions
+                .defineCommands()
+                .andParse("\\d+", e -> new IntegerExpression(Integer.valueOf(e)))
+                .withCommand("[+]", AddOperation.EMPTY)
+                .withCommand("([-])(?!-)", MinusOperation.EMPTY)
+                .withCommand("[*]", MultiplyOperation.EMPTY)
+                .withCommand("[\\^]", PowerOperation.EMPTY)
+                .withCommand("([dD])", DiceOperation::new);
     }
 
 }

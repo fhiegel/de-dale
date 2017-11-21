@@ -14,7 +14,7 @@ public class ExpressionPrinter extends ExpressionVisitor<StringBuilder> {
                 .when(BoldTextExpression.class, e -> sb.append("*"))
                 .when(ValuedExpression.class, e -> sb.append(e.value()))
                 .when(ConcatCommand.class, e -> sb.append(ConcatCommand.CONCAT_SEPARATOR))
-                .otherwise(e -> sb.append(e));
+                .otherwise(e -> sb.append('{').append(e.getClass()).append('}'));
     }
 
     @Override

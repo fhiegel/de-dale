@@ -6,7 +6,7 @@ import static org.mockito.Mockito.when;
 
 import org.junit.Test;
 
-import com.dedale.core.parse.ExpressionParsers;
+import com.dedale.core.CommandDefinitions;
 import com.dedale.dice.Dice;
 import com.dedale.dice.DiceOperation;
 import com.dedale.dice.DiceProvider;
@@ -176,7 +176,8 @@ public class StringCalculatorTest {
         when(dice.roll()).thenReturn(3);
 
         DiceProvider dices = faces -> dice;
-        ExpressionParsers statements = StringCalculator.calculatorStatements().when("([dD])", e -> new DiceOperation(new DiceSum(dices)));
+        CommandDefinitions statements = StringCalculator.calculatorStatements()
+                .andParse("([dD])", e -> new DiceOperation(new DiceSum(dices)));
         calculator = new StringCalculator(statements);
 
         String sentence = "1d4";

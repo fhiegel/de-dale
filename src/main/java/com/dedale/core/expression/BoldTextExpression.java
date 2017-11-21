@@ -1,5 +1,7 @@
 package com.dedale.core.expression;
 
+import com.dedale.core.ExecutionContext;
+
 public class BoldTextExpression extends AbstractExpression {
 
     public static final BoldTextExpression EMPTY = new BoldTextExpression(null);
@@ -11,8 +13,8 @@ public class BoldTextExpression extends AbstractExpression {
     }
 
     @Override
-    public Expression evaluate() {
-        return wrapText(text.evaluate());
+    public Expression execute(ExecutionContext context) {
+        return wrapText((Expression) text.execute(context));
     }
 
     @Override

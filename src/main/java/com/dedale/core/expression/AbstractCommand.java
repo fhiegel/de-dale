@@ -1,25 +1,27 @@
 package com.dedale.core.expression;
 
+import com.dedale.core.ExecutionContext;
+
 public abstract class AbstractCommand extends AbstractExpression {
 
-    protected final Command command;
+    protected final CommandCombiner command;
     protected final Expression left;
     protected final Expression right;
 
-    protected AbstractCommand(Command command) {
+    protected AbstractCommand(CommandCombiner command) {
         this(command, null, null);
     }
 
-    protected AbstractCommand(Command command, Expression left, Expression right) {
+    protected AbstractCommand(CommandCombiner command, Expression left, Expression right) {
         this.command = command;
         this.left = left;
         this.right = right;
     }
 
     @Override
-    public Expression evaluate() {
-        Expression evaluatedLeft = left.evaluate();
-        Expression evaluatedRight = right.evaluate();
+    public Expression execute(ExecutionContext context) {
+        Expression evaluatedLeft = left.execute(context);
+        Expression evaluatedRight = right.execute(context);
         return command.execute(evaluatedLeft, evaluatedRight);
     }
 
