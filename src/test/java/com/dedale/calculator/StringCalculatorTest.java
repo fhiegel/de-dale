@@ -1,247 +1,191 @@
 package com.dedale.calculator;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-import java.util.Arrays;
-
-import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 
+import com.dedale.core.parse.ExpressionParsers;
+import com.dedale.dice.Dice;
+import com.dedale.dice.DiceOperation;
+import com.dedale.dice.DiceProvider;
 import com.dedale.dice.DiceSum;
 
 public class StringCalculatorTest {
-    
-    private StringCalculator calculator;
-    
-    @Before
-    public void initializeCalculator() throws Exception {
-        calculator = new StringCalculator();
-    }
-    
+
+    private StringCalculator calculator = new StringCalculator(StringCalculator.calculatorStatements());
+
     @Test
-    public void returns_one_when_string_one_given() throws Exception {
-        // Given
-        String sentence = "1";
-        
-        Integer result = calculator.calculate(sentence);
-        
-        // Then
-        assertThat(result).isEqualTo(1);
+    public void should_return_given_number() throws Exception {
+        String input = "1";
+
+        String result = calculator.calculate(input);
+
+        assertThat(result).isEqualTo("1");
     }
-    
+
     @Test
-    public void returns_two_when_string_two_given() throws Exception {
-        // Given
-        String sentence = "2";
-        
-        // When
-        Integer result = calculator.calculate(sentence);
-        
-        // Then
-        assertThat(result).isEqualTo(2);
+    public void one_plus_two_equals_three() throws Exception {
+        String input = "1+2";
+
+        String result = calculator.calculate(input);
+
+        assertThat(result).isEqualTo("3");
     }
-    
+
     @Test
-    public void returns_two_when_string_oneplusone_given() throws Exception {
-        // Given
-        String sentence = "1+1";
-        
-        // When
-        Integer result = calculator.calculate(sentence);
-        
-        // Then
-        assertThat(result).isEqualTo(2);
+    public void one_plus_two_equals_three_when_spaced() throws Exception {
+        String input = "1 + 2";
+
+        String result = calculator.calculate(input);
+
+        assertThat(result).isEqualTo("3");
     }
-    
+
     @Test
-    public void returns_two_for_oneplusone_with_space() throws Exception {
-        // Given
-        String sentence = "1 + 1";
-        
-        // When
-        Integer result = calculator.calculate(sentence);
-        
-        // Then
-        assertThat(result).isEqualTo(2);
+    public void one_plus_two_plus_three_equals_six() throws Exception {
+        String input = "1+2+4";
+
+        String result = calculator.calculate(input);
+
+        assertThat(result).isEqualTo("7");
     }
-    
+
     @Test
-    @Ignore("Should find what we expect")
-    public void returns_two_when_string_oneplusone_given_foo() throws Exception {
-        // Given
-        String sentence = "1+" + Integer.MAX_VALUE;
-        
-        // When
-        Integer result = calculator.calculate(sentence);
-        
-        // Then
-        assertThat(result).isEqualTo(2);
+    public void one_and_one_return_one_and_one() throws Exception {
+        String input = "1 1";
+
+        String result = calculator.calculate(input);
+
+        assertThat(result).isEqualTo("1 1");
     }
-    
+
     @Test
-    public void returns_three_when_string_oneplusoneplusone_given() throws Exception {
-        // Given
-        String sentence = "1+1+1";
-        
-        // When
-        Integer result = calculator.calculate(sentence);
-        
-        // Then
-        assertThat(result).isEqualTo(3);
+    public void one_plus_two_and_one_plus_two_return_three_and_three() throws Exception {
+        String input = "1+2 1+2";
+
+        String result = calculator.calculate(input);
+
+        assertThat(result).isEqualTo("3 3");
     }
-    
+
     @Test
-    public void returns_zero_when_string_oneminussone_given() throws Exception {
-        // Given
-        String sentence = "1-1";
-        
-        // When
-        Integer result = calculator.calculate(sentence);
-        
-        // Then
-        assertThat(result).isEqualTo(0);
+    public void three_minus_two_equals_one() throws Exception {
+        String input = "3-2";
+
+        String result = calculator.calculate(input);
+
+        assertThat(result).isEqualTo("1");
     }
-    
+
     @Test
-    public void returns_one_when_string_oneplusoneminussone_given() throws Exception {
-        // Given
-        String sentence = "1+1-1";
-        
-        // When
-        Integer result = calculator.calculate(sentence);
-        
-        // Then
-        assertThat(result).isEqualTo(1);
+    public void nine_minus_five_minus_three_equals_one() throws Exception {
+        String input = "9-5-3";
+
+        String result = calculator.calculate(input);
+
+        assertThat(result).isEqualTo("1");
     }
-    
+
     @Test
-    public void returns_one_when_string_oneminusoneplussone_given() throws Exception {
-        // Given
-        String sentence = "1-1+1";
-        
-        // When
-        Integer result = calculator.calculate(sentence);
-        
-        // Then
-        assertThat(result).isEqualTo(1);
+    public void two_multiply_three_equals_six() throws Exception {
+        String input = "2*3";
+
+        String result = calculator.calculate(input);
+
+        assertThat(result).isEqualTo("6");
     }
-    
+
     @Test
-    public void returns_one_when_string_one_multiply_one_given() throws Exception {
-        // Given
-        String sentence = "1*1";
-        
-        // When
-        Integer result = calculator.calculate(sentence);
-        
-        // Then
-        assertThat(result).isEqualTo(1);
+    public void two_multiply_three_multiply_four_equals_twenty_four() throws Exception {
+        String input = "2*3*4";
+
+        String result = calculator.calculate(input);
+
+        assertThat(result).isEqualTo("24");
     }
-    
+
     @Test
-    public void returns_eight_when_string_two_multiply_two_multiply_two_given() throws Exception {
-        // Given
-        String sentence = "2*2*2";
-        
-        // When
-        Integer result = calculator.calculate(sentence);
-        
-        // Then
-        assertThat(result).isEqualTo(8);
+    public void two_multiply_three_plus_four_equals_ten() throws Exception {
+        String input = "2*3+4";
+
+        String result = calculator.calculate(input);
+
+        assertThat(result).isEqualTo("10");
     }
-    
+
     @Test
-    public void returns_six_when_string_two_multiply_two_plus_two_given() throws Exception {
-        // Given
-        String sentence = "2+2*2";
-        
-        // When
-        Integer result = calculator.calculate(sentence);
-        
-        // Then
-        assertThat(result).isEqualTo(6);
+    public void two_plus_three_multiply_four_minus_five_equals_nine() throws Exception {
+        String input = "2+3*4-5";
+
+        String result = calculator.calculate(input);
+
+        assertThat(result).isEqualTo("9");
     }
-    
+
     @Test
     public void returns_one_when_string_two_power_zero_given() throws Exception {
-        // Given
         String sentence = "2^0";
-        
-        // When
-        Integer result = calculator.calculate(sentence);
-        
-        // Then
-        assertThat(result).isEqualTo(1);
+
+        String result = calculator.calculate(sentence);
+
+        assertThat(result).isEqualTo("1");
     }
-    
+
     @Test
     public void returns_one_when_string_two_power_one_given() throws Exception {
-        // Given
         String sentence = "2^1";
-        
-        // When
-        Integer result = calculator.calculate(sentence);
-        
-        // Then
-        assertThat(result).isEqualTo(2);
+
+        String result = calculator.calculate(sentence);
+
+        assertThat(result).isEqualTo("2");
     }
-    
+
     @Test
     public void returns_64_when_string_two_power_six_given() throws Exception {
-        // Given
         String sentence = "2^6";
-        
-        // When
-        Integer result = calculator.calculate(sentence);
-        
-        // Then
-        assertThat(result).isEqualTo(64);
+
+        String result = calculator.calculate(sentence);
+
+        assertThat(result).isEqualTo("64");
     }
-    
+
     @Test
     public void returns_64_when_string_two_power_three_power_two_given() throws Exception {
-        // Given
         String sentence = "2^3^2";
-        
-        // When
-        Integer result = calculator.calculate(sentence);
-        
-        // Then
-        assertThat(result).isEqualTo(64);
+
+        String result = calculator.calculate(sentence);
+
+        assertThat(result).isEqualTo("64");
     }
-    
+
     @Test
     public void returns_32_when_string_two_power_three_multiply_two_power_two_given() throws Exception {
-        // Given
         String sentence = "2^3*2^2";
-        
-        // When
-        Integer result = calculator.calculate(sentence);
-        
-        // Then
-        assertThat(result).isEqualTo(32);
+
+        String result = calculator.calculate(sentence);
+
+        assertThat(result).isEqualTo("32");
     }
-    
+
     @Test
     public void returns_3_for_throwing_1d4() throws Exception {
         // Given
-        DiceSum adaptee = mock(DiceSum.class);
-        when(adaptee.rollKindOf(anyInt(), anyInt())).thenReturn(3);
-        
-        StringToIntegerOperation dice = new StringToIntegerOperation("d", OperandReader.LEFT_TO_RIGHT, (l,r) -> SumDiceRollsOperation.sumDices(adaptee, l, r));
-        calculator = new StringCalculator(Arrays.asList(dice));
-        
+        Dice dice = mock(Dice.class);
+        when(dice.roll()).thenReturn(3);
+
+        DiceProvider dices = faces -> dice;
+        ExpressionParsers statements = StringCalculator.calculatorStatements().when("([dD])", e -> new DiceOperation(new DiceSum(dices)));
+        calculator = new StringCalculator(statements);
+
         String sentence = "1d4";
-        
+
         // When
-        Integer result = calculator.calculate(sentence);
-        
+        String result = calculator.calculate(sentence);
+
         // Then
-        assertThat(result).isEqualTo(3);
+        assertThat(result).isEqualTo("3");
     }
-    
+
 }
