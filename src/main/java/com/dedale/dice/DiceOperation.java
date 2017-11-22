@@ -1,10 +1,9 @@
 package com.dedale.dice;
 
-import com.dedale.core.expression.AbstractArithmeticOperation;
-import com.dedale.core.expression.ArithmeticExpression;
-import com.dedale.core.expression.CommandCombiner;
-import com.dedale.core.expression.Expression;
-import com.dedale.core.expression.IntegerFunction;
+import com.dedale.core.calculator.AbstractArithmeticOperation;
+import com.dedale.core.calculator.IntegerFunction;
+import com.dedale.core.engine.expression.CommandCombiner;
+import com.dedale.core.engine.expression.Expression;
 
 public class DiceOperation extends AbstractArithmeticOperation {
 
@@ -25,7 +24,7 @@ public class DiceOperation extends AbstractArithmeticOperation {
     }
 
     @Override
-    protected ArithmeticExpression copy(Expression left, Expression right) {
+    protected DiceOperation copy(Expression left, Expression right) {
         return new DiceOperation(this.command, left, right);
     }
 
