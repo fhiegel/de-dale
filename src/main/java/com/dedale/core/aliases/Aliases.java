@@ -26,4 +26,11 @@ public class Aliases implements Iterable<Alias> {
         return "Aliases [aliases=" + aliases + "]";
     }
 
+    public void remove(String aliasName) {
+        aliases.stream()
+                .filter(a -> a.name.equals(aliasName))
+                .findFirst()
+                .ifPresent(aliases::remove);
+    }
+
 }

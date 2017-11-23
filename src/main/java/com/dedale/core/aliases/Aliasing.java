@@ -11,10 +11,14 @@ public class Aliasing implements CommandModule {
     
     final Aliases userAlias = new Aliases();
 
-    public Aliasing() {
+    Aliasing() {
         this(CommandModule.EMPTY);
     }
 
+    Aliasing(CommandDefinitions commands) {
+        this(c -> commands);
+    }
+    
     public Aliasing(CommandModule module) {
         this.module = module;
     }
@@ -43,6 +47,7 @@ public class Aliasing implements CommandModule {
         return CommandDefinitions
                 .defineCommands()
                 .withParameterizedCommand("add", args -> new AddAlias(args, () -> userAlias))
+                .withParameterizedCommand("remove", args -> new RemoveAlias(args, () -> userAlias))
                 .withCommand("--help", new TextExpression("Help text"))
                 .withDefault(new ListAliases(() -> userAlias));
     }
