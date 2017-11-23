@@ -44,6 +44,19 @@ public class AliasingFeatures {
         assertThat(aliases).hasSize(3);
         assertThat(aliases).containsExactly(alias(), alias("name2", "cmd2"), alias("name3", "cmd3"));
     }
+    
+    @Test
+    public void aliases_are_ordered_by_name() throws Exception {
+        givenUser("anUser").hasAlias("name3", "cmd3");
+        givenUser("anUser").hasAlias("name", "cmd");
+        givenUser("anUser").hasAlias("name2", "cmd2");
+        
+        Expression cmd = engine().interpret("alias");
+        Aliases aliases = ((GetAliases) cmd).value();
+        
+        assertThat(aliases).hasSize(3);
+        assertThat(aliases).containsExactly(alias(), alias("name2", "cmd2"), alias("name3", "cmd3"));
+    }
 
     @Test
     public void an_alias_is_added() throws Exception {

@@ -1,12 +1,12 @@
 package com.dedale.core.aliases;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
+import java.util.TreeSet;
 
 public class Aliases implements Iterable<Alias> {
 
-    private final Collection<Alias> aliases = new ArrayList<>();
+    private final Collection<Alias> aliases = new TreeSet<>((a1, a2) -> a1.name.compareToIgnoreCase(a2.name));
 
     @Override
     public Iterator<Alias> iterator() {
