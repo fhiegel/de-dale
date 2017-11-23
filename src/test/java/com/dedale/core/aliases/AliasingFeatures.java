@@ -97,15 +97,24 @@ public class AliasingFeatures {
 
         assertThat(help.value()).isEqualTo("Should run Do command.");
     }
-    
+
     @Test
     public void an_alias_is_removed() throws Exception {
         givenUser("anUser").hasAlias("name", "cmd");
 
         GetAliases getAliases = (GetAliases) engine().interpret("alias remove name");
-        
+
         assertThat(getAliases.value()).isEmpty();
         assumeAliasesAreEmpty();
+    }
+
+    @Test
+    public void an_alias_is_unique() throws Exception {
+        givenUser("anUser").hasAlias("name", "cmd");
+
+        GetAliases getAliases = (GetAliases) engine().interpret("alias add name=something");
+
+        assertThat(getAliases.value()).containsExactly(alias("name", "something"));
     }
 
     //

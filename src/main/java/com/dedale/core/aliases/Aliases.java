@@ -18,6 +18,7 @@ public class Aliases implements Iterable<Alias> {
     }
 
     public void addAlias(String name, String commandLine) {
+        remove(name);
         addAlias(new Alias(name, commandLine));
     }
 
