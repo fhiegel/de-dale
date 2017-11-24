@@ -1,17 +1,13 @@
 package com.dedale.core.aliases;
 
-import java.util.function.Supplier;
-
 import com.dedale.core.engine.ExecutionContext;
 import com.dedale.core.engine.expression.Expression;
 
 public class ListAliases implements Expression {
 
-    public static final ListAliases INSTANCE = new ListAliases(() -> null);
-    
-    private final Supplier<Aliases> userAlias;
+    private final UserAliases userAlias;
 
-    public ListAliases(Supplier<Aliases> userAlias) {
+    public ListAliases(UserAliases userAlias) {
         this.userAlias = userAlias;
     }
 
@@ -22,6 +18,7 @@ public class ListAliases implements Expression {
 
     @Override
     public Expression execute(ExecutionContext context) {
-        return new GetAliases(userAlias.get());
+        Aliases aliases = userAlias.getAliases(context.user());
+        return new GetAliases(aliases);
     }
 }
