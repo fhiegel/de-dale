@@ -6,7 +6,6 @@ import static org.mockito.Mockito.when;
 
 import org.junit.Test;
 
-import com.dedale.core.calculator.Calculator;
 import com.dedale.core.engine.CommandDefinitions;
 import com.dedale.core.engine.CommandModule;
 import com.dedale.core.engine.InterpreterEngine;
@@ -181,7 +180,7 @@ public class CalculatorTest {
 
         CommandDefinitions statements = CommandDefinitions
                 .defineCommands()
-                .andParse("([dD])").with().constant(new DiceOperation(new DiceSum(faces -> dice)))
+                .andParse("([dD])(?!\\a)").with().constant(new DiceOperation(new DiceSum(faces -> dice)))
                 .build();
         module = new Calculator(statements);
 
@@ -192,6 +191,27 @@ public class CalculatorTest {
 
         // Then
         assertThat(result).isEqualTo("3");
+    }
+    
+    @Test
+    public void returns_labelled_dice_result() throws Exception {
+        // Given
+        Dice dice = mock(Dice.class);
+        when(dice.roll()).thenReturn(5, 3);
+        
+        CommandDefinitions statements = CommandDefinitions
+                .defineCommands()
+                .andParse("([dD])(?=\\d)").with().constant(new DiceOperation(new DiceSum(faces -> dice))).build()
+                ;
+        module = new Calculator(statements);
+        
+        String sentence = "attaque: 1d20+5 degats: 1d4";
+        
+        // When
+        String result = calculate(sentence);
+        
+        // Then
+        assertThat(result).isEqualTo("attaque: 10 degats: 3");
     }
 
     //
@@ -209,3 +229,4 @@ public class CalculatorTest {
     }
 
 }
+
