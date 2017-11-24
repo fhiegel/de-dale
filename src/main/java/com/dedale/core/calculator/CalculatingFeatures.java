@@ -5,6 +5,7 @@ import javax.ws.rs.core.FeatureContext;
 
 import org.glassfish.hk2.utilities.binding.AbstractBinder;
 
+import com.dedale.core.TextModule;
 import com.dedale.core.aliases.Aliasing;
 import com.dedale.core.aliases.InMemoryUserAliases;
 import com.dedale.core.aliases.UserAliases;
@@ -21,7 +22,7 @@ public class CalculatingFeatures implements Feature {
             @Override
             protected void configure() {
                 UserAliases userAliases = new InMemoryUserAliases();
-                CommandModule calculator = new Aliasing(new Calculator(), userAliases);
+                CommandModule calculator = new TextModule(new Aliasing(new Calculator(), userAliases));
                 bind(new InterpreterEngine(calculator)).named(ENGINE).to(InterpreterEngine.class);
             }
         });

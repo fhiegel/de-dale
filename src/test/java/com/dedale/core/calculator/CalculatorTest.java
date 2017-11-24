@@ -6,6 +6,7 @@ import static org.mockito.Mockito.when;
 
 import org.junit.Test;
 
+import com.dedale.core.TextModule;
 import com.dedale.core.engine.CommandDefinitions;
 import com.dedale.core.engine.CommandModule;
 import com.dedale.core.engine.InterpreterEngine;
@@ -203,7 +204,7 @@ public class CalculatorTest {
                 .defineCommands()
                 .andParse("([dD])(?=\\d)").with().constant(new DiceOperation(new DiceSum(faces -> dice))).build()
                 ;
-        module = new Calculator(statements);
+        module = new TextModule(new Calculator(statements));
         
         String sentence = "attaque: 1d20+5 degats: 1d4";
         

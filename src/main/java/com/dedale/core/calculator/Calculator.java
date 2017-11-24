@@ -3,7 +3,6 @@ package com.dedale.core.calculator;
 import com.dedale.core.engine.CommandDefinitions;
 import com.dedale.core.engine.CommandModule;
 import com.dedale.core.engine.ExecutionContext;
-import com.dedale.core.engine.expression.TextExpression;
 import com.dedale.dice.DiceOperation;
 
 public class Calculator implements CommandModule {
@@ -36,8 +35,7 @@ public class Calculator implements CommandModule {
                 .withCommand("([-])(?!-)", MinusOperation.EMPTY)
                 .withCommand("[*]", MultiplyOperation.EMPTY)
                 .withCommand("[\\^]", PowerOperation.EMPTY)
-                .withCommand("([dD])(?=\\d)", DiceOperation::new)
-                .andParse("\\S+", TextExpression::new);
+                .withCommand("([dD])(?=\\d)", DiceOperation::new);
     }
 
 }
