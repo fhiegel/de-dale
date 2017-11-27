@@ -40,7 +40,7 @@ public class DiceResource {
         String responseText = MARKDOWN_BOLD + slackRequest.getText() + "=" + MARKDOWN_BOLD + " " + diceResult;
 
         return SlackMessageBuilder
-                .beginResponse()
+                .beginMessage()
                 .inChannel()
                 .addAttachment()
                 .withAuthorName(slackRequest.getUserName())

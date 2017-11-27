@@ -1,6 +1,6 @@
 package com.dedale.slack.api;
 
-import static com.dedale.markdown.MarkdownTags.MARKDOWN_BOLD;
+import static com.dedale.markdown.MarkdownTags.BOLD;
 
 import java.util.logging.Logger;
 
@@ -31,13 +31,13 @@ public class SlackApp {
     @Path("cmd")
     public SlackMessage slackRoll(SlackRequest request) {
         if (request == null) {
-            return SlackMessageBuilder.beginResponse().withText("ERROR").build();
+            return SlackMessageBuilder.beginMessage().withText("ERROR").build();
         }
         log.info(request.toString());
         // String diceResult = calculator.calculate(diceSentence).toString();
 
-        String responseText = request.getText() + "= " + MARKDOWN_BOLD + "ok" + MARKDOWN_BOLD;
+        String responseText = request.getText() + "= " + BOLD + "ok" + BOLD;
 
-        return SlackMessageBuilder.beginResponse().withText(responseText).build();
+        return SlackMessageBuilder.beginMessage().withText(responseText).build();
     }
 }

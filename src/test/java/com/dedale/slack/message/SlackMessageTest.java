@@ -16,7 +16,7 @@ public class SlackMessageTest {
     @Test
     public void empty_message_is_ephemeral() throws Exception {
         // Given
-        SlackMessage response = SlackMessageBuilder.beginResponse().build();
+        SlackMessage response = SlackMessageBuilder.beginMessage().build();
 
         // Then
         assertResponseEqualsFile(response, "empty_ephemeral.json");
@@ -25,7 +25,7 @@ public class SlackMessageTest {
     @Test
     public void empty_in_channel_message() throws Exception {
         // Given
-        SlackMessage response = SlackMessageBuilder.beginResponse().inChannel().build();
+        SlackMessage response = SlackMessageBuilder.beginMessage().inChannel().build();
 
         // Then
         assertResponseEqualsFile(response, "empty_in_channel.json");
@@ -34,7 +34,7 @@ public class SlackMessageTest {
     @Test
     public void should_slack_response_contains_text() throws Exception {
         // Given
-        SlackMessage response = SlackMessageBuilder.beginResponse().withText("some text here").build();
+        SlackMessage response = SlackMessageBuilder.beginMessage().withText("some text here").build();
 
         // Then
         assertResponseEqualsFile(response, "simple_ephemeral.json");
@@ -43,7 +43,7 @@ public class SlackMessageTest {
     @Test
     public void message_toString_should_be_pretty() throws Exception {
         // Given
-        SlackMessage response = SlackMessageBuilder.beginResponse().withText("some text here").build();
+        SlackMessage response = SlackMessageBuilder.beginMessage().withText("some text here").build();
 
         // Then
         String expectedToString = FileTestUtils.getResourceFileAsString(getClass(), "message_toString");
@@ -53,7 +53,7 @@ public class SlackMessageTest {
     @Test
     public void should_single_attachment_response_have_all_fields() throws Exception {
         // Given
-        SlackMessage response = SlackMessageBuilder.beginResponse()
+        SlackMessage response = SlackMessageBuilder.beginMessage()
                 .addAttachment()
                     .withFallback("Required plain-text summary of the attachment.")
                     .withColor("#36a64f")

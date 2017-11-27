@@ -91,6 +91,10 @@ public class SlackMessageAttachmentBuilder<NB>
         return this;
     }
 
+    public SlackMessageAttachmentBuilder<NB> withMarkdownText(Object text) {
+        return withMarkdownText(text.toString());
+    }
+    
     public SlackMessageAttachmentBuilder<NB> withMarkdownText(String text) {
         return withText(text).markdownInText();
     }

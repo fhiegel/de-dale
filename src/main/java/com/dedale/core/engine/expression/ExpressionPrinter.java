@@ -4,6 +4,7 @@ import com.dedale.core.calculator.AddOperation;
 import com.dedale.core.calculator.MinusOperation;
 import com.dedale.core.calculator.MultiplyOperation;
 import com.dedale.core.calculator.PowerOperation;
+import com.dedale.dice.DiceResult;
 
 public class ExpressionPrinter extends ExpressionVisitor<StringBuilder> {
 
@@ -18,7 +19,9 @@ public class ExpressionPrinter extends ExpressionVisitor<StringBuilder> {
                 
                 .when(BoldTextExpression.class, e -> sb.append("*"))
                 .when(ValuedExpression.class, e -> sb.append(e.value()))
+                .when(DiceResult.class, e -> sb.append(e.value()))
                 .when(ConcatCommand.class, e -> sb.append(ConcatCommand.CONCAT_SEPARATOR))
+                .when(Neutral.class, e -> sb.append(e))
                 .otherwise(e -> sb.append('{').append(e.getClass()).append('}'));
     }
 
