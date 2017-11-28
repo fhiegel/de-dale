@@ -3,7 +3,7 @@ package com.dedale.core.calculator;
 import static java.lang.Math.pow;
 
 import com.dedale.core.engine.expression.Expression;
-import com.dedale.core.engine.expression.ExpressionVisitor;
+import com.dedale.core.engine.expression.SyntaxTreeVisitor;
 
 public class PowerOperation extends AbstractArithmeticOperation {
 
@@ -24,8 +24,8 @@ public class PowerOperation extends AbstractArithmeticOperation {
     }
 
     @Override
-    protected ExpressionVisitor<Expression> configure(ExpressionVisitor<Expression> dispatcher) {
-        return super.configure(dispatcher)
+    protected SyntaxTreeVisitor configure(SyntaxTreeVisitor syntaxTree) {
+        return super.configure(syntaxTree)
                 .when(PowerOperation.class, pow -> pow.assignLeft(this))
                 .when(MultiplyOperation.class, multiply -> multiply.assignLeft(this));
     }

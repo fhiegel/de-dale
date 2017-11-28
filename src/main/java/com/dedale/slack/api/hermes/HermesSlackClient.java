@@ -31,7 +31,7 @@ public class HermesSlackClient {
         Expression expression = calculator.interpret(context, context.input());
 
         SlackRendererVisitor builder = new SlackRendererVisitor(context);
-        expression.accept(builder);
+        builder = builder.visit(expression);
         return builder.message();
     }
     

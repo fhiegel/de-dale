@@ -6,5 +6,6 @@ public interface MarkdownTags {
     String CODEBLOCK = "```";
     String ITALIC = "_";
     String BOLD = "*";
+    String QUOTE = ">";
     
 }

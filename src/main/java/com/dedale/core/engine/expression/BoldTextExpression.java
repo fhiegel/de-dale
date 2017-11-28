@@ -18,8 +18,8 @@ public class BoldTextExpression extends AbstractExpression {
     }
 
     @Override
-    protected ExpressionVisitor<Expression> configure(ExpressionVisitor<Expression> dispatcher) {
-        return super.configure(dispatcher).when(TextExpression.class, this::wrapText);
+    protected SyntaxTreeVisitor configure(SyntaxTreeVisitor syntaxTree) {
+        return super.configure(syntaxTree).when(TextExpression.class, this::wrapText);
     }
 
     Expression wrapText(Expression text) {

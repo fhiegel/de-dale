@@ -14,23 +14,27 @@ import com.dedale.slack.message.SlackMessageBuilder;
 
 public class SlackRendererVisitor extends ExpressionVisitor<SlackMessageBuilder> {
 
-    private SlackMessageBuilder builder = SlackMessageBuilder.beginMessage();
+    private SlackRendererVisitor(SlackMessageBuilder messageBuilder) {
+        super(messageBuilder);
+    }
 
     public SlackRendererVisitor(ExecutionContext context) {
+        this(SlackMessageBuilder.beginMessage());
         this
-                .when(GetAliases.class, e -> builder.ephemeralResponse().withText(aliasMarkdown(e)))
-                .otherwise(e -> builder
+                .when(GetAliases.class, e -> result.ephemeralResponse().withText(aliasMarkdown(e)))
+                .otherwise(e -> result
                         .inChannel()
                         .addAttachment()
                         .withAuthorName(context.user().name())
-                        .withMarkdownText((context.input().isEmpty() ? "" :context.input() + "= ") + BOLD + print(e) + BOLD)
+                        .withMarkdownText((context.input().isEmpty() ? "" : context.input() + "= ") + BOLD + print(e) + BOLD)
                         .endAttachment());
     }
 
     private Markdown aliasMarkdown(GetAliases e) {
         Markdown markdown = new Markdown();
+        markdown = markdown.bold().append("Aliases : ").bold().line();
         for (Alias alias : e.value()) {
-            markdown = markdown.append(alias.name()).append(" = ").append(alias.commandLine()).line();
+            markdown = markdown.quote().append(alias.name()).append(" = ").append(alias.commandLine()).line();
         }
         return markdown;
     }
@@ -41,12 +45,18 @@ public class SlackRendererVisitor extends ExpressionVisitor<SlackMessageBuilder>
         return printer.print();
     }
 
+    @Override
+    @SuppressWarnings("unchecked")
+    protected SlackRendererVisitor visitor(SlackMessageBuilder result) {
+        return new SlackRendererVisitor(result);
+    }
+
     public SlackMessageBuilder builder() {
-        return builder;
+        return result;
     }
 
     public SlackMessage message() {
-        return builder.build();
+        return result.build();
     }
 
 }

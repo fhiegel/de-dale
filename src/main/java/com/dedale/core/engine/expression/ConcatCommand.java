@@ -16,8 +16,8 @@ public class ConcatCommand extends AbstractCommand {
     }
 
     @Override
-    protected ExpressionVisitor<Expression> configure(ExpressionVisitor<Expression> dispatcher) {
-        return dispatcher.when(BoldTextExpression.class, bold -> bold.wrapText(this)).when(Expression.class, this::assignRight);
+    protected SyntaxTreeVisitor configure(SyntaxTreeVisitor syntaxTree) {
+        return syntaxTree.when(BoldTextExpression.class, bold -> bold.wrapText(this)).when(Expression.class, this::assignRight);
     }
 
     private static ConcatCommand concat(Expression left, Expression right) {

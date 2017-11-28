@@ -8,33 +8,43 @@ import com.dedale.dice.DiceResult;
 
 public class ExpressionPrinter extends ExpressionVisitor<StringBuilder> {
 
-    private final StringBuilder sb = new StringBuilder();
-
     public ExpressionPrinter() {
+        this(new StringBuilder());
         this
-                .when(AddOperation.class, e -> sb.append("+"))
-                .when(MinusOperation.class, e -> sb.append("-"))
-                .when(MultiplyOperation.class, e -> sb.append("*"))
-                .when(PowerOperation.class, e -> sb.append("^"))
-                
-                .when(BoldTextExpression.class, e -> sb.append("*"))
-                .when(ValuedExpression.class, e -> sb.append(e.value()))
-                .when(DiceResult.class, e -> sb.append(e.value()))
-                .when(ConcatCommand.class, e -> sb.append(ConcatCommand.CONCAT_SEPARATOR))
-                .when(Neutral.class, e -> sb.append(e))
-                .otherwise(e -> sb.append('{').append(e.getClass()).append('}'));
+                .when(AddOperation.class, e -> result.append("+"))
+                .when(MinusOperation.class, e -> result.append("-"))
+                .when(MultiplyOperation.class, e -> result.append("*"))
+                .when(PowerOperation.class, e -> result.append("^"))
+
+                .when(BoldTextExpression.class, e -> result.append("*"))
+                .when(ValuedExpression.class, e -> result.append(e.value()))
+                .when(DiceResult.class, e -> result.append(e.value()))
+                .when(ConcatCommand.class, e -> result.append(ConcatCommand.CONCAT_SEPARATOR))
+                .when(Neutral.class, e -> result.append(e))
+                .otherwise(e -> result.append('{').append(e.getClass()).append('}'));
+    }
+
+    private ExpressionPrinter(StringBuilder stringBuilder) {
+        super(stringBuilder);
     }
 
     @Override
-    public StringBuilder visit(Expression receiver) {
+    @SuppressWarnings("unchecked")
+    public ExpressionPrinter visit(Expression receiver) {
         if (receiver == null) {
-            return sb.append("null");
+            return new ExpressionPrinter(result.append("null"));
         }
         return super.visit(receiver);
     }
+    
+    @Override
+    @SuppressWarnings("unchecked")
+    protected ExpressionPrinter visitor(StringBuilder result) {
+        return new ExpressionPrinter(result);
+    }
 
     public String print() {
-        return sb.toString();
+        return result.toString();
     }
 
 }

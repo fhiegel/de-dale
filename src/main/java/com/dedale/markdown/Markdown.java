@@ -32,6 +32,10 @@ public class Markdown {
         return append(MarkdownTags.CODEBLOCK);
     }
 
+    public Markdown quote() {
+        return append(MarkdownTags.QUOTE);
+    }
+
     public Markdown line() {
         return append("\n");
     }

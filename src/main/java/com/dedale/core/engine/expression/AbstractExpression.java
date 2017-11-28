@@ -3,17 +3,18 @@ package com.dedale.core.engine.expression;
 public abstract class AbstractExpression implements Expression {
 
     public final Expression then(Expression after) {
-        ExpressionVisitor<Expression> dispatcher = defaultDispatcher();
-        configure(dispatcher);
-        return dispatcher.visit(after);
+        SyntaxTreeVisitor syntaxTree = defaultDispatcher();
+        configure(syntaxTree);
+        SyntaxTreeVisitor visit = syntaxTree.visit(after);
+        return visit.next();
     }
     
-    protected ExpressionVisitor<Expression> configure(ExpressionVisitor<Expression> dispatcher) {
-        return dispatcher;
+    protected SyntaxTreeVisitor configure(SyntaxTreeVisitor syntaxTree) {
+        return syntaxTree;
     }
 
-    private ExpressionVisitor<Expression> defaultDispatcher() {
-        return new OriginStatementVisitor(this)
+    private SyntaxTreeVisitor defaultDispatcher() {
+        return new SyntaxTreeVisitor(this)
                 .when(Neutral.class, neutral -> this);
     }
 
