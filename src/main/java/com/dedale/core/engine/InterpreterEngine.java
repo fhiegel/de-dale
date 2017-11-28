@@ -3,22 +3,18 @@ package com.dedale.core.engine;
 import com.dedale.core.engine.expression.Expression;
 
 public class InterpreterEngine {
-    
+
     private final CommandModule module;
 
     public InterpreterEngine(CommandModule module) {
         this.module = module;
     }
 
-    public Expression interpret(ExecutionContext context, String input) {
+    public Expression interpret(ExecutionContext context) {
         CommandCompiler compiler = getCompiler(context);
-        CommandLine commandLine = compiler.compile(input);
+        CommandLine commandLine = compiler.compile(context.input());
         Expression expression = commandLine.expression();
         return expression.execute(context);
-    }
-    
-    public Expression interpret(String input) {
-        return interpret(defaultContext(), input);
     }
 
     private CommandCompiler getCompiler(ExecutionContext context) {
@@ -29,10 +25,9 @@ public class InterpreterEngine {
     private CommandDefinitions getCommands(ExecutionContext context) {
         return module.configure(context);
     }
-    
+
     public ExecutionContext defaultContext() {
         return ExecutionContext.from(this);
     }
-
 
 }

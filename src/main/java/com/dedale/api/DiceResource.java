@@ -56,7 +56,7 @@ public class DiceResource {
     }
 
     private Expression interpret(String input) {
-        return calculator.interpret(input);
+        return calculator.interpret(calculator.defaultContext().withInput(input));
     }
 
     private String print(Expression expression) {

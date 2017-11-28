@@ -26,15 +26,17 @@ public class HermesSlackClient {
                 .defaultContext()
                 .withUser(slackRequest.getUserId())
                 .withUserName(slackRequest.getUserName())
-                .input(slackRequest.getText());
+                .withInput(slackRequest.getText());
         
-        Expression expression = calculator.interpret(context, context.input());
+        Expression expression = calculator.interpret(context);
 
+        return mapToMessage(context, expression);
+    }
+
+    private SlackMessage mapToMessage(ExecutionContext context, Expression expression) {
         SlackRendererVisitor builder = new SlackRendererVisitor(context);
         builder = builder.visit(expression);
         return builder.message();
     }
-    
-    
     
 }

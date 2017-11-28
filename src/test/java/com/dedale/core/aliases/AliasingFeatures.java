@@ -16,6 +16,8 @@ public class AliasingFeatures {
 
     private UserAliases userAliases = new InMemoryUserAliases();
     private Aliasing module = new Aliasing(CommandModule.EMPTY, userAliases);
+    private InterpreterEngine engine = new InterpreterEngine(module);
+    private ExecutionContext context = engine.defaultContext().withUser("anUser");;
 
     @Test
     public void aliases_are_empty() throws Exception {
@@ -106,7 +108,9 @@ public class AliasingFeatures {
                 .defineCommands()
                 .withCommand("doSomethingElse", new TextExpression("Text when Do Something Else"))
                 .withCommand("do", new TextExpression("Should run Do command.")), userAliases);
-
+        engine = new InterpreterEngine(module);
+        context = engine.defaultContext();
+        
         Expression cmd = defaultInterpret("alias add do=\"doSomethingElse\"");
 
         cmd = defaultInterpret("do");
@@ -138,8 +142,8 @@ public class AliasingFeatures {
     public void an_alias_is_for_an_user() throws Exception {
         givenUser("anOtherUser").hasAlias("name", "cmd");
 
-        ExecutionContext context = engine().defaultContext().withUser("anUser");
-        GetAliases getAliases = (GetAliases) engine().interpret(context, "alias");
+        context = context.withUser("anUser").withInput("alias");
+        GetAliases getAliases = (GetAliases) engine.interpret(context);
         assertThat(getAliases.value()).isEmpty();
     }
 
@@ -148,12 +152,12 @@ public class AliasingFeatures {
         givenUser("anUser").hasAlias("name", "cmd");
         givenUser("anOtherUser").hasAlias("name", "cmd for another user");
 
-        ExecutionContext context = engine().defaultContext().withUser("anUser");
-        GetAliases getAliases = (GetAliases) engine().interpret(context, "alias");
+        context = context.withUser("anUser").withInput("alias");
+        GetAliases getAliases = (GetAliases) engine.interpret(context);
         assertThat(getAliases.value()).containsExactly(alias("name", "cmd"));
 
-        context = engine().defaultContext().withUser("anOtherUser");
-        getAliases = (GetAliases) engine().interpret(context, "alias");
+        context = context.withUser("anOtherUser").withInput("alias");
+        getAliases = (GetAliases) engine.interpret(context);
         assertThat(getAliases.value()).containsExactly(alias("name", "cmd for another user"));
     }
 
@@ -161,13 +165,8 @@ public class AliasingFeatures {
     // Utils
     //
 
-    private InterpreterEngine engine() {
-        return new InterpreterEngine(module);
-    }
-
     private Expression defaultInterpret(String input) {
-        InterpreterEngine engine = engine();
-        return engine.interpret(engine.defaultContext().withUser("anUser"), input);
+        return engine.interpret(context.withInput(input));
     }
 
     private void assumeAliasesAreEmpty() {

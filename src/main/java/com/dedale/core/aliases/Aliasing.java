@@ -31,7 +31,12 @@ public class Aliasing implements CommandModule {
     private CommandDefinitions aliases(ExecutionContext context) {
         CommandDefinitions aliases = CommandDefinitions.defineCommands();
         for (Alias alias : userAliases.getAliases(context.user())) {
-            aliases.andParse(alias.name).strictly().with().provider(() -> context.engine().interpret(context, alias.commandLine)).build();
+            aliases
+                    .andParse(alias.name)
+                    .strictly()
+                    .with()
+                    .provider(() -> context.engine().interpret(context.withInput(alias.commandLine)))
+                    .build();
         }
         return aliases;
     }

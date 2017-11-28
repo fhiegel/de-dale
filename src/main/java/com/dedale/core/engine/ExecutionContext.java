@@ -32,7 +32,7 @@ public class ExecutionContext {
         return new ExecutionContext(engine, user.withName(userName), input);
     }
 
-    public ExecutionContext input(String input) {
+    public ExecutionContext withInput(String input) {
         return new ExecutionContext(engine, user, input);
     }
 

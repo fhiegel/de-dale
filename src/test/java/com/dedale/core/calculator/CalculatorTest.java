@@ -9,6 +9,7 @@ import org.junit.Test;
 import com.dedale.core.TextModule;
 import com.dedale.core.engine.CommandDefinitions;
 import com.dedale.core.engine.CommandModule;
+import com.dedale.core.engine.ExecutionContext;
 import com.dedale.core.engine.InterpreterEngine;
 import com.dedale.core.engine.expression.Expression;
 import com.dedale.core.engine.expression.ExpressionPrinter;
@@ -221,8 +222,9 @@ public class CalculatorTest {
 
     private String calculate(String input) {
         InterpreterEngine engine = new InterpreterEngine(module);
+        ExecutionContext context = engine.defaultContext().withInput(input);
 
-        Expression expression = engine.interpret(input);
+        Expression expression = engine.interpret(context);
 
         ExpressionPrinter printer = new ExpressionPrinter();
         expression.accept(printer);

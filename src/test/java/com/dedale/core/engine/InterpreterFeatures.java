@@ -94,6 +94,6 @@ public class InterpreterFeatures {
 
     public Expression interpret(String input) {
         InterpreterEngine engine = new InterpreterEngine(module);
-        return engine.interpret(input);
+        return engine.interpret(engine.defaultContext().withInput(input));
     }
 }

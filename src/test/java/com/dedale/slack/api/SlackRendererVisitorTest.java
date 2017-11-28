@@ -43,7 +43,7 @@ public class SlackRendererVisitorTest {
     @Test
     public void dice() throws Exception {
         // Given
-        context = context.input("2d6");
+        context = context.withInput("2d6");
         Expression expression = new DiceResult(2, 6, 12);
 
         // When
@@ -63,7 +63,7 @@ public class SlackRendererVisitorTest {
     @Test
     public void multiple_commands_should_be_consistent() throws Exception {
         // Given
-        context = context.input("2d6");
+        context = context.withInput("2d6");
         Expression expression = text("some text:").then(new DiceResult(2, 6, 12));
         
         // When

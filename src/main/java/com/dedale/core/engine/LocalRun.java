@@ -13,7 +13,7 @@ final class LocalRun implements Expression {
 
     @Override
     public Expression execute(ExecutionContext context) {
-        return localEngine.interpret(context, commandLine);
+        return localEngine.interpret(context.withInput(commandLine));
     }
 
     @Override
