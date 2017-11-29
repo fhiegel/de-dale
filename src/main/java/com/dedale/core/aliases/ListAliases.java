@@ -5,10 +5,10 @@ import com.dedale.core.engine.expression.Expression;
 
 public class ListAliases implements Expression {
 
-    private final UserAliases userAlias;
+    private final UserAliases userAliases;
 
-    public ListAliases(UserAliases userAlias) {
-        this.userAlias = userAlias;
+    public ListAliases(UserAliases userAliases) {
+        this.userAliases = userAliases;
     }
 
     @Override
@@ -18,7 +18,7 @@ public class ListAliases implements Expression {
 
     @Override
     public Expression execute(ExecutionContext context) {
-        Aliases aliases = userAlias.getAliases(context.user());
+        Aliases aliases = userAliases.getAliases(context.user());
         return new GetAliases(aliases);
     }
 }

@@ -4,6 +4,7 @@ import com.dedale.core.engine.CommandDefinitions;
 import com.dedale.core.engine.CommandModule;
 import com.dedale.core.engine.ExecutionContext;
 import com.dedale.core.engine.expression.TextExpression;
+import com.dedale.utils.resources.Resources;
 
 public class Aliasing implements CommandModule {
 
@@ -25,7 +26,9 @@ public class Aliasing implements CommandModule {
     }
 
     private CommandDefinitions aliasModule(ExecutionContext context) {
-        return CommandDefinitions.defineCommands().withModule("alias", aliasingCommands()).flatAdd(aliases(context));
+        return CommandDefinitions.defineCommands()
+                .flatAdd(aliasingCommands())
+                .flatAdd(aliases(context));
     }
 
     private CommandDefinitions aliases(ExecutionContext context) {
@@ -44,10 +47,12 @@ public class Aliasing implements CommandModule {
     private CommandDefinitions aliasingCommands() {
         return CommandDefinitions
                 .defineCommands()
-                .withParameterizedCommand("add", args -> new AddAlias(args, userAliases))
-                .withParameterizedCommand("remove", args -> new RemoveAlias(args, userAliases))
-                .withCommand("--help", new TextExpression("Help text"))
-                .withDefault(new ListAliases(userAliases));
+                .withParameterizedCommand("alias", args -> new AddAlias(args, userAliases))
+                .andParse("alias").strictly().with().constant(new ListAliases(userAliases)).build()
+                .withParameterizedCommand("alias add", args -> new AddAlias(args, userAliases))
+                .withParameterizedCommand("unalias", args -> new RemoveAlias(args, userAliases))
+                .withParameterizedCommand("alias remove", args -> new RemoveAlias(args, userAliases))
+                .withCommand("alias --help", new TextExpression(Resources.get("com/dedale/core", "aliases", "HELP.md").asString()));
     }
 
 }

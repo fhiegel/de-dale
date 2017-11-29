@@ -11,8 +11,11 @@ import com.dedale.core.engine.ExecutionContext;
 import com.dedale.core.engine.InterpreterEngine;
 import com.dedale.core.engine.expression.Expression;
 import com.dedale.core.engine.expression.TextExpression;
+import com.dedale.utils.resources.Resources;
 
 public class AliasingFeatures {
+    
+    private static final String HELP = Resources.get("com/dedale/core", "aliases", "HELP.md").asString();
 
     private UserAliases userAliases = new InMemoryUserAliases();
     private Aliasing module = new Aliasing(CommandModule.EMPTY, userAliases);
@@ -87,7 +90,7 @@ public class AliasingFeatures {
         Expression cmd = defaultInterpret("alias --help");
 
         TextExpression help = (TextExpression) cmd;
-        assertThat(help.value()).isEqualTo("Help text");
+        assertThat(help.value()).isEqualTo(HELP);
     }
 
     @Test
@@ -99,7 +102,7 @@ public class AliasingFeatures {
         cmd = defaultInterpret("doHelp");
         TextExpression help = (TextExpression) cmd;
 
-        assertThat(help.value()).isEqualTo("Help text");
+        assertThat(help.value()).isEqualTo(HELP);
     }
 
     @Test
@@ -110,7 +113,7 @@ public class AliasingFeatures {
                 .withCommand("do", new TextExpression("Should run Do command.")), userAliases);
         engine = new InterpreterEngine(module);
         context = engine.defaultContext();
-        
+
         Expression cmd = defaultInterpret("alias add do=\"doSomethingElse\"");
 
         cmd = defaultInterpret("do");
@@ -125,6 +128,16 @@ public class AliasingFeatures {
 
         GetAliases getAliases = (GetAliases) defaultInterpret("alias remove name");
 
+        assertThat(getAliases.value()).isEmpty();
+        assumeAliasesAreEmpty();
+    }
+    
+    @Test
+    public void an_alias_is_unaliased() throws Exception {
+        givenUser("anUser").hasAlias("name", "cmd");
+        
+        GetAliases getAliases = (GetAliases) defaultInterpret("unalias name");
+        
         assertThat(getAliases.value()).isEmpty();
         assumeAliasesAreEmpty();
     }
@@ -161,6 +174,7 @@ public class AliasingFeatures {
         assertThat(getAliases.value()).containsExactly(alias("name", "cmd for another user"));
     }
 
+    
     //
     // Utils
     //
@@ -174,8 +188,7 @@ public class AliasingFeatures {
     }
 
     private Aliases getAliases() {
-        Expression cmd = defaultInterpret("alias");
-        GetAliases getAliases = (GetAliases) cmd;
+        GetAliases getAliases = (GetAliases) defaultInterpret("alias");
         return getAliases.value();
     }
 
