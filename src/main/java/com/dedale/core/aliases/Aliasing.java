@@ -52,7 +52,7 @@ public class Aliasing implements CommandModule {
                 .withParameterizedCommand("alias add", args -> new AddAlias(args, userAliases))
                 .withParameterizedCommand("unalias", args -> new RemoveAlias(args, userAliases))
                 .withParameterizedCommand("alias remove", args -> new RemoveAlias(args, userAliases))
-                .withCommand("alias --help", new TextExpression(Resources.get("com/dedale/core", "aliases", "HELP.md").asString()));
+                .withCommand("alias --help", () -> new TextExpression(Resources.getRelativeTo(Aliasing.class, "HELP.md").asString()));
     }
 
 }
