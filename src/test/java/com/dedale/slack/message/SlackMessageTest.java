@@ -61,6 +61,7 @@ public class SlackMessageTest {
                     .withAuthorName("Bobby Tables")
                     .withAuthorLink("http://flickr.com/bobby/")
                     .withAuthorIcon("http://flickr.com/icons/bobby.jpg")
+                    .markdownInText().markdownInPretext()
                     .withTitle("Slack API Documentation")
                     .withTitleLink("https://api.slack.com/")
                     .withText("Optional text that appears within the attachment")

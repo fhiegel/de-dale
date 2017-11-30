@@ -81,6 +81,10 @@ public class SlackMessageAttachmentBuilder<NB>
         return markdownIn("text");
     }
 
+    public SlackMessageAttachmentBuilder<NB> markdownInPretext() {
+        return markdownIn("pretext");
+    }
+
     private SlackMessageAttachmentBuilder<NB> markdownIn(String field) {
         bean.addMarkdownField(field);
         return this;

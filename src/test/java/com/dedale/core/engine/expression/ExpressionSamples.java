@@ -18,7 +18,7 @@ public class ExpressionSamples {
     public static final Expression multiply = MultiplyOperation.EMPTY;
     public static final Expression power = PowerOperation.EMPTY;
 
-    public static final BoldTextExpression bold = BoldTextExpression.EMPTY;
+    public static final BoldTextExpression bold = BoldTextExpression.BOLD;
     public static final TextExpression anExpression = text("<any expression>");
 
     public static final TextExpression text(String text) {

@@ -26,8 +26,8 @@ public abstract class ExpressionVisitor<R> {
     }
 
     @SuppressWarnings("unchecked")
-    public <T extends Expression, V extends ExpressionVisitor<R>> V otherwise(Function<Expression, R> defaultEvaluation) {
-        this.defaultEvaluation = defaultEvaluation;
+    public <T extends Expression, V extends ExpressionVisitor<R>> V otherwise(Function<Expression, R> otherwise) {
+        this.defaultEvaluation = otherwise;
         return (V) this;
     }
 

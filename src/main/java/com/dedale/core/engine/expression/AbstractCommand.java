@@ -34,7 +34,7 @@ public abstract class AbstractCommand extends AbstractExpression {
         if (!isFullAtRight()) {
             return assignRight(right);
         }
-        return ConcatCommand.CONCAT.left(this).apply(right);
+        return THEN.left(this).apply(right);
     }
 
     boolean isFullAtRight() {
@@ -50,10 +50,12 @@ public abstract class AbstractCommand extends AbstractExpression {
     protected abstract Expression copy(Expression left, Expression right);
     
     @Override
-    public <R> void accept(ExpressionVisitor<R> visitor) {
-        if (left != null) left.accept(visitor);
-        super.accept(visitor);
-        if (right != null) right.accept(visitor);
+    public <R, V extends ExpressionVisitor<R>> V accept(V visitor) {
+        V actual = visitor;
+        actual = left != null? left.accept(actual) : actual;
+        actual = super.accept(visitor);
+        actual = right != null? right.accept(actual) : actual;
+        return actual;
     }
 
 }

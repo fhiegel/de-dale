@@ -4,14 +4,15 @@ import com.dedale.core.engine.ExecutionContext;
 
 public interface Expression {
 
-    Expression NEUTRAL = new Neutral();
+    Neutral NEUTRAL = Neutral.NEUTRAL;
+    Then THEN = Then.THEN;
 
     Expression then(Expression after);
 
     Expression execute(ExecutionContext context);
 
-    default <R> void accept(ExpressionVisitor<R> visitor) {
-        visitor.visit(this);
+    default <R, V extends ExpressionVisitor<R>> V accept(V visitor) {
+        return visitor.visit(this);
     }
 
 }

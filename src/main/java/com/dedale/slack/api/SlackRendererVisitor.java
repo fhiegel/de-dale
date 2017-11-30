@@ -1,5 +1,6 @@
 package com.dedale.slack.api;
 
+import static com.dedale.markdown.Markdown.of;
 import static com.dedale.markdown.MarkdownTags.BOLD;
 
 import com.dedale.core.aliases.Alias;
@@ -8,6 +9,7 @@ import com.dedale.core.engine.ExecutionContext;
 import com.dedale.core.engine.expression.Expression;
 import com.dedale.core.engine.expression.ExpressionPrinter;
 import com.dedale.core.engine.expression.ExpressionVisitor;
+import com.dedale.core.engine.expression.RawText;
 import com.dedale.markdown.Markdown;
 import com.dedale.slack.message.SlackMessage;
 import com.dedale.slack.message.SlackMessageBuilder;
@@ -22,6 +24,7 @@ public class SlackRendererVisitor extends ExpressionVisitor<SlackMessageBuilder>
         this(SlackMessageBuilder.beginMessage());
         this
                 .when(GetAliases.class, e -> result.ephemeralResponse().withText(aliasMarkdown(e)))
+                .when(RawText.class, e -> result.ephemeralResponse().withMarkdown(of(e.value())))
                 .otherwise(e -> result
                         .inChannel()
                         .addAttachment()
@@ -30,10 +33,10 @@ public class SlackRendererVisitor extends ExpressionVisitor<SlackMessageBuilder>
                         .endAttachment());
     }
 
-    private Markdown aliasMarkdown(GetAliases e) {
+    private Markdown aliasMarkdown(GetAliases aliases) {
         Markdown markdown = new Markdown();
         markdown = markdown.bold().append("Aliases : ").bold().line();
-        for (Alias alias : e.value()) {
+        for (Alias alias : aliases.value()) {
             markdown = markdown.quote().append(alias.name()).append(" = ").append(alias.commandLine()).line();
         }
         return markdown;

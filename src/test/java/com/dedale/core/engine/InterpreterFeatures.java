@@ -29,7 +29,6 @@ public class InterpreterFeatures {
         Expression expression = interpret(input);
 
         String result = print(expression);
-
         assertThat(result).isEqualTo("*Some text*");
     }
 

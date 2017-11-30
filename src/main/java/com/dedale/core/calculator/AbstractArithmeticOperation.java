@@ -2,7 +2,6 @@ package com.dedale.core.calculator;
 
 import com.dedale.core.engine.expression.AbstractCommand;
 import com.dedale.core.engine.expression.CommandCombiner;
-import com.dedale.core.engine.expression.ConcatCommand;
 import com.dedale.core.engine.expression.Expression;
 import com.dedale.core.engine.expression.SyntaxTreeVisitor;
 
@@ -34,7 +33,7 @@ public class AbstractArithmeticOperation extends AbstractCommand implements Arit
                 .when(MultiplyOperation.class, multiply -> this.assignRight(multiply))
 
                 .when(ArithmeticExpression.class, arithmetic -> this.assignRightWhenNotFull(arithmetic))
-                .when(Expression.class, ConcatCommand.CONCAT.left(this));
+                .otherwise(Expression.THEN.left(this));
     }
 
     @Override

@@ -8,7 +8,7 @@ import static org.mockito.Mockito.mock;
 import org.junit.Test;
 
 import com.dedale.core.engine.ExecutionContext;
-import com.dedale.core.engine.expression.ConcatCommand;
+import com.dedale.core.engine.expression.Then;
 import com.dedale.core.engine.expression.Expression;
 import com.dedale.core.engine.expression.ExpressionPrinter;
 import com.dedale.core.engine.expression.TextExpression;
@@ -73,10 +73,10 @@ public class ExpressionFeatures {
     @Test
     public void evaluate_two_integer_expressions_will_return_concat_statement() throws Exception {
         // When
-        Expression concat = one.then(two);
+        Expression then = one.then(two);
 
         // Then
-        assertThat(concat).isInstanceOf(ConcatCommand.class);
+        assertThat(then).isInstanceOf(Then.class);
     }
 
     @Test

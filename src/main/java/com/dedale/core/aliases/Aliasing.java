@@ -3,7 +3,7 @@ package com.dedale.core.aliases;
 import com.dedale.core.engine.CommandDefinitions;
 import com.dedale.core.engine.CommandModule;
 import com.dedale.core.engine.ExecutionContext;
-import com.dedale.core.engine.expression.TextExpression;
+import com.dedale.core.engine.expression.RawText;
 import com.dedale.utils.resources.Resources;
 
 public class Aliasing implements CommandModule {
@@ -52,7 +52,7 @@ public class Aliasing implements CommandModule {
                 .withParameterizedCommand("alias add", args -> new AddAlias(args, userAliases))
                 .withParameterizedCommand("unalias", args -> new RemoveAlias(args, userAliases))
                 .withParameterizedCommand("alias remove", args -> new RemoveAlias(args, userAliases))
-                .withCommand("alias --help", () -> new TextExpression(Resources.getRelativeTo(Aliasing.class, "HELP.md").asString()));
+                .withCommand("alias --help", () -> new RawText(Resources.getRelativeTo(Aliasing.class, "HELP.md").asString()));
     }
 
 }

@@ -4,7 +4,9 @@ import com.dedale.core.engine.ExecutionContext;
 
 final class Neutral implements Expression {
     
-    Neutral() {
+    public static final Neutral NEUTRAL = new Neutral();
+    
+    private Neutral() {
     }
 
     @Override

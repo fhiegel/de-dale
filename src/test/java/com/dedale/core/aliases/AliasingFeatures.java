@@ -20,7 +20,7 @@ public class AliasingFeatures {
     private UserAliases userAliases = new InMemoryUserAliases();
     private Aliasing module = new Aliasing(CommandModule.EMPTY, userAliases);
     private InterpreterEngine engine = new InterpreterEngine(module);
-    private ExecutionContext context = engine.defaultContext().withUser("anUser");;
+    private ExecutionContext context = engine.defaultContext().withUser("anUser");
 
     @Test
     public void aliases_are_empty() throws Exception {
@@ -174,7 +174,6 @@ public class AliasingFeatures {
         assertThat(getAliases.value()).containsExactly(alias("name", "cmd for another user"));
     }
 
-    
     //
     // Utils
     //

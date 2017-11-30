@@ -15,7 +15,8 @@ public abstract class AbstractExpression implements Expression {
 
     private SyntaxTreeVisitor defaultDispatcher() {
         return new SyntaxTreeVisitor(this)
-                .when(Neutral.class, neutral -> this);
+                .when(Neutral.class, neutral -> this)
+                .otherwise(THEN.left(this));
     }
 
     @Override

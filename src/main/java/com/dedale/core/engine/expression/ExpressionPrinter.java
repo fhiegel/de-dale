@@ -8,8 +8,18 @@ import com.dedale.dice.DiceResult;
 
 public class ExpressionPrinter extends ExpressionVisitor<StringBuilder> {
 
+    public static final String CONCAT_SEPARATOR = " ";
+    
     public ExpressionPrinter() {
         this(new StringBuilder());
+    }
+
+    private ExpressionPrinter(StringBuilder stringBuilder) {
+        super(stringBuilder);
+        define();
+    }
+
+    protected void define() {
         this
                 .when(AddOperation.class, e -> result.append("+"))
                 .when(MinusOperation.class, e -> result.append("-"))
@@ -19,13 +29,9 @@ public class ExpressionPrinter extends ExpressionVisitor<StringBuilder> {
                 .when(BoldTextExpression.class, e -> result.append("*"))
                 .when(ValuedExpression.class, e -> result.append(e.value()))
                 .when(DiceResult.class, e -> result.append(e.value()))
-                .when(ConcatCommand.class, e -> result.append(ConcatCommand.CONCAT_SEPARATOR))
+                .when(Then.class, e -> result.append(CONCAT_SEPARATOR))
                 .when(Neutral.class, e -> result.append(e))
                 .otherwise(e -> result.append('{').append(e.getClass()).append('}'));
-    }
-
-    private ExpressionPrinter(StringBuilder stringBuilder) {
-        super(stringBuilder);
     }
 
     @Override
@@ -36,7 +42,7 @@ public class ExpressionPrinter extends ExpressionVisitor<StringBuilder> {
         }
         return super.visit(receiver);
     }
-    
+
     @Override
     @SuppressWarnings("unchecked")
     protected ExpressionPrinter visitor(StringBuilder result) {
