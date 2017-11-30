@@ -47,12 +47,12 @@ public class Aliasing implements CommandModule {
     private CommandDefinitions aliasingCommands() {
         return CommandDefinitions
                 .defineCommands()
-                .withParameterizedCommand("alias", args -> new AddAlias(args, userAliases))
-                .andParse("alias").strictly().with().constant(new ListAliases(userAliases)).build()
                 .withParameterizedCommand("alias add", args -> new AddAlias(args, userAliases))
-                .withParameterizedCommand("unalias", args -> new RemoveAlias(args, userAliases))
                 .withParameterizedCommand("alias remove", args -> new RemoveAlias(args, userAliases))
-                .withCommand("alias --help", () -> new RawText(Resources.getRelativeTo(Aliasing.class, "HELP.md").asString()));
+                .withCommand("alias --help", () -> new RawText(Resources.getRelativeTo(Aliasing.class, "HELP.md").asString()))
+                .andParse("alias").strictly().with().constant(new ListAliases(userAliases)).build()
+                .withParameterizedCommand("alias", args -> new AddAlias(args, userAliases))
+                .withParameterizedCommand("unalias", args -> new RemoveAlias(args, userAliases));
     }
 
 }
