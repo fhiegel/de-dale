@@ -1,37 +1,20 @@
 package com.dedale.core.engine.expression;
 
 import static com.dedale.core.engine.expression.Expression.NEUTRAL;
+import static com.dedale.core.engine.expression.ExpressionSamples.*;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.mock;
 
 import org.junit.Test;
 
-import com.dedale.core.calculator.AddOperation;
-import com.dedale.core.calculator.IntegerExpression;
-import com.dedale.core.calculator.MinusOperation;
-import com.dedale.core.calculator.MultiplyOperation;
-import com.dedale.core.calculator.PowerOperation;
 import com.dedale.core.engine.ExecutionContext;
-import com.dedale.core.engine.expression.BoldTextExpression;
-import com.dedale.core.engine.expression.ConcatCommand;
+import com.dedale.core.engine.expression.Then;
 import com.dedale.core.engine.expression.Expression;
 import com.dedale.core.engine.expression.ExpressionPrinter;
 import com.dedale.core.engine.expression.TextExpression;
 
 public class ExpressionFeatures {
 
-    static final Expression one = new IntegerExpression(1);
-    static final Expression two = new IntegerExpression(2);
-    static final Expression three = new IntegerExpression(3);
-    static final Expression four = new IntegerExpression(4);
-    static final Expression seven = new IntegerExpression(7);
-    static final Expression add = AddOperation.EMPTY;
-    static final Expression minus = MinusOperation.EMPTY;
-    static final Expression multiply = MultiplyOperation.EMPTY;
-    static final Expression power = PowerOperation.EMPTY;
-
-    static final BoldTextExpression bold = BoldTextExpression.EMPTY;
-    static final TextExpression anExpression = new TextExpression("<any expression>");
     private ExecutionContext context = mock(ExecutionContext.class);
 
     @Test
@@ -90,10 +73,10 @@ public class ExpressionFeatures {
     @Test
     public void evaluate_two_integer_expressions_will_return_concat_statement() throws Exception {
         // When
-        Expression concat = one.then(two);
+        Expression then = one.then(two);
 
         // Then
-        assertThat(concat).isInstanceOf(ConcatCommand.class);
+        assertThat(then).isInstanceOf(Then.class);
     }
 
     @Test

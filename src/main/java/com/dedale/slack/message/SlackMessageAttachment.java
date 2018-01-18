@@ -201,4 +201,119 @@ public class SlackMessageAttachment {
         return getClass().getSimpleName() + " " + JsonUtils.asJson(this);
     }
 
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + ((authorIcon == null) ? 0 : authorIcon.hashCode());
+        result = prime * result + ((authorLink == null) ? 0 : authorLink.hashCode());
+        result = prime * result + ((authorName == null) ? 0 : authorName.hashCode());
+        result = prime * result + ((color == null) ? 0 : color.hashCode());
+        result = prime * result + ((fallback == null) ? 0 : fallback.hashCode());
+        result = prime * result + ((fields == null) ? 0 : fields.hashCode());
+        result = prime * result + ((footer == null) ? 0 : footer.hashCode());
+        result = prime * result + ((footerIcon == null) ? 0 : footerIcon.hashCode());
+        result = prime * result + ((imageUrl == null) ? 0 : imageUrl.hashCode());
+        result = prime * result + ((markdownIn == null) ? 0 : markdownIn.hashCode());
+        result = prime * result + ((pretext == null) ? 0 : pretext.hashCode());
+        result = prime * result + ((text == null) ? 0 : text.hashCode());
+        result = prime * result + ((thumbUrl == null) ? 0 : thumbUrl.hashCode());
+        result = prime * result + ((timestamp == null) ? 0 : timestamp.hashCode());
+        result = prime * result + ((title == null) ? 0 : title.hashCode());
+        result = prime * result + ((titleLink == null) ? 0 : titleLink.hashCode());
+        return result;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        if (getClass() != obj.getClass())
+            return false;
+        SlackMessageAttachment other = (SlackMessageAttachment) obj;
+        if (authorIcon == null) {
+            if (other.authorIcon != null)
+                return false;
+        } else if (!authorIcon.equals(other.authorIcon))
+            return false;
+        if (authorLink == null) {
+            if (other.authorLink != null)
+                return false;
+        } else if (!authorLink.equals(other.authorLink))
+            return false;
+        if (authorName == null) {
+            if (other.authorName != null)
+                return false;
+        } else if (!authorName.equals(other.authorName))
+            return false;
+        if (color == null) {
+            if (other.color != null)
+                return false;
+        } else if (!color.equals(other.color))
+            return false;
+        if (fallback == null) {
+            if (other.fallback != null)
+                return false;
+        } else if (!fallback.equals(other.fallback))
+            return false;
+        if (fields == null) {
+            if (other.fields != null)
+                return false;
+        } else if (!fields.equals(other.fields))
+            return false;
+        if (footer == null) {
+            if (other.footer != null)
+                return false;
+        } else if (!footer.equals(other.footer))
+            return false;
+        if (footerIcon == null) {
+            if (other.footerIcon != null)
+                return false;
+        } else if (!footerIcon.equals(other.footerIcon))
+            return false;
+        if (imageUrl == null) {
+            if (other.imageUrl != null)
+                return false;
+        } else if (!imageUrl.equals(other.imageUrl))
+            return false;
+        if (markdownIn == null) {
+            if (other.markdownIn != null)
+                return false;
+        } else if (!markdownIn.equals(other.markdownIn))
+            return false;
+        if (pretext == null) {
+            if (other.pretext != null)
+                return false;
+        } else if (!pretext.equals(other.pretext))
+            return false;
+        if (text == null) {
+            if (other.text != null)
+                return false;
+        } else if (!text.equals(other.text))
+            return false;
+        if (thumbUrl == null) {
+            if (other.thumbUrl != null)
+                return false;
+        } else if (!thumbUrl.equals(other.thumbUrl))
+            return false;
+        if (timestamp == null) {
+            if (other.timestamp != null)
+                return false;
+        } else if (!timestamp.equals(other.timestamp))
+            return false;
+        if (title == null) {
+            if (other.title != null)
+                return false;
+        } else if (!title.equals(other.title))
+            return false;
+        if (titleLink == null) {
+            if (other.titleLink != null)
+                return false;
+        } else if (!titleLink.equals(other.titleLink))
+            return false;
+        return true;
+    }
+
 }

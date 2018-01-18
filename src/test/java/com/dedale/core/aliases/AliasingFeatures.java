@@ -2,6 +2,8 @@ package com.dedale.core.aliases;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import com.dedale.core.engine.expression.RawText;
+import com.dedale.core.engine.expression.ValuedExpression;
 import org.junit.Test;
 
 import com.dedale.core.User;
@@ -11,11 +13,16 @@ import com.dedale.core.engine.ExecutionContext;
 import com.dedale.core.engine.InterpreterEngine;
 import com.dedale.core.engine.expression.Expression;
 import com.dedale.core.engine.expression.TextExpression;
+import com.dedale.utils.resources.Resources;
 
 public class AliasingFeatures {
+    
+    private static final String HELP = Resources.get("com/dedale/core", "aliases", "HELP.md").asString();
 
     private UserAliases userAliases = new InMemoryUserAliases();
     private Aliasing module = new Aliasing(CommandModule.EMPTY, userAliases);
+    private InterpreterEngine engine = new InterpreterEngine(module);
+    private ExecutionContext context = engine.defaultContext().withUser("anUser");
 
     @Test
     public void aliases_are_empty() throws Exception {
@@ -84,20 +91,20 @@ public class AliasingFeatures {
     public void print_help() throws Exception {
         Expression cmd = defaultInterpret("alias --help");
 
-        TextExpression help = (TextExpression) cmd;
-        assertThat(help.value()).isEqualTo("Help text");
+        ValuedExpression<String> help = (RawText) cmd;
+        assertThat(help.value()).isEqualTo(HELP);
     }
 
     @Test
     public void an_alias_is_run() throws Exception {
         assumeAliasesAreEmpty();
 
-        Expression cmd = defaultInterpret("alias add doHelp=\"alias --help\"");
+        defaultInterpret("alias add doHelp=\"alias --help\"");
 
-        cmd = defaultInterpret("doHelp");
-        TextExpression help = (TextExpression) cmd;
+        Expression cmd = defaultInterpret("doHelp");
+        ValuedExpression<String> help = (RawText) cmd;
 
-        assertThat(help.value()).isEqualTo("Help text");
+        assertThat(help.value()).isEqualTo(HELP);
     }
 
     @Test
@@ -106,6 +113,8 @@ public class AliasingFeatures {
                 .defineCommands()
                 .withCommand("doSomethingElse", new TextExpression("Text when Do Something Else"))
                 .withCommand("do", new TextExpression("Should run Do command.")), userAliases);
+        engine = new InterpreterEngine(module);
+        context = engine.defaultContext();
 
         Expression cmd = defaultInterpret("alias add do=\"doSomethingElse\"");
 
@@ -124,6 +133,16 @@ public class AliasingFeatures {
         assertThat(getAliases.value()).isEmpty();
         assumeAliasesAreEmpty();
     }
+    
+    @Test
+    public void an_alias_is_unaliased() throws Exception {
+        givenUser("anUser").hasAlias("name", "cmd");
+        
+        GetAliases getAliases = (GetAliases) defaultInterpret("unalias name");
+        
+        assertThat(getAliases.value()).isEmpty();
+        assumeAliasesAreEmpty();
+    }
 
     @Test
     public void an_alias_is_unique() throws Exception {
@@ -138,8 +157,8 @@ public class AliasingFeatures {
     public void an_alias_is_for_an_user() throws Exception {
         givenUser("anOtherUser").hasAlias("name", "cmd");
 
-        ExecutionContext context = engine().defaultContext().withUser("anUser");
-        GetAliases getAliases = (GetAliases) engine().interpret(context, "alias");
+        context = context.withUser("anUser").withInput("alias");
+        GetAliases getAliases = (GetAliases) engine.interpret(context);
         assertThat(getAliases.value()).isEmpty();
     }
 
@@ -148,12 +167,12 @@ public class AliasingFeatures {
         givenUser("anUser").hasAlias("name", "cmd");
         givenUser("anOtherUser").hasAlias("name", "cmd for another user");
 
-        ExecutionContext context = engine().defaultContext().withUser("anUser");
-        GetAliases getAliases = (GetAliases) engine().interpret(context, "alias");
+        context = context.withUser("anUser").withInput("alias");
+        GetAliases getAliases = (GetAliases) engine.interpret(context);
         assertThat(getAliases.value()).containsExactly(alias("name", "cmd"));
 
-        context = engine().defaultContext().withUser("anOtherUser");
-        getAliases = (GetAliases) engine().interpret(context, "alias");
+        context = context.withUser("anOtherUser").withInput("alias");
+        getAliases = (GetAliases) engine.interpret(context);
         assertThat(getAliases.value()).containsExactly(alias("name", "cmd for another user"));
     }
 
@@ -161,13 +180,8 @@ public class AliasingFeatures {
     // Utils
     //
 
-    private InterpreterEngine engine() {
-        return new InterpreterEngine(module);
-    }
-
     private Expression defaultInterpret(String input) {
-        InterpreterEngine engine = engine();
-        return engine.interpret(engine.defaultContext().withUser("anUser"), input);
+        return engine.interpret(context.withInput(input));
     }
 
     private void assumeAliasesAreEmpty() {
@@ -175,8 +189,7 @@ public class AliasingFeatures {
     }
 
     private Aliases getAliases() {
-        Expression cmd = defaultInterpret("alias");
-        GetAliases getAliases = (GetAliases) cmd;
+        GetAliases getAliases = (GetAliases) defaultInterpret("alias");
         return getAliases.value();
     }
 

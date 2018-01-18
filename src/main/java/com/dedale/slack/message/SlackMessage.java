@@ -94,4 +94,59 @@ public class SlackMessage {
         return getClass().getSimpleName() + " " + JsonUtils.asJson(this);
     }
 
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + ((attachments == null) ? 0 : attachments.hashCode());
+        result = prime * result + ((channel == null) ? 0 : channel.hashCode());
+        result = prime * result + (markdown ? 1231 : 1237);
+        result = prime * result + ((responseType == null) ? 0 : responseType.hashCode());
+        result = prime * result + ((text == null) ? 0 : text.hashCode());
+        result = prime * result + ((token == null) ? 0 : token.hashCode());
+        result = prime * result + ((userName == null) ? 0 : userName.hashCode());
+        return result;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        if (getClass() != obj.getClass())
+            return false;
+        SlackMessage other = (SlackMessage) obj;
+        if (attachments == null) {
+            if (other.attachments != null)
+                return false;
+        } else if (!attachments.equals(other.attachments))
+            return false;
+        if (channel == null) {
+            if (other.channel != null)
+                return false;
+        } else if (!channel.equals(other.channel))
+            return false;
+        if (markdown != other.markdown)
+            return false;
+        if (responseType != other.responseType)
+            return false;
+        if (text == null) {
+            if (other.text != null)
+                return false;
+        } else if (!text.equals(other.text))
+            return false;
+        if (token == null) {
+            if (other.token != null)
+                return false;
+        } else if (!token.equals(other.token))
+            return false;
+        if (userName == null) {
+            if (other.userName != null)
+                return false;
+        } else if (!userName.equals(other.userName))
+            return false;
+        return true;
+    }
+
 }

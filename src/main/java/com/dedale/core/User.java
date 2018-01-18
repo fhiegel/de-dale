@@ -1,18 +1,29 @@
 package com.dedale.core;
 
 public class User {
-    
-    public static final User NONE = new User("");
+
+    public static final User NONE = new User("", "");
 
     private final String userId;
 
+    private final String name;
+
     public User(String userId) {
+        this(userId, userId);
+    }
+
+    private User(String userId, String name) {
         this.userId = userId;
+        this.name = name;
+    }
+
+    public String name() {
+        return name;
     }
 
     @Override
     public String toString() {
-        return "User {userId=" + userId + "}";
+        return "User {userId=" + userId + ", name=" + name + "}";
     }
 
     @Override
@@ -38,6 +49,10 @@ public class User {
         } else if (!userId.equals(other.userId))
             return false;
         return true;
+    }
+
+    public User withName(String name) {
+        return new User(userId, name);
     }
 
 }

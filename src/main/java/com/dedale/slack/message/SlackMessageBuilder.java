@@ -2,15 +2,26 @@ package com.dedale.slack.message;
 
 import java.util.List;
 
+import com.dedale.markdown.Markdown;
+
 public class SlackMessageBuilder {
 
     private SlackMessage message = new SlackMessage();
 
-    public static SlackMessageBuilder beginResponse() {
+    public static SlackMessageBuilder beginMessage() {
         return new SlackMessageBuilder();
     }
 
     // Text
+
+    public SlackMessageBuilder withText(Object object) {
+        return withText(object.toString());
+    }
+    
+    public SlackMessageBuilder withMarkdown(Markdown markdown) {
+        return withText(markdown).asMarkdown();
+    }
+    
 
     public SlackMessageBuilder withText(String text) {
         message.setText(text);
@@ -49,7 +60,7 @@ public class SlackMessageBuilder {
         return this;
     }
 
-    // Defautls
+    // Defaults
 
     public SlackMessageBuilder withToken(String token) {
         message.setToken(token);
@@ -61,6 +72,10 @@ public class SlackMessageBuilder {
         return this;
     }
 
+    private SlackMessageBuilder asMarkdown() {
+        return this;
+    }
+    
     // Build in methods
 
     public SlackMessage build() {

@@ -34,7 +34,7 @@ public class InterpreterTestModule implements CommandModule {
                 .withModule("roll", new Calculator())
                 .withModule("recursivesubcmd", aParser)
                 .andParse("show", e -> new TextExpression("..."))
-                .andParse("--bold", e -> BoldTextExpression.EMPTY)
+                .andParse("--bold", e -> BoldTextExpression.BOLD)
                 .andParse("\\S+", TextExpression::new);
     }
 

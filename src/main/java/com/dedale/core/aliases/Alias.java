@@ -10,6 +10,14 @@ public class Alias {
         this.commandLine = commandLine;
     }
 
+    public String name() {
+        return name;
+    }
+
+    public String commandLine() {
+        return commandLine;
+    }
+
     @Override
     public int hashCode() {
         final int prime = 31;

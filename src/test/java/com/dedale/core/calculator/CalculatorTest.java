@@ -6,12 +6,13 @@ import static org.mockito.Mockito.when;
 
 import org.junit.Test;
 
-import com.dedale.core.TextModule;
 import com.dedale.core.engine.CommandDefinitions;
 import com.dedale.core.engine.CommandModule;
+import com.dedale.core.engine.ExecutionContext;
 import com.dedale.core.engine.InterpreterEngine;
 import com.dedale.core.engine.expression.Expression;
 import com.dedale.core.engine.expression.ExpressionPrinter;
+import com.dedale.core.text.Texting;
 import com.dedale.dice.Dice;
 import com.dedale.dice.DiceOperation;
 import com.dedale.dice.DiceSum;
@@ -204,7 +205,7 @@ public class CalculatorTest {
                 .defineCommands()
                 .andParse("([dD])(?=\\d)").with().constant(new DiceOperation(new DiceSum(faces -> dice))).build()
                 ;
-        module = new TextModule(new Calculator(statements));
+        module = new Texting(new Calculator(statements));
         
         String sentence = "attaque: 1d20+5 degats: 1d4";
         
@@ -221,8 +222,9 @@ public class CalculatorTest {
 
     private String calculate(String input) {
         InterpreterEngine engine = new InterpreterEngine(module);
+        ExecutionContext context = engine.defaultContext().withInput(input);
 
-        Expression expression = engine.interpret(input);
+        Expression expression = engine.interpret(context);
 
         ExpressionPrinter printer = new ExpressionPrinter();
         expression.accept(printer);

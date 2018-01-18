@@ -4,9 +4,9 @@ import com.dedale.core.engine.ExecutionContext;
 
 public class BoldTextExpression extends AbstractExpression {
 
-    public static final BoldTextExpression EMPTY = new BoldTextExpression(null);
+    public static final BoldTextExpression BOLD = new BoldTextExpression(NEUTRAL);
 
-    private Expression text;
+    private final Expression text;
 
     private BoldTextExpression(Expression text) {
         this.text = text;
@@ -14,12 +14,12 @@ public class BoldTextExpression extends AbstractExpression {
 
     @Override
     public Expression execute(ExecutionContext context) {
-        return wrapText((Expression) text.execute(context));
+        return wrapText(text.execute(context));
     }
 
     @Override
-    protected ExpressionVisitor<Expression> configure(ExpressionVisitor<Expression> dispatcher) {
-        return super.configure(dispatcher).when(TextExpression.class, this::wrapText);
+    protected SyntaxTreeVisitor configure(SyntaxTreeVisitor syntaxTree) {
+        return super.configure(syntaxTree).when(TextExpression.class, this::wrapText);
     }
 
     Expression wrapText(Expression text) {
@@ -27,10 +27,12 @@ public class BoldTextExpression extends AbstractExpression {
     }
 
     @Override
-    public <R> void accept(ExpressionVisitor<R> visitor) {
-        super.accept(visitor);
-        if (text != null) text.accept(visitor);
-        super.accept(visitor);
+    public <R, V extends ExpressionVisitor<R>> V accept(V visitor) {
+        V actual = visitor;
+        actual = super.accept(visitor);
+        actual = text != null ? text.accept(actual) : actual;
+        actual = super.accept(visitor);
+        return actual;
     }
 
 }

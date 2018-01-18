@@ -1,4 +1,4 @@
-package com.dedale.core;
+package com.dedale.core.text;
 
 import com.dedale.core.engine.CommandDefinitions;
 import com.dedale.core.engine.CommandModule;
@@ -6,19 +6,19 @@ import com.dedale.core.engine.ExecutionContext;
 import com.dedale.core.engine.expression.BoldTextExpression;
 import com.dedale.core.engine.expression.TextExpression;
 
-public class TextModule implements CommandModule {
+public class Texting implements CommandModule {
 
     private final CommandModule module;
 
-    TextModule() {
+    Texting() {
         this(CommandModule.EMPTY);
     }
 
-    TextModule(CommandDefinitions commands) {
+    Texting(CommandDefinitions commands) {
         this(c -> commands);
     }
 
-    public TextModule(CommandModule module) {
+    public Texting(CommandModule module) {
         this.module = module;
     }
 
@@ -31,7 +31,7 @@ public class TextModule implements CommandModule {
     protected CommandDefinitions textModule() {
         return CommandDefinitions
                 .defineCommands()
-                .andParse("--bold", e -> BoldTextExpression.EMPTY)
+                .andParse("--bold", e -> BoldTextExpression.BOLD)
                 .andParse("\\S+", TextExpression::new);
     }
 
