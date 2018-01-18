@@ -2,6 +2,7 @@ package com.dedale.core.engine;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import org.junit.Ignore;
 import org.junit.Test;
 
 import com.dedale.core.engine.CommandDefinitions;
@@ -24,6 +25,7 @@ public class InterpreterFeatures {
     }
 
     @Test
+    @Ignore
     public void should_return_given_bold_text() throws Exception {
         String input = "Some text --bold";
         Expression expression = interpret(input);

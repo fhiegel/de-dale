@@ -2,6 +2,8 @@ package com.dedale.core.aliases;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import com.dedale.core.engine.expression.RawText;
+import com.dedale.core.engine.expression.ValuedExpression;
 import org.junit.Test;
 
 import com.dedale.core.User;
@@ -89,7 +91,7 @@ public class AliasingFeatures {
     public void print_help() throws Exception {
         Expression cmd = defaultInterpret("alias --help");
 
-        TextExpression help = (TextExpression) cmd;
+        ValuedExpression<String> help = (RawText) cmd;
         assertThat(help.value()).isEqualTo(HELP);
     }
 
@@ -97,10 +99,10 @@ public class AliasingFeatures {
     public void an_alias_is_run() throws Exception {
         assumeAliasesAreEmpty();
 
-        Expression cmd = defaultInterpret("alias add doHelp=\"alias --help\"");
+        defaultInterpret("alias add doHelp=\"alias --help\"");
 
-        cmd = defaultInterpret("doHelp");
-        TextExpression help = (TextExpression) cmd;
+        Expression cmd = defaultInterpret("doHelp");
+        ValuedExpression<String> help = (RawText) cmd;
 
         assertThat(help.value()).isEqualTo(HELP);
     }
