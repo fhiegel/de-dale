@@ -20,10 +20,13 @@ public class DiceResource {
 
     private static final String MARKDOWN_BOLD = "*";
 
+    private final InterpreterEngine calculator;
+
     @Inject
-    @Named(CalculatingFeatures.ENGINE)
-    private InterpreterEngine calculator;
-    
+    public DiceResource(@Named(CalculatingFeatures.ENGINE) InterpreterEngine calculator) {
+        this.calculator = calculator;
+    }
+
     @POST
     @Produces(MediaType.TEXT_PLAIN)
     public String defaultRoll(String diceSentence) {

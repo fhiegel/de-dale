@@ -11,15 +11,19 @@ public class Dispatcher {
 
     private static final boolean NOT_PARALLEL = false;
 
+    private final Iterable<QueryHandler<?, ?>> handlers;
+
     @Inject
-    private Iterable<QueryHandler<?, ?>> handlers;
+    public Dispatcher(Iterable<QueryHandler<?, ?>> handlers) {
+        this.handlers = handlers;
+    }
 
     public <R, Q extends Query<R>> R dispatch(Q query) {
         return getHandler(query).handle(query);
     }
 
     @SuppressWarnings("unchecked")
-    protected <R, Q extends Query<R>> QueryHandler<R, Q> getHandler(Q query) {
+    private <R, Q extends Query<R>> QueryHandler<R, Q> getHandler(Q query) {
         return (QueryHandler<R, Q>) StreamSupport
                 .stream(handlers.spliterator(), NOT_PARALLEL)
                 .filter(isApplicableToQuery(query))

@@ -16,9 +16,12 @@ import com.dedale.slack.request.SlackRequest;
 @Path("slack/hermes")
 public class HermesSlackClient {
     
+    private final InterpreterEngine calculator;
+
     @Inject
-    @Named(CalculatingFeatures.ENGINE)
-    private InterpreterEngine calculator;
+    public HermesSlackClient(@Named(CalculatingFeatures.ENGINE) InterpreterEngine calculator) {
+        this.calculator = calculator;
+    }
 
     @POST
     public SlackMessage slackRoll(SlackRequest slackRequest) {

@@ -3,13 +3,12 @@ package com.dedale.cards;
 import java.util.Collection;
 import java.util.Collections;
 
-
 public class CardContainer {
-    
-    private Collection<Card> cards = Collections.emptyList();
+
+    private final Collection<Card> cards;
 
     public CardContainer() {
-
+        this(Collections.emptyList());
     }
 
     public CardContainer(Collection<Card> cards) {

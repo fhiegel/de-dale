@@ -8,7 +8,7 @@ import com.dedale.common.InMemoryRepository;
 import com.dedale.common.Repository;
 
 @Singleton
-public class CardRepositoryImpl implements CardRepository {
+public class CardRepositoryImpl implements Cards {
     
     private Repository<Card> delegate = new InMemoryRepository<>();
 

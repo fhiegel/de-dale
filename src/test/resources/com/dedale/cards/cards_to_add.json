@@ -9,14 +9,6 @@
             "description": "Cette carte était déjà existante",
             "id": 5,
             "title": "Item existant"
-        },
-        {
-            "id": 12,
-            "title": "Titre 12"
-        },
-        {
-            "description": "Description 14",
-            "id": 14
         }
     ]
 }

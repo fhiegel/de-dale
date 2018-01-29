@@ -2,7 +2,7 @@ package com.dedale.cards.query;
 
 import com.dedale.cards.Card;
 import com.dedale.cards.CardBuilder;
-import com.dedale.cards.CardRepository;
+import com.dedale.cards.Cards;
 import com.dedale.cards.CardRepositoryInMemory;
 import com.dedale.utils.jersey.ApplicationInjectionRule;
 import org.junit.Rule;
@@ -15,20 +15,22 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 public class AddCardCommandHandlerTest {
 
+    private Cards repository = new CardRepositoryInMemory();
+
     @Rule
-    public ApplicationInjectionRule rule = ApplicationInjectionRule.dedaleRule().configureBinding(
-            binder -> binder.bind(CardRepositoryInMemory.class).to(CardRepository.class).in(Singleton.class));
+    public ApplicationInjectionRule rule = ApplicationInjectionRule
+            .dedaleRule()
+            .configureBinding(
+                    binder -> binder.bind(repository).to(Cards.class)
+            );
 
     @Inject
-    private CardRepository repository;
-
-    @Inject
-    private AddCardCommandHandler handler;
+    private AddCardHandler handler;
 
     @Test
-    public void should_add_card_add_it_with_id() throws Exception {
+    public void should_add_card_add_it_with_id() {
         // Given
-        AddCardCommand addCommand = AddCardCommand.from(CardBuilder.builder().build());
+        AddCard addCommand = AddCard.from(CardBuilder.builder().build());
 
         // When
         Card card = handler.handle(addCommand);
@@ -38,9 +40,9 @@ public class AddCardCommandHandlerTest {
     }
 
     @Test
-    public void should_add_card_add_it_in_repository() throws Exception {
+    public void should_add_card_add_it_in_repository() {
         // Given
-        AddCardCommand addCommand = AddCardCommand.from(CardBuilder.builder().build());
+        AddCard addCommand = AddCard.from(CardBuilder.builder().build());
 
         // When
         Card card = handler.handle(addCommand);

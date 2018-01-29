@@ -15,25 +15,29 @@ import org.jvnet.hk2.annotations.Service;
 
 import com.dedale.cards.Card;
 import com.dedale.cards.CardContainer;
-import com.dedale.cards.CardRepository;
+import com.dedale.cards.Cards;
 import com.dedale.common.Query;
 import com.dedale.common.QueryHandler;
 
 @Service
-public class FindCardsByIdsQueryHandler implements QueryHandler<CardContainer, FindCardsByIdsQuery> {
+public class FindCardsByIdsHandler implements QueryHandler<CardContainer, FindCardsByIds> {
 
-    private Map<FindCardsByIdsQuery, CardContainer> cardsByIds = new HashMap<>();
+    private Map<FindCardsByIds, CardContainer> cardsByIds = new HashMap<>();
+
+    private final Cards cards;
 
     @Inject
-    private CardRepository repository;
-
-    @Override
-    public Class<FindCardsByIdsQuery> listenTo() {
-        return FindCardsByIdsQuery.class;
+    public FindCardsByIdsHandler(Cards cards) {
+        this.cards = cards;
     }
 
     @Override
-    public CardContainer handle(FindCardsByIdsQuery query) {
+    public Class<FindCardsByIds> listenTo() {
+        return FindCardsByIds.class;
+    }
+
+    @Override
+    public CardContainer handle(FindCardsByIds query) {
         return getFromCache(query, cardsByIds, this::getCardList);
     }
 
@@ -46,27 +50,27 @@ public class FindCardsByIdsQueryHandler implements QueryHandler<CardContainer, F
         return result;
     }
 
-    private CardContainer getCardList(FindCardsByIdsQuery query) {
+    private CardContainer getCardList(FindCardsByIds query) {
         return query.getCardIds().stream().map(this::getCardById).collect(collectionConsumer(CardContainer::new));
     }
 
-    protected <T, R> Collector<T, Collection<T>, R> collectionConsumer(Function<Collection<T>, R> finisher) {
+    private <T, R> Collector<T, Collection<T>, R> collectionConsumer(Function<Collection<T>, R> finisher) {
         return Collector.of(listSupplier(), Collection::add, collectionCombiner(), finisher);
     }
 
-    protected <T> BinaryOperator<Collection<T>> collectionCombiner() {
+    private <T> BinaryOperator<Collection<T>> collectionCombiner() {
         return (left, right) -> {
             left.addAll(right);
             return left;
         };
     }
 
-    protected <T> Supplier<Collection<T>> listSupplier() {
-        return (Supplier<Collection<T>>) ArrayList::new;
+    private <T> Supplier<Collection<T>> listSupplier() {
+        return ArrayList::new;
     }
 
     private Card getCardById(Long cardId) {
-        return repository.getById(cardId);
+        return cards.getById(cardId);
     }
 
 }

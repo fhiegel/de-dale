@@ -8,7 +8,7 @@ public class CardBuilder {
 
     private String title;
 
-    public static CardBuilder builder(){
+    public static CardBuilder builder() {
         return new CardBuilder();
     }
 
@@ -29,6 +29,6 @@ public class CardBuilder {
 
     public Card build() {
         return new Card(id, title, description
-                );
+        );
     }
 }

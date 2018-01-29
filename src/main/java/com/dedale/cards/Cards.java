@@ -2,6 +2,6 @@ package com.dedale.cards;
 
 import com.dedale.common.Repository;
 
-public interface CardRepository extends Repository<Card> {
+public interface Cards extends Repository<Card> {
     
 }
