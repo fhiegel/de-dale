@@ -16,8 +16,8 @@ import org.jvnet.hk2.annotations.Service;
 import com.dedale.cards.Card;
 import com.dedale.cards.CardContainer;
 import com.dedale.cards.Cards;
-import com.dedale.common.Query;
-import com.dedale.common.QueryHandler;
+import com.dedale.core.query.Query;
+import com.dedale.core.query.QueryHandler;
 
 @Service
 public class FindCardsByIdsHandler implements QueryHandler<CardContainer, FindCardsByIds> {

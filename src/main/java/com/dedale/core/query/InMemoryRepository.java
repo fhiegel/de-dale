@@ -1,4 +1,4 @@
-package com.dedale.common;
+package com.dedale.core.query;
 
 import java.util.ArrayList;
 import java.util.Collections;

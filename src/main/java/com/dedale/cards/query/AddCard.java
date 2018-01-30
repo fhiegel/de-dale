@@ -1,7 +1,7 @@
 package com.dedale.cards.query;
 
 import com.dedale.cards.Card;
-import com.dedale.common.Query;
+import com.dedale.core.query.Query;
 
 
 public class AddCard implements Query<Card> {

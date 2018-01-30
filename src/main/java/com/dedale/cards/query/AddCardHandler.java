@@ -6,7 +6,7 @@ import org.jvnet.hk2.annotations.Service;
 
 import com.dedale.cards.Card;
 import com.dedale.cards.Cards;
-import com.dedale.common.QueryHandler;
+import com.dedale.core.query.QueryHandler;
 
 @Service
 public class AddCardHandler implements QueryHandler<Card, AddCard> {

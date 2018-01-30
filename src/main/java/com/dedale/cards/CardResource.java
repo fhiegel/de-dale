@@ -12,7 +12,7 @@ import javax.ws.rs.core.MediaType;
 import com.dedale.cards.query.AddCard;
 import com.dedale.cards.query.FindCardsByIds;
 import com.dedale.cards.query.GetAllCards;
-import com.dedale.common.Dispatcher;
+import com.dedale.core.query.Dispatcher;
 
 @Path(CardResource.PATH)
 public class CardResource {

@@ -4,7 +4,7 @@ import org.jvnet.hk2.annotations.Service;
 
 import com.dedale.cards.CardContainer;
 import com.dedale.cards.Cards;
-import com.dedale.common.QueryHandler;
+import com.dedale.core.query.QueryHandler;
 
 import javax.inject.Inject;
 

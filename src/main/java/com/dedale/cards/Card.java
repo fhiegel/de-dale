@@ -1,9 +1,8 @@
 package com.dedale.cards;
 
-import com.dedale.common.Identifiable;
+import com.dedale.core.query.Identifiable;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
-import javafx.scene.control.PopupControlBuilder;
 
 @JsonInclude(Include.NON_EMPTY)
 public class Card implements Identifiable {

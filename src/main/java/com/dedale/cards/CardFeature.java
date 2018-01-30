@@ -8,8 +8,8 @@ import org.glassfish.hk2.utilities.binding.AbstractBinder;
 import com.dedale.cards.query.AddCardHandler;
 import com.dedale.cards.query.FindCardsByIdsHandler;
 import com.dedale.cards.query.GetAllCardsHandler;
-import com.dedale.common.Dispatcher;
-import com.dedale.common.QueryHandler;
+import com.dedale.core.query.Dispatcher;
+import com.dedale.core.query.QueryHandler;
 
 public class CardFeature implements Feature {
 

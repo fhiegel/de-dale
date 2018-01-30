@@ -4,8 +4,8 @@ import java.util.List;
 
 import javax.inject.Singleton;
 
-import com.dedale.common.InMemoryRepository;
-import com.dedale.common.Repository;
+import com.dedale.core.query.InMemoryRepository;
+import com.dedale.core.query.Repository;
 
 @Singleton
 public class CardRepositoryImpl implements Cards {

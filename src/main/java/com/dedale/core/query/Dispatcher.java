@@ -1,4 +1,4 @@
-package com.dedale.common;
+package com.dedale.core.query;
 
 import java.util.function.Predicate;
 import java.util.stream.StreamSupport;

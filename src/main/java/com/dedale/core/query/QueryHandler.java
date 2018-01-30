@@ -1,4 +1,4 @@
-package com.dedale.common;
+package com.dedale.core.query;
 
 import org.jvnet.hk2.annotations.Contract;
 

@@ -20,7 +20,7 @@ import org.junit.Test;
 
 import com.dedale.cards.query.AddCard;
 import com.dedale.cards.query.AddCardHandler;
-import com.dedale.common.QueryHandler;
+import com.dedale.core.query.QueryHandler;
 import com.dedale.utils.FileTestUtils;
 import com.dedale.utils.jersey.ApplicationRule;
 
