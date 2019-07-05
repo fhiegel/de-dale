@@ -1,76 +1,86 @@
 package com.dedale.slack.app.hermes;
 
-import static com.dedale.slack.SlackTestUtils.getResponseContentAsString;
-import static com.dedale.utils.FileTestUtils.getResourceFileAsJson;
+import com.dedale.slack.SlackTestUtils;
+import com.dedale.slack.message.SlackMessage;
+import com.dedale.slack.request.SlackRequestBuilder.Form;
+import com.dedale.utils.JsonUtils;
+import com.dedale.utils.resources.Resources;
+import io.micronaut.http.HttpRequest;
+import io.micronaut.http.HttpResponse;
+import io.micronaut.http.HttpStatus;
+import io.micronaut.http.MediaType;
+import io.micronaut.http.client.HttpClient;
+import io.micronaut.http.client.annotation.Client;
+import io.micronaut.test.annotation.MicronautTest;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
+
+import javax.inject.Inject;
+
 import static org.assertj.core.api.Assertions.assertThat;
 
-import javax.ws.rs.client.Entity;
-import javax.ws.rs.core.Application;
-import javax.ws.rs.core.Form;
-import javax.ws.rs.core.Response;
+@MicronautTest
+class HermesSlackClientTest {
 
-import org.glassfish.jersey.test.JerseyTest;
-import org.junit.Ignore;
-import org.junit.Test;
-
-import com.dedale.DeDaleResourceConfig;
-import com.dedale.slack.SlackTestUtils;
-
-public class HermesSlackClientTest extends JerseyTest {
-
-    @Override
-    protected Application configure() {
-        return new DeDaleResourceConfig();
-    }
+    @Inject
+    @Client("/")
+    HttpClient client;
 
     @Test
-    public void should_return_200_for_a_correct_slack_input() throws Exception {
+    void should_return_200_for_a_correct_slack_input() {
         // Given
         Form form = SlackTestUtils.defaultSlackRequest();
 
-        Response response = postHermes(form);
+        HttpResponse<SlackMessage> response = postHermes(form);
 
         // Then
-        assertThat(response.getStatus()).isEqualTo(200);
+        Assertions.assertEquals(response.getStatus(), HttpStatus.OK);
     }
 
     @Test
-    public void should_print_response_in_channel() throws Exception {
+    void should_print_response_in_channel() throws Exception {
         // Given
         Form form = SlackTestUtils.defaultSlackRequest();
 
         // When
-        Response response = postHermes(form);
+        SlackMessage slackMessage = client.toBlocking()
+                .retrieve(HttpRequest.POST("slack/hermes", form)
+                        .contentType(MediaType.APPLICATION_FORM_URLENCODED), SlackMessage.class);
 
         // Then
-        assertResponseEqualsFile(response, "hermes_response.json");
+        assertThat(slackMessage).isEqualTo(getSlackMessage("hermes_response.json"));
+    }
+
+    private SlackMessage getSlackMessage(String relativePath) throws java.io.IOException {
+        return JsonUtils.objectMapper.readValue(Resources
+                .getRelativeTo(getClass(), relativePath)
+                .asString(), SlackMessage.class);
     }
 
     @Test
-    @Ignore
-    public void should_print_response_with_error_message_in_channel_when_request_is_invalid() throws Exception {
+    @Disabled
+    void should_print_response_with_error_message_in_channel_when_request_is_invalid() throws Exception {
         // Given
-        Form form = SlackTestUtils.beginRequest().withUserName("Dummy User").withText("not a dice Sentense").build();
+        Form form = SlackTestUtils.beginRequest().withUserName("Dummy User").withText("not a dice Sentence").build();
 
         // When
-        Response response = postHermes(form);
+        SlackMessage slackMessage = client.toBlocking()
+                .retrieve(HttpRequest.POST("slack/hermes", form)
+                        .contentType(MediaType.APPLICATION_FORM_URLENCODED), SlackMessage.class);
 
         // Then
-        assertResponseEqualsFile(response, "hermes_response_for_invalid_request.json");
+        assertThat(slackMessage).isEqualTo(getSlackMessage("hermes_response.json"));
     }
 
     //
     // Utilitaires
     //
 
-    private Response postHermes(Form form) {
-        return target("slack/hermes").request().post(Entity.form(form));
-    }
-
-    private void assertResponseEqualsFile(Response response, String filePath) throws Exception {
-        String responseContent = getResponseContentAsString(response);
-        String expectedFileContent = getResourceFileAsJson(getClass(), filePath);
-        assertThat(responseContent).isEqualTo(expectedFileContent);
+    private HttpResponse<SlackMessage> postHermes(Form form) {
+        return client.toBlocking()
+                .exchange(HttpRequest.POST("slack/hermes", form)
+                        .contentType(MediaType.APPLICATION_FORM_URLENCODED));
     }
 
 }

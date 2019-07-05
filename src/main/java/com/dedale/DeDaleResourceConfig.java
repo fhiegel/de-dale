@@ -1,21 +1,20 @@
 package com.dedale;
 
-import com.dedale.cards.CardFeature;
-import com.dedale.core.calculator.CalculatingFeatures;
-import com.dedale.slack.SlackFeatures;
-import com.dedale.utils.JsonConfiguration;
-import org.glassfish.jersey.server.ResourceConfig;
+import com.dedale.slack.SlackCredentials;
+import io.micronaut.context.BeanContext;
+import io.micronaut.context.annotation.Factory;
 
+@Factory
+public class DeDaleResourceConfig {
 
-public class DeDaleResourceConfig extends ResourceConfig {
+    public SlackCredentials getSlackCredentials() {
 
-    public DeDaleResourceConfig() {
-        packages("com.dedale.api");
-        register(CalculatingFeatures.class);
-        register(SlackFeatures.class);
-        register(JsonConfiguration.class);
-
-        register(CardFeature.class);
+        SlackCredentials credentials = new SlackCredentials();
+        BeanContext.run()
+                .registerSingleton(SlackCredentials.class, credentials);
+//        SlackCredentials slackCredentials = Resources.getRelativeTo(getClass(), "slack.credentials.yaml").fromYaml()
+//                .as(SlackCredentials.class);
+        return credentials;
     }
 
 }

@@ -1,19 +1,17 @@
 package com.dedale.cards.query;
 
-import org.jvnet.hk2.annotations.Service;
-
 import com.dedale.cards.CardContainer;
 import com.dedale.cards.Cards;
 import com.dedale.core.query.QueryHandler;
+import io.micronaut.context.annotation.Prototype;
 
 import javax.inject.Inject;
+import javax.inject.Singleton;
 
-@Service
 public class GetAllCardsHandler implements QueryHandler<CardContainer, GetAllCards> {
 
     private final Cards cards;
 
-    @Inject
     public GetAllCardsHandler(Cards cards) {
         this.cards = cards;
     }

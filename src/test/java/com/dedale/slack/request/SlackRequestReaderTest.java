@@ -1,147 +1,142 @@
 package com.dedale.slack.request;
 
+import com.dedale.utils.resources.Resources;
+import org.junit.jupiter.api.Test;
+
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.util.Map;
+import java.util.stream.Collectors;
+
 import static org.assertj.core.api.Assertions.assertThat;
 
-import java.io.ByteArrayInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.UnsupportedEncodingException;
+class SlackRequestReaderTest {
 
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.MultivaluedHashMap;
+    private SlackRequestReader reader = new SlackRequestReader();
 
-import org.junit.Test;
+    @Test
+    void should_parse_channelId_from_request() throws Exception {
+        // Given
+        Map<String, String> inputStream = getInputStreamFromFile("default_request");
 
-import com.dedale.slack.request.SlackRequest;
-import com.dedale.slack.request.SlackRequestReader;
-import com.dedale.utils.FileTestUtils;
+        // When
+        SlackRequest slackRequest = readFrom(inputStream);
 
-public class SlackRequestReaderTest {
+        // Then
+        assertThat(slackRequest.getChannelId()).isEqualTo("C2147483705");
+    }
 
-	private SlackRequestReader reader = new SlackRequestReader();
+    @Test
+    void should_parse_channelName_from_request() throws Exception {
+        // Given
+        Map<String, String> inputStream = getInputStreamFromFile("default_request");
 
-	@Test
-	public void should_parse_channelId_from_request() throws Exception {
-		// Given
-		InputStream inputStream = getInputStreamFromFile("default_request");
+        // When
+        SlackRequest slackRequest = readFrom(inputStream);
 
-		// When
-		SlackRequest slackRequest = readFrom(inputStream);
+        // Then
+        assertThat(slackRequest.getChannelName()).isEqualTo("test");
+    }
 
-		// Then
-		assertThat(slackRequest.getChannelId()).isEqualTo("C2147483705");
-	}
+    @Test
+    void should_parse_command_from_request() throws Exception {
+        // Given
+        Map<String, String> inputStream = getInputStreamFromFile("default_request");
 
-	@Test
-	public void should_parse_channelName_from_request() throws Exception {
-		// Given
-		InputStream inputStream = getInputStreamFromFile("default_request");
+        // When
+        SlackRequest slackRequest = readFrom(inputStream);
 
-		// When
-		SlackRequest slackRequest = readFrom(inputStream);
+        // Then
+        assertThat(slackRequest.getCommand()).isEqualTo("/weather");
+    }
 
-		// Then
-		assertThat(slackRequest.getChannelName()).isEqualTo("test");
-	}
+    @Test
+    void should_parse_responseUrl_from_request() throws Exception {
+        // Given
+        Map<String, String> inputStream = getInputStreamFromFile("default_request");
 
-	@Test
-	public void should_parse_command_from_request() throws Exception {
-		// Given
-		InputStream inputStream = getInputStreamFromFile("default_request");
+        // When
+        SlackRequest slackRequest = readFrom(inputStream);
 
-		// When
-		SlackRequest slackRequest = readFrom(inputStream);
+        // Then
+        assertThat(slackRequest.getResponseUrl()).isEqualTo("https://hooks.slack.com/commands/1234/5678");
+    }
 
-		// Then
-		assertThat(slackRequest.getCommand()).isEqualTo("/weather");
-	}
+    @Test
+    void should_parse_teamDomain_from_request() throws Exception {
+        // Given
+        Map<String, String> inputStream = getInputStreamFromFile("default_request");
 
-	@Test
-	public void should_parse_responseUrl_from_request() throws Exception {
-		// Given
-		InputStream inputStream = getInputStreamFromFile("default_request");
+        // When
+        SlackRequest slackRequest = readFrom(inputStream);
 
-		// When
-		SlackRequest slackRequest = readFrom(inputStream);
+        // Then
+        assertThat(slackRequest.getTeamDomain()).isEqualTo("example");
+    }
 
-		// Then
-		assertThat(slackRequest.getResponseUrl()).isEqualTo("https://hooks.slack.com/commands/1234/5678");
-	}
+    @Test
+    void should_parse_teamId_from_request() throws Exception {
+        // Given
+        Map<String, String> inputStream = getInputStreamFromFile("default_request");
 
-	@Test
-	public void should_parse_teamDomain_from_request() throws Exception {
-		// Given
-		InputStream inputStream = getInputStreamFromFile("default_request");
+        // When
+        SlackRequest slackRequest = readFrom(inputStream);
 
-		// When
-		SlackRequest slackRequest = readFrom(inputStream);
+        // Then
+        assertThat(slackRequest.getTeamId()).isEqualTo("T0001");
+    }
 
-		// Then
-		assertThat(slackRequest.getTeamDomain()).isEqualTo("example");
-	}
+    @Test
+    void should_parse_text_from_request() throws Exception {
+        // Given
+        Map<String, String> inputStream = getInputStreamFromFile("default_request");
 
-	@Test
-	public void should_parse_teamId_from_request() throws Exception {
-		// Given
-		InputStream inputStream = getInputStreamFromFile("default_request");
+        // When
+        SlackRequest slackRequest = readFrom(inputStream);
 
-		// When
-		SlackRequest slackRequest = readFrom(inputStream);
+        // Then
+        assertThat(slackRequest.getText()).isEqualTo("94070");
+    }
 
-		// Then
-		assertThat(slackRequest.getTeamId()).isEqualTo("T0001");
-	}
+    @Test
+    void should_parse_userId_from_request() throws Exception {
+        // Given
+        Map<String, String> inputStream = getInputStreamFromFile("default_request");
 
-	@Test
-	public void should_parse_text_from_request() throws Exception {
-		// Given
-		InputStream inputStream = getInputStreamFromFile("default_request");
+        // When
+        SlackRequest slackRequest = readFrom(inputStream);
 
-		// When
-		SlackRequest slackRequest = readFrom(inputStream);
+        // Then
+        assertThat(slackRequest.getUserId()).isEqualTo("U2147483697");
+    }
 
-		// Then
-		assertThat(slackRequest.getText()).isEqualTo("94070");
-	}
+    @Test
+    void should_parse_userName_from_request() throws Exception {
+        // Given
+        Map<String, String> inputStream = getInputStreamFromFile("default_request");
 
-	@Test
-	public void should_parse_userId_from_request() throws Exception {
-		// Given
-		InputStream inputStream = getInputStreamFromFile("default_request");
+        // When
+        SlackRequest slackRequest = readFrom(inputStream);
 
-		// When
-		SlackRequest slackRequest = readFrom(inputStream);
+        // Then
+        assertThat(slackRequest.getUserName()).isEqualTo("Steve");
+    }
 
-		// Then
-		assertThat(slackRequest.getUserId()).isEqualTo("U2147483697");
-	}
+    //
+    // Utilitaires
+    //
 
-	@Test
-	public void should_parse_userName_from_request() throws Exception {
-		// Given
-		InputStream inputStream = getInputStreamFromFile("default_request");
+    private Map<String, String> getInputStreamFromFile(String filePath) throws IOException {
+        Path path = Resources.getRelativeTo(getClass(), filePath).asPath();
+        return Files.lines(path)
+                .filter(s -> s.matches("^\\w+=\\S+"))
+                .collect(Collectors.toMap(k -> k.split("=")[0],
+                        v -> v.split("=")[1]));
+    }
 
-		// When
-		SlackRequest slackRequest = readFrom(inputStream);
-
-		// Then
-		assertThat(slackRequest.getUserName()).isEqualTo("Steve");
-	}
-
-	//
-	// Utilitaires
-	//
-
-	private InputStream getInputStreamFromFile(String filePath) throws FileNotFoundException, UnsupportedEncodingException {
-		String inputAsString = FileTestUtils.getResourceFileAsString(getClass(), filePath);
-		inputAsString = inputAsString.replaceAll(System.lineSeparator(), "&");
-		return new ByteArrayInputStream(inputAsString.getBytes());
-	}
-
-	private SlackRequest readFrom(InputStream inputStream) throws IOException {
-		return reader.readFrom(SlackRequest.class, null, null, MediaType.APPLICATION_FORM_URLENCODED_TYPE,
-				new MultivaluedHashMap<>(), inputStream);
-	}
+    private SlackRequest readFrom(Map<String, String> inputStream) {
+        return reader.readFrom(inputStream);
+    }
 
 }

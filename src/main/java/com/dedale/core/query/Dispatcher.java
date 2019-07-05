@@ -1,20 +1,19 @@
 package com.dedale.core.query;
 
+import java.util.List;
 import java.util.function.Predicate;
 import java.util.stream.StreamSupport;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
-@Singleton
 public class Dispatcher {
 
     private static final boolean NOT_PARALLEL = false;
 
-    private final Iterable<QueryHandler<?, ?>> handlers;
+    private final List<QueryHandler<?, ?>> handlers;
 
-    @Inject
-    public Dispatcher(Iterable<QueryHandler<?, ?>> handlers) {
+    public Dispatcher(List<QueryHandler<?, ?>> handlers) {
         this.handlers = handlers;
     }
 

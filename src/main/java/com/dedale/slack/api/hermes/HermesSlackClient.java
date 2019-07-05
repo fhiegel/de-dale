@@ -1,36 +1,35 @@
 package com.dedale.slack.api.hermes;
 
-import javax.inject.Inject;
-import javax.inject.Named;
-import javax.ws.rs.POST;
-import javax.ws.rs.Path;
-
-import com.dedale.core.calculator.CalculatingFeatures;
 import com.dedale.core.engine.ExecutionContext;
 import com.dedale.core.engine.InterpreterEngine;
 import com.dedale.core.engine.expression.Expression;
 import com.dedale.slack.api.SlackRendererVisitor;
 import com.dedale.slack.message.SlackMessage;
 import com.dedale.slack.request.SlackRequest;
+import io.micronaut.http.MediaType;
+import io.micronaut.http.annotation.Controller;
+import io.micronaut.http.annotation.Post;
 
-@Path("slack/hermes")
+import javax.inject.Inject;
+
+@Controller("slack/hermes")
 public class HermesSlackClient {
     
     private final InterpreterEngine calculator;
 
     @Inject
-    public HermesSlackClient(@Named(CalculatingFeatures.ENGINE) InterpreterEngine calculator) {
+    public HermesSlackClient(InterpreterEngine calculator) {
         this.calculator = calculator;
     }
 
-    @POST
+    @Post(consumes = MediaType.APPLICATION_FORM_URLENCODED)
     public SlackMessage slackRoll(SlackRequest slackRequest) {
         ExecutionContext context = calculator
                 .defaultContext()
                 .withUser(slackRequest.getUserId())
                 .withUserName(slackRequest.getUserName())
                 .withInput(slackRequest.getText());
-        
+
         Expression expression = calculator.interpret(context);
 
         return mapToMessage(context, expression);

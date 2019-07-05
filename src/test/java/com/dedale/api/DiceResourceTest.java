@@ -1,83 +1,101 @@
 package com.dedale.api;
 
+import io.micronaut.http.HttpRequest;
+import io.micronaut.http.HttpResponse;
+import io.micronaut.http.HttpStatus;
+import io.micronaut.http.MediaType;
+import io.micronaut.http.client.HttpClient;
+import io.micronaut.http.client.annotation.Client;
+import io.micronaut.test.annotation.MicronautTest;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
+
+import javax.inject.Inject;
+
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
-import javax.ws.rs.client.Entity;
-import javax.ws.rs.core.Application;
-import javax.ws.rs.core.Response;
+@MicronautTest
+class DiceResourceTest {
 
-import org.glassfish.jersey.test.JerseyTest;
-import org.junit.Ignore;
-import org.junit.Test;
-
-import com.dedale.DeDaleResourceConfig;
-
-public class DiceResourceTest extends JerseyTest {
-
-    @Override
-    protected Application configure() {
-        return new DeDaleResourceConfig();
-    }
+    @Inject
+    @Client("/")
+    HttpClient client;
 
     @Test
-    public void should_return_200_for_well_formed_dice_query() throws Exception {
+    void should_return_200_for_well_formed_dice_query() {
         // Given
         String wellFormedQuery = "1+1";
 
         // When
-        Response responseMsg = target("dices").request().post(Entity.text(wellFormedQuery));
+        HttpResponse<String> dices = postDiceQuery(wellFormedQuery);
 
         // Then
-        assertThat(responseMsg.getStatus()).isEqualTo(200);
+        assertEquals(dices.getStatus(), HttpStatus.OK);
     }
 
     @Test
-    public void should_return_appropriate_result_for_well_formed_dice_query() throws Exception {
+    void should_return_appropriate_result_for_well_formed_dice_query() {
         // Given
         String wellFormedQuery = "1+1";
 
         // When
-        Response responseMsg = target("dices").request().post(Entity.text(wellFormedQuery));
+        String responseMsg = postDiceQueryAsString(wellFormedQuery);
 
         // Then
-        assertThat(responseMsg.readEntity(String.class)).isEqualTo("2");
+        assertThat(responseMsg).contains("2");
     }
-    
+
     @Test
-    public void should_roll_a_dice_twice() throws Exception {
+    void should_roll_a_dice_twice() {
         // Given
         String wellFormedQuery = "1+2 3+4";
-        
+
         // When
-        Response responseMsg = target("dices").request().post(Entity.text(wellFormedQuery));
-        
+        String responseMsg = postDiceQueryAsString(wellFormedQuery);
+
         // Then
-        assertThat(responseMsg.readEntity(String.class)).isEqualTo("3 7");
-    }
-    
-    @Test
-    public void should_roll_a_dice_twice_despite_spaces() throws Exception {
-        // Given
-        String wellFormedQuery = "1+ 2 3+ 4";
-        
-        // When
-        Response responseMsg = target("dices").request().post(Entity.text(wellFormedQuery));
-        
-        // Then
-        assertThat(responseMsg.readEntity(String.class)).isEqualTo("3 7");
+        assertThat(responseMsg).contains("3 7");
     }
 
     @Test
-    @Ignore
-    public void should_return_400_for_malformed_dice_query() throws Exception {
+    void should_roll_a_dice_twice_despite_spaces() {
+        // Given
+        String wellFormedQuery = "1+ 2 3+ 4";
+
+        // When
+        String responseMsg = postDiceQueryAsString(wellFormedQuery);
+
+        // Then
+        assertThat(responseMsg).contains("3 7");
+    }
+
+    @Test
+    @Disabled
+    void should_return_400_for_malformed_dice_query() {
         // Given
         String malFormedQuery = "malFormedQuery";
 
         // When
-        Response responseMsg = target("dices").request().post(Entity.text(malFormedQuery));
+        HttpResponse<String> responseMsg = postDiceQuery(malFormedQuery);
 
         // Then
-        assertThat(responseMsg.getStatus()).isEqualTo(400);
+        assertEquals(responseMsg.getStatus(), HttpStatus.BAD_REQUEST);
+    }
+
+
+    private HttpResponse<String> postDiceQuery(String wellFormedQuery) {
+        return client.toBlocking()
+                .exchange(HttpRequest.POST("dices", wellFormedQuery)
+                        .accept(MediaType.TEXT_PLAIN_TYPE)
+                        .contentType(MediaType.TEXT_PLAIN_TYPE));
+    }
+
+    private String postDiceQueryAsString(String wellFormedQuery) {
+        return client.toBlocking()
+                .retrieve(HttpRequest.POST("dices", wellFormedQuery)
+                        .accept(MediaType.TEXT_PLAIN_TYPE)
+                        .contentType(MediaType.TEXT_PLAIN_TYPE));
     }
 
 }

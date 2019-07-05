@@ -4,7 +4,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import com.dedale.core.engine.expression.RawText;
 import com.dedale.core.engine.expression.ValuedExpression;
-import org.junit.Test;
 
 import com.dedale.core.User;
 import com.dedale.core.engine.CommandDefinitions;
@@ -14,10 +13,11 @@ import com.dedale.core.engine.InterpreterEngine;
 import com.dedale.core.engine.expression.Expression;
 import com.dedale.core.engine.expression.TextExpression;
 import com.dedale.utils.resources.Resources;
+import org.junit.jupiter.api.Test;
 
-public class AliasingFeatures {
+ class AliasingFeatures {
     
-    private static final String HELP = Resources.get("com/dedale/core", "aliases", "HELP.md").asString();
+    private static final String HELP = Resources.getRelativeTo(AliasingFeatures.class, "HELP.md").asString();
 
     private UserAliases userAliases = new InMemoryUserAliases();
     private Aliasing module = new Aliasing(CommandModule.EMPTY, userAliases);
@@ -25,7 +25,7 @@ public class AliasingFeatures {
     private ExecutionContext context = engine.defaultContext().withUser("anUser");
 
     @Test
-    public void aliases_are_empty() throws Exception {
+     void aliases_are_empty() throws Exception {
         Expression result = defaultInterpret("alias");
 
         assertThat(result).isNotNull();
@@ -33,7 +33,7 @@ public class AliasingFeatures {
     }
 
     @Test
-    public void aliases_are_not_empty_when_an_user_defined_one() throws Exception {
+     void aliases_are_not_empty_when_an_user_defined_one() throws Exception {
         givenUser("anUser").hasAlias("name", "cmd");
 
         Expression cmd = defaultInterpret("alias");
@@ -44,7 +44,7 @@ public class AliasingFeatures {
     }
 
     @Test
-    public void aliases_are_not_empty_when_an_user_defined_some() throws Exception {
+     void aliases_are_not_empty_when_an_user_defined_some() throws Exception {
         givenUser("anUser").hasAlias("name", "cmd");
         givenUser("anUser").hasAlias("name2", "cmd2");
         givenUser("anUser").hasAlias("name3", "cmd3");
@@ -57,7 +57,7 @@ public class AliasingFeatures {
     }
 
     @Test
-    public void aliases_are_ordered_by_name() throws Exception {
+     void aliases_are_ordered_by_name() throws Exception {
         givenUser("anUser").hasAlias("name3", "cmd3");
         givenUser("anUser").hasAlias("name", "cmd");
         givenUser("anUser").hasAlias("name2", "cmd2");
@@ -70,7 +70,7 @@ public class AliasingFeatures {
     }
 
     @Test
-    public void an_alias_is_added() throws Exception {
+     void an_alias_is_added() throws Exception {
         assumeAliasesAreEmpty();
 
         defaultInterpret("alias add name=cmd");
@@ -79,7 +79,7 @@ public class AliasingFeatures {
     }
 
     @Test
-    public void an_alias_is_added_without_quotes() throws Exception {
+     void an_alias_is_added_without_quotes() throws Exception {
         assumeAliasesAreEmpty();
 
         defaultInterpret("alias add name=\"cmd\"");
@@ -88,7 +88,7 @@ public class AliasingFeatures {
     }
 
     @Test
-    public void print_help() throws Exception {
+     void print_help() throws Exception {
         Expression cmd = defaultInterpret("alias --help");
 
         ValuedExpression<String> help = (RawText) cmd;
@@ -96,7 +96,7 @@ public class AliasingFeatures {
     }
 
     @Test
-    public void an_alias_is_run() throws Exception {
+     void an_alias_is_run() throws Exception {
         assumeAliasesAreEmpty();
 
         defaultInterpret("alias add doHelp=\"alias --help\"");
@@ -108,7 +108,7 @@ public class AliasingFeatures {
     }
 
     @Test
-    public void command_is_run_when_alias_with_same_name_definer() throws Exception {
+     void command_is_run_when_alias_with_same_name_definer() throws Exception {
         module = new Aliasing(CommandDefinitions
                 .defineCommands()
                 .withCommand("doSomethingElse", new TextExpression("Text when Do Something Else"))
@@ -125,7 +125,7 @@ public class AliasingFeatures {
     }
 
     @Test
-    public void an_alias_is_removed() throws Exception {
+     void an_alias_is_removed() throws Exception {
         givenUser("anUser").hasAlias("name", "cmd");
 
         GetAliases getAliases = (GetAliases) defaultInterpret("alias remove name");
@@ -135,7 +135,7 @@ public class AliasingFeatures {
     }
     
     @Test
-    public void an_alias_is_unaliased() throws Exception {
+     void an_alias_is_unaliased() throws Exception {
         givenUser("anUser").hasAlias("name", "cmd");
         
         GetAliases getAliases = (GetAliases) defaultInterpret("unalias name");
@@ -145,7 +145,7 @@ public class AliasingFeatures {
     }
 
     @Test
-    public void an_alias_is_unique() throws Exception {
+     void an_alias_is_unique() throws Exception {
         givenUser("anUser").hasAlias("name", "cmd");
 
         GetAliases getAliases = (GetAliases) defaultInterpret("alias add name=something");
@@ -154,7 +154,7 @@ public class AliasingFeatures {
     }
 
     @Test
-    public void an_alias_is_for_an_user() throws Exception {
+     void an_alias_is_for_an_user() throws Exception {
         givenUser("anOtherUser").hasAlias("name", "cmd");
 
         context = context.withUser("anUser").withInput("alias");
@@ -163,7 +163,7 @@ public class AliasingFeatures {
     }
 
     @Test
-    public void an_alias_is_for_an_ussdgsgsdfer() throws Exception {
+     void an_alias_is_for_an_ussdgsgsdfer() throws Exception {
         givenUser("anUser").hasAlias("name", "cmd");
         givenUser("anOtherUser").hasAlias("name", "cmd for another user");
 

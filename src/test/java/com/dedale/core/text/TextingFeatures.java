@@ -1,23 +1,22 @@
 package com.dedale.core.text;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
-import org.junit.Test;
-
 import com.dedale.core.engine.ExecutionContext;
 import com.dedale.core.engine.InterpreterEngine;
-import com.dedale.core.engine.expression.Then;
 import com.dedale.core.engine.expression.ExpressionPrinter;
 import com.dedale.core.engine.expression.TextExpression;
+import com.dedale.core.engine.expression.Then;
+import org.junit.jupiter.api.Test;
 
-public class TextingFeatures {
+import static org.assertj.core.api.Assertions.assertThat;
+
+class TextingFeatures {
 
     private Texting module = new Texting();
     private InterpreterEngine engine = new InterpreterEngine(module);
     private ExecutionContext context = engine.defaultContext();
 
     @Test
-    public void text_instruction_is_a_text() throws Exception {
+    void text_instruction_is_a_text() throws Exception {
         // Given
         context = context.withInput("Text");
 
@@ -29,7 +28,7 @@ public class TextingFeatures {
     }
 
     @Test
-    public void multiple_text_instructions_are_concat() throws Exception {
+    void multiple_text_instructions_are_concat() throws Exception {
         // Given
         context = context.withInput("Some text");
 

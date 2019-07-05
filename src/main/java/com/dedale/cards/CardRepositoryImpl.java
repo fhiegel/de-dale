@@ -7,7 +7,6 @@ import javax.inject.Singleton;
 import com.dedale.core.query.InMemoryRepository;
 import com.dedale.core.query.Repository;
 
-@Singleton
 public class CardRepositoryImpl implements Cards {
     
     private Repository<Card> delegate = new InMemoryRepository<>();

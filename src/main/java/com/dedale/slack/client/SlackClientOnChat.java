@@ -1,15 +1,14 @@
 package com.dedale.slack.client;
 
-import javax.ws.rs.client.Client;
-
 import com.dedale.slack.request.SlackRequestBuilder;
+import io.micronaut.http.client.HttpClient;
 
 public class SlackClientOnChat {
 
-    private final Client client;
+    private final HttpClient client;
     private final SlackRequestBuilder requestBuilder;
 
-    SlackClientOnChat(Client client, SlackRequestBuilder requestBuilder) {
+    SlackClientOnChat(HttpClient client, SlackRequestBuilder requestBuilder) {
         this.client = client;
         this.requestBuilder = requestBuilder;
     }

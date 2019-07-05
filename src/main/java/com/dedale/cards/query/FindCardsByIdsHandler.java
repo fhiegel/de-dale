@@ -1,5 +1,14 @@
 package com.dedale.cards.query;
 
+import com.dedale.cards.Card;
+import com.dedale.cards.CardContainer;
+import com.dedale.cards.Cards;
+import com.dedale.core.query.Query;
+import com.dedale.core.query.QueryHandler;
+import io.micronaut.context.annotation.Prototype;
+
+import javax.inject.Inject;
+import javax.inject.Singleton;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -9,24 +18,12 @@ import java.util.function.Function;
 import java.util.function.Supplier;
 import java.util.stream.Collector;
 
-import javax.inject.Inject;
-
-import org.jvnet.hk2.annotations.Service;
-
-import com.dedale.cards.Card;
-import com.dedale.cards.CardContainer;
-import com.dedale.cards.Cards;
-import com.dedale.core.query.Query;
-import com.dedale.core.query.QueryHandler;
-
-@Service
 public class FindCardsByIdsHandler implements QueryHandler<CardContainer, FindCardsByIds> {
 
     private Map<FindCardsByIds, CardContainer> cardsByIds = new HashMap<>();
 
     private final Cards cards;
 
-    @Inject
     public FindCardsByIdsHandler(Cards cards) {
         this.cards = cards;
     }

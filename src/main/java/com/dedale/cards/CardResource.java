@@ -1,23 +1,18 @@
 package com.dedale.cards;
 
-import javax.inject.Inject;
-import javax.ws.rs.Consumes;
-import javax.ws.rs.GET;
-import javax.ws.rs.POST;
-import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
-import javax.ws.rs.Produces;
-import javax.ws.rs.core.MediaType;
-
 import com.dedale.cards.query.AddCard;
 import com.dedale.cards.query.FindCardsByIds;
 import com.dedale.cards.query.GetAllCards;
 import com.dedale.core.query.Dispatcher;
+import io.micronaut.http.MediaType;
+import io.micronaut.http.annotation.*;
 
-@Path(CardResource.PATH)
+import javax.inject.Inject;
+
+@Controller(CardResource.PATH)
 public class CardResource {
 
-    static final String PATH = "cards";
+    static final String PATH = "/cards";
 
     private final Dispatcher dispatcher;
 
@@ -26,28 +21,26 @@ public class CardResource {
         this.dispatcher = dispatcher;
     }
 
-    @GET
+    @Get
     @Produces(MediaType.APPLICATION_JSON)
     public CardContainer all() {
         return dispatcher.dispatch(new GetAllCards());
     }
 
-    @GET
-    @Path("{cardIds}")
+    @Get("{cardIds}")
     @Produces(MediaType.APPLICATION_JSON)
-    public CardContainer getByIds(@PathParam("cardIds") String cardIds) {
+    public CardContainer getByIds(@PathVariable("cardIds") String cardIds) {
         return dispatcher.dispatch(FindCardsByIds.parse(cardIds));
     }
 
-    @POST
+    @Post
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Card addCard(Card card) {
         return dispatcher.dispatch(AddCard.from(card));
     }
 
-    @POST
-    @Path("list")
+    @Post("list")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public CardContainer addContainer(CardContainer cardContainer) {

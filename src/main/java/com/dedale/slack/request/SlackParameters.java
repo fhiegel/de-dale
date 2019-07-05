@@ -1,21 +1,15 @@
 package com.dedale.slack.request;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 import java.util.logging.Logger;
 
-import javax.ws.rs.core.MultivaluedMap;
-
 class SlackParameters {
+
     private static final Logger log = Logger.getLogger(SlackParameters.class.getName());
 
     private static final SlackRequestInjectValue<Void> NO_INJECT = (request, parameter) -> {
     };
-    private static final SlackParameterExtractor<Void> NO_EXTRACT = (parameter) -> {
-        return null;
-    };
+    private static final SlackParameterExtractor<Void> NO_EXTRACT = (parameter) -> null;
 
     private final Collection<SlackParameter<?>> parameters = new ArrayList<>();
 
@@ -27,12 +21,8 @@ class SlackParameters {
         return addParameter(name, injector, (parameters) -> extractValueByDefault(name, parameters));
     }
 
-    private String extractValueByDefault(String name, MultivaluedMap<String, String> parameters) {
-        return extractList(name, parameters).get(0);
-    }
-
-    private List<String> extractList(String name, MultivaluedMap<String, String> parameters) {
-        return parameters.getOrDefault(name, Collections.emptyList());
+    private String extractValueByDefault(String name, Map<String, String> parameters) {
+        return parameters.getOrDefault(name, "");
     }
 
     private <T> SlackParameters addParameter(String name, SlackRequestInjectValue<T> injector, SlackParameterExtractor<T> extractor) {
@@ -45,13 +35,18 @@ class SlackParameters {
     }
 
     public SlackParameter<?> findByName(String name) {
-        return parameters.stream().filter(parameter -> parameter.name().equals(name)).findFirst().orElse(logParameter(name));
+        return parameters.stream()
+                .filter(parameter -> parameter.name().equals(name))
+                .findFirst()
+                .orElse(logParameter(name));
     }
 
-    private SlackParameter<List<String>> logParameter(String name) {
-        return new SlackParameter<List<String>>(name, (request, parameter) -> {
-            log.warning("Unknown parameter : name=" + name + ", value=" + parameter);
-        }, parameters -> extractList(name, parameters));
+    private SlackParameter<String> logParameter(String name) {
+        return new SlackParameter<>(name, injectIntoLog(name), parameters -> extractValueByDefault(name, parameters));
+    }
+
+    private SlackRequestInjectValue<String> injectIntoLog(String name) {
+        return (request, parameter) -> log.warning(() -> String.format("Unknown parameter : name=%s, value=%s", name, parameter));
     }
 
 }

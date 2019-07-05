@@ -1,34 +1,28 @@
 package com.dedale.slack.api;
 
-import static com.dedale.markdown.MarkdownTags.BOLD;
-
-import java.util.logging.Logger;
-
-import javax.ws.rs.Consumes;
-import javax.ws.rs.POST;
-import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
-import javax.ws.rs.core.MediaType;
-
 import com.dedale.slack.message.SlackMessage;
 import com.dedale.slack.message.SlackMessageBuilder;
 import com.dedale.slack.request.SlackRequest;
+import io.micronaut.http.annotation.Body;
+import io.micronaut.http.annotation.Controller;
+import io.micronaut.http.annotation.Post;
 
-@Path("slack")
+import java.util.logging.Logger;
+
+import static com.dedale.markdown.MarkdownTags.BOLD;
+
+@Controller("/slack")
 public class SlackApp {
 
     private static final Logger log = Logger.getLogger(SlackApp.class.getName());
 
-    @POST
-    @Consumes(MediaType.APPLICATION_JSON)
-    @Produces(MediaType.APPLICATION_JSON)
-    public String listen(String request) {
+    @Post
+    public String listen(@Body String request) {
         log.info(request);
         return request;
     }
 
-    @POST
-    @Path("cmd")
+    @Post("cmd")
     public SlackMessage slackRoll(SlackRequest request) {
         if (request == null) {
             return SlackMessageBuilder.beginMessage().withText("ERROR").build();

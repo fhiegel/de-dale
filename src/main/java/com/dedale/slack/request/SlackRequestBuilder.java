@@ -1,8 +1,6 @@
 package com.dedale.slack.request;
 
-import javax.ws.rs.core.Form;
-
-import com.dedale.slack.request.SlackRequest;
+import java.util.HashMap;
 
 public class SlackRequestBuilder {
 
@@ -61,6 +59,12 @@ public class SlackRequestBuilder {
     public SlackRequestBuilder withToken(String token) {
         requestAsForm.param(SlackRequest.TOKEN_PARAM, token);
         return this;
+    }
+
+    public static class Form extends HashMap<String, String>{
+        public void param(String key, String value) {
+            put(key, value);
+        }
     }
 
     public Form build() {

@@ -1,36 +1,31 @@
 package com.dedale.core.engine.expression;
 
+import com.dedale.core.engine.ExecutionContext;
+import org.junit.jupiter.api.Test;
+
 import static com.dedale.core.engine.expression.Expression.NEUTRAL;
 import static com.dedale.core.engine.expression.ExpressionSamples.*;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.mock;
 
-import org.junit.Test;
-
-import com.dedale.core.engine.ExecutionContext;
-import com.dedale.core.engine.expression.Then;
-import com.dedale.core.engine.expression.Expression;
-import com.dedale.core.engine.expression.ExpressionPrinter;
-import com.dedale.core.engine.expression.TextExpression;
-
-public class ExpressionFeatures {
+class ExpressionFeatures {
 
     private ExecutionContext context = mock(ExecutionContext.class);
 
     @Test
-    public void evaluate_neutral_will_return_initial_expression() throws Exception {
+    void evaluate_neutral_will_return_initial_expression() {
         Expression expression = anExpression.then(Expression.NEUTRAL);
         assertThat(expression).isEqualTo(anExpression);
     }
 
     @Test
-    public void neutral_evaluate_expression_will_return_second_expression() throws Exception {
+    void neutral_evaluate_expression_will_return_second_expression() {
         Expression expression = NEUTRAL.then(anExpression);
         assertThat(expression).isEqualTo(anExpression);
     }
 
     @Test
-    public void evaluate_two_text_expressions_will_return_expression_concatenation() throws Exception {
+    void evaluate_two_text_expressions_will_return_expression_concatenation() {
         // Given
         TextExpression first = new TextExpression("one");
         TextExpression second = new TextExpression("sentence");
@@ -44,7 +39,7 @@ public class ExpressionFeatures {
     }
 
     @Test
-    public void print_two_integer_expressions_an_one_operation_will_return_readable_result() throws Exception {
+    void print_two_integer_expressions_an_one_operation_will_return_readable_result() {
         // When
         Expression result = one.then(add).then(two);
 
@@ -53,7 +48,7 @@ public class ExpressionFeatures {
     }
 
     @Test
-    public void evaluate_two_integer_expressions_an_one_operation_will_return_readable_result() throws Exception {
+    void evaluate_two_integer_expressions_an_one_operation_will_return_readable_result() {
         // When
         Expression result = one.then(add).then(two).execute(context);
 
@@ -62,7 +57,7 @@ public class ExpressionFeatures {
     }
 
     @Test
-    public void evaluate_two_integer_expressions_will_return_concat_result() throws Exception {
+    void evaluate_two_integer_expressions_will_return_concat_result() {
         // When
         Expression result = one.then(two).execute(context);
 
@@ -71,7 +66,7 @@ public class ExpressionFeatures {
     }
 
     @Test
-    public void evaluate_two_integer_expressions_will_return_concat_statement() throws Exception {
+    void evaluate_two_integer_expressions_will_return_concat_statement() {
         // When
         Expression then = one.then(two);
 
@@ -80,7 +75,7 @@ public class ExpressionFeatures {
     }
 
     @Test
-    public void prints_composite_sum() throws Exception {
+    void prints_composite_sum() {
 
         // When
         Expression result = one.then(add).then(two).then(add).then(four);
@@ -90,7 +85,7 @@ public class ExpressionFeatures {
     }
 
     @Test
-    public void one_plus_two_plus_four_equals_seven() throws Exception {
+    void one_plus_two_plus_four_equals_seven() {
 
         // When
         Expression notEvaluated = one.then(add).then(two).then(add).then(four);
@@ -102,7 +97,7 @@ public class ExpressionFeatures {
     }
 
     @Test
-    public void one_plus_two_multiply_three_equals_seven() throws Exception {
+    void one_plus_two_multiply_three_equals_seven() {
         // When
         Expression notEvaluated = one.then(add).then(two).then(multiply).then(three);
         Expression result = notEvaluated.execute(context);
@@ -113,7 +108,7 @@ public class ExpressionFeatures {
     }
 
     @Test
-    public void one_plus_two_multiply_three_multiply_four_equals_twenty_five() throws Exception {
+    void one_plus_two_multiply_three_multiply_four_equals_twenty_five() {
         // When
         Expression notEvaluated = one.then(add).then(two).then(multiply).then(three).then(multiply).then(four);
         Expression result = notEvaluated.execute(context);
@@ -124,7 +119,7 @@ public class ExpressionFeatures {
     }
 
     @Test
-    public void one_plus_two_multiply_three_plus_four_equals_eleven() throws Exception {
+    void one_plus_two_multiply_three_plus_four_equals_eleven() {
         // When
         Expression notEvaluated = one.then(add).then(two).then(multiply).then(three).then(add).then(four);
         Expression result = notEvaluated.execute(context);
@@ -135,7 +130,7 @@ public class ExpressionFeatures {
     }
 
     @Test
-    public void seven_minus_two_multiply_three_equals_one() throws Exception {
+    void seven_minus_two_multiply_three_equals_one() {
         // When
         Expression notEvaluated = seven.then(minus).then(two).then(multiply).then(three);
         Expression result = notEvaluated.execute(context);
@@ -146,7 +141,7 @@ public class ExpressionFeatures {
     }
 
     @Test
-    public void two_power_three_multiply_two_power_two_equals_thirty_two() throws Exception {
+    void two_power_three_multiply_two_power_two_equals_thirty_two() {
         // When
         Expression notEvaluated = two.then(power).then(three).then(multiply).then(two).then(power).then(two);
         Expression result = notEvaluated.execute(context);

@@ -45,7 +45,7 @@ public class InMemoryRepository<I extends Identifiable> implements Repository<I>
     
     @Override
     public List<I> getAll() {
-        return Collections.unmodifiableList(new ArrayList<>(inMemoryItems.values()));
+        return List.copyOf(inMemoryItems.values());
     }
     
 }

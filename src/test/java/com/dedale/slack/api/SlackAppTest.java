@@ -1,43 +1,49 @@
 package com.dedale.slack.api;
 
+import com.dedale.slack.SlackTestUtils;
+import com.dedale.slack.request.SlackRequestBuilder;
+import com.dedale.utils.resources.Resources;
+import io.micronaut.http.HttpRequest;
+import io.micronaut.http.client.HttpClient;
+import io.micronaut.http.client.annotation.Client;
+import io.micronaut.runtime.server.EmbeddedServer;
+import io.micronaut.test.annotation.MicronautTest;
+import org.junit.jupiter.api.Test;
+
+import javax.inject.Inject;
+
+import static io.micronaut.http.MediaType.APPLICATION_JSON_TYPE;
 import static org.assertj.core.api.Assertions.assertThat;
 
-import javax.ws.rs.client.Entity;
-import javax.ws.rs.core.Application;
-import javax.ws.rs.core.Form;
-import javax.ws.rs.core.Response;
+/**
+ * @see {@link SlackApp}
+ */
+@MicronautTest
+class SlackAppTest {
 
-import org.glassfish.jersey.test.JerseyTest;
-import org.junit.Test;
-
-import com.dedale.DeDaleResourceConfig;
-import com.dedale.slack.SlackTestUtils;
-import com.dedale.utils.resources.Resources;
-
-public class SlackAppTest extends JerseyTest{
-
-    @Override
-    protected Application configure() {
-        return new DeDaleResourceConfig();
-    }
+    @Inject
+    @Client("/")
+    HttpClient client;
 
     @Test
-    public void challenge_accepted() throws Exception {
+    void challenge_accepted() {
         String challenge = Resources.getRelativeTo(getClass(), "challenge.json").asString();
 
-        Response responseMsg = target("slack").request().post(Entity.json(challenge));
-
-        assertThat(responseMsg.readEntity(String.class)).containsPattern("\"challenge\": \"\\S+\"");
+        String responseMsg = client.toBlocking()
+                .retrieve(HttpRequest.POST("slack", challenge)
+                                .contentType(APPLICATION_JSON_TYPE)
+                                .accept(APPLICATION_JSON_TYPE));
+        assertThat(responseMsg).containsPattern("\"challenge\":\"\\S+\"");
     }
 
     @Test
-    public void command_invoked() throws Exception {
-        Form commandLine = SlackTestUtils.beginRequest().withText("command line").build();
+    void command_invoked() {
+        SlackRequestBuilder.Form commandLine = SlackTestUtils.beginRequest().withText("command line").build();
 
-        Response responseMsg = target("slack/cmd").request().post(Entity.form(commandLine));
+        String responseMsg = client.toBlocking()
+                .retrieve(HttpRequest.POST("slack/cmd", commandLine));
 
-        assertThat(responseMsg.readEntity(String.class)).containsPattern("\"text\" : \"command line= \\*ok\\*\"");
+        assertThat(responseMsg).containsPattern("\"text\":\".*command line= \\*ok\\*\"");
     }
-
 
 }

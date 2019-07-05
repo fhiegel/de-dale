@@ -1,8 +1,9 @@
 package com.dedale.slack.request;
 
-import javax.ws.rs.core.MultivaluedMap;
+import java.util.List;
+import java.util.Map;
 
 @FunctionalInterface
 interface SlackParameterExtractor<T> {
-    T extract(MultivaluedMap<String, String> parameters);
+    T extract(Map<String, String> parameters);
 }

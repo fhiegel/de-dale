@@ -1,6 +1,7 @@
 package com.dedale.slack.request;
 
-import javax.ws.rs.core.MultivaluedMap;
+import java.util.List;
+import java.util.Map;
 
 class SlackParameter<T> {
 
@@ -18,7 +19,7 @@ class SlackParameter<T> {
         return name;
     }
 
-    public SlackValuedParameter<T> parse(MultivaluedMap<String, String> parameters) {
+    public SlackValuedParameter<T> parse(Map<String, String> parameters) {
         T value = extractor.extract(parameters);
         return new SlackValuedParameter<>(name, injector, value);
     }

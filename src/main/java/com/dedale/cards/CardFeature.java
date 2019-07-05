@@ -1,38 +1,42 @@
 package com.dedale.cards;
 
-import javax.ws.rs.core.Feature;
-import javax.ws.rs.core.FeatureContext;
-
-import org.glassfish.hk2.utilities.binding.AbstractBinder;
-
 import com.dedale.cards.query.AddCardHandler;
 import com.dedale.cards.query.FindCardsByIdsHandler;
 import com.dedale.cards.query.GetAllCardsHandler;
 import com.dedale.core.query.Dispatcher;
 import com.dedale.core.query.QueryHandler;
+import io.micronaut.context.annotation.Factory;
 
-public class CardFeature implements Feature {
+import javax.inject.Singleton;
+import java.util.List;
 
-    @Override
-    public boolean configure(FeatureContext context) {
-        context.register(CardResource.class);
-        context.register(new AbstractBinder() {
+@Factory
+public class CardFeature  {
 
-            @Override
-            protected void configure() {
-                bind(Dispatcher.class).to(Dispatcher.class);
+    @Singleton
+    Dispatcher dispatcher(List<QueryHandler<?, ?>> handlers) {
+        return new Dispatcher(handlers);
+    }
 
-                CardRepositoryImpl cards = new CardRepositoryImpl();
-                bind(cards).to(Cards.class);
+    @Singleton
+    Cards getCards() {
+        CardRepositoryImpl cards = new CardRepositoryImpl();
+        return cards;
+    }
 
+    @Singleton
+    GetAllCardsHandler getAllCardsHandler(Cards cards) {
+        return new GetAllCardsHandler(cards);
+    }
 
-                bind(GetAllCardsHandler.class).to(GetAllCardsHandler.class).to(QueryHandler.class);
-                bind(AddCardHandler.class).to(AddCardHandler.class).to(QueryHandler.class);
-                bind(FindCardsByIdsHandler.class).to(FindCardsByIdsHandler.class).to(QueryHandler.class);
-            }
-        });
+    @Singleton
+    AddCardHandler addCardHandler(Cards cards) {
+        return new AddCardHandler(cards);
+    }
 
-        return true;
+    @Singleton
+    FindCardsByIdsHandler findCardsByIdsHandler(Cards cards) {
+        return new FindCardsByIdsHandler(cards);
     }
 
 }

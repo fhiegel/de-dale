@@ -7,7 +7,7 @@ public class SlackCredentials {
 
     private String defaultChannel;
     private String technicalChannel;
-    private Map<String, String> tokens;
+    private Map<String, String> tokens = Map.of();
 
     public Map<String, String> getTokens() {
         return tokens;
@@ -17,8 +17,8 @@ public class SlackCredentials {
         this.tokens = tokens;
     }
 
-    public Optional<String> getToken(String tokenName) {
-        return Optional.ofNullable(tokens.get(tokenName));
+    public String getToken(String tokenName) {
+        return tokens.get(tokenName);
     }
 
     public String getDefaultChannel() {

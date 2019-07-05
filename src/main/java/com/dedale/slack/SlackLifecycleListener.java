@@ -1,13 +1,10 @@
 package com.dedale.slack;
 
-import javax.inject.Inject;
-
-import org.glassfish.jersey.server.spi.Container;
-import org.glassfish.jersey.server.spi.ContainerLifecycleListener;
-
 import com.dedale.slack.client.SlackClient;
 
-public class SlackLifecycleListener implements ContainerLifecycleListener {
+import javax.inject.Inject;
+
+public class SlackLifecycleListener/* implements ContainerLifecycleListener */{
 
     private SlackClient slack;
 
@@ -16,22 +13,21 @@ public class SlackLifecycleListener implements ContainerLifecycleListener {
         this.slack = slack;
     }
 
-    @Override
-    public void onStartup(Container container) {
-        System.out.println("###");
-        System.out.println("### STARTED");
-        System.out.println("###");
+//    public void onStartup(Container container) {
+//        System.out.println("###");
+//        System.out.println("### STARTED");
+//        System.out.println("###");
+//
+//        slack.technicalChat().postMessage("DeDale Started").send();
+//    }
 
-        slack.technicalChat().postMessage("DeDale Started").send();
-    }
-
-    @Override
-    public void onReload(Container container) {
-    }
-
-    @Override
-    public void onShutdown(Container container) {
-        slack.technicalChat().postMessage("DeDale Stopped").send();
-    }
+//    @Override
+//    public void onReload(Container container) {
+//    }
+//
+//    @Override
+//    public void onShutdown(Container container) {
+//        slack.technicalChat().postMessage("DeDale Stopped").send();
+//    }
 
 }

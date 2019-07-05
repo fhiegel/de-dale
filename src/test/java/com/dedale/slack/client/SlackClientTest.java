@@ -1,89 +1,105 @@
 package com.dedale.slack.client;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
-
-import javax.ws.rs.client.Client;
-import javax.ws.rs.client.Entity;
-import javax.ws.rs.client.Invocation.Builder;
-import javax.ws.rs.client.WebTarget;
-import javax.ws.rs.core.Form;
-
-import org.junit.Before;
-import org.junit.Rule;
-import org.junit.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Captor;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnit;
-import org.mockito.junit.MockitoRule;
-
 import com.dedale.slack.SlackCredentials;
-import com.dedale.utils.resources.Resources;
+import com.dedale.slack.request.SlackRequestBuilder;
+import io.micronaut.http.HttpRequest;
+import io.micronaut.http.client.HttpClient;
+import io.micronaut.http.client.annotation.Client;
+import io.micronaut.runtime.server.EmbeddedServer;
+import io.micronaut.test.annotation.MicronautTest;
+import org.assertj.core.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.*;
+import org.mockito.junit.jupiter.MockitoExtension;
 
-public class SlackClientTest {
+import javax.inject.Inject;
+
+import java.util.Map;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.spy;
+import static org.mockito.Mockito.verify;
+
+@MicronautTest
+@ExtendWith(MockitoExtension.class)
+class SlackClientTest {
 
     private static final String BOT_TOKEN = "bot_token";
 
-    @Rule
-    public MockitoRule rule = MockitoJUnit.rule();
 
-    @Mock
-    private Client client;
+    //    @Rule
+//    public MockitoRule rule = MockitoJUnit.rule();
+//
+//    @Mock
+//    private HttpClient client;
+//
+//    @Mock
+//    private WebTarget webTarget;
+//
+//    @Mock
+//    private Builder builder;
+//
+//
+//    private SlackCredentials credentials = Resources.getRelativeTo(SlackCredentials.class, "slack.credentials.sample.yaml").fromYaml().as(SlackCredentials.class);
 
-    @Mock
-    private WebTarget webTarget;
-
-    @Mock
-    private Builder builder;
+    @Client(SlackClient.SLACK_API)
+    @Inject
+    private HttpClient client;
 
     @Captor
-    private ArgumentCaptor<Entity<Form>> entity;
+    private ArgumentCaptor<HttpRequest<SlackRequestBuilder.Form>> entity;
 
-    private SlackCredentials credentials = Resources.getRelativeTo(SlackCredentials.class, "slack.credentials.sample.yaml").fromYaml().as(SlackCredentials.class);
+    private SlackCredentials credentials = new SlackCredentials();
 
-    @InjectMocks
-    private SlackClient slackClient = new SlackClient(client, credentials);
+    private SlackClient slackClient;
 
-    @Before
-    public void initializeWebClient() {
-        when(client.target(anyString())).thenReturn(webTarget);
-        when(webTarget.request()).thenReturn(builder);
+    @BeforeEach
+    void initializeWebClient() {
+        client = spy(client);
+        slackClient = new SlackClient(client, credentials);
     }
 
     @Test
-    public void post_on_slack_chat_postMessage_url() throws Exception {
+    void post_on_slack_chat_postMessage_url() {
         slackClient.chat().postMessage("a message").send();
 
-        verify(client).target("https://slack.com/api/chat.postMessage");
+        HttpRequest<SlackRequestBuilder.Form> request = verifyRequest();
+        assertThat(request.getPath())
+                .isEqualTo("chat.postMessage");
     }
 
+
     @Test
-    public void post_credential_token() throws Exception {
+    void post_credential_token() {
+        credentials.setTokens(Map.of("bot", BOT_TOKEN));
+
         slackClient.chat().postMessage("a message").send();
 
         assertPostedParameterContainsExactly("token", BOT_TOKEN);
     }
 
     @Test
-    public void post_channel() throws Exception {
+    void post_channel() {
+        credentials.setDefaultChannel("general");
+
         slackClient.chat().postMessage("a message").send();
 
         assertPostedParameterContainsExactly("channel", "general");
     }
 
     @Test
-    public void post_on_technical_channel() throws Exception {
+    void post_on_technical_channel() {
+        credentials.setTechnicalChannel("a_technical_channel");
+
         slackClient.technicalChat().postMessage("a message").send();
 
         assertPostedParameterContainsExactly("channel", "a_technical_channel");
     }
 
     @Test
-    public void post_message() throws Exception {
+    void post_message() {
         slackClient.chat().postMessage("a message").send();
 
         assertPostedParameterContainsExactly("text", "a message");
@@ -93,10 +109,16 @@ public class SlackClientTest {
     // Utils
     //
 
-    private void assertPostedParameterContainsExactly(String parameterName, String... parameterValues) {
-        verify(builder).post(entity.capture());
-        Form form = entity.getValue().getEntity();
-        assertThat(form.asMap().get(parameterName)).containsExactly(parameterValues);
+    private HttpRequest<SlackRequestBuilder.Form> verifyRequest() {
+        verify(client).exchange(entity.capture());
+        return entity.getValue();
     }
+
+    private void assertPostedParameterContainsExactly(String parameterName, String parameterValue) {
+        assertThat(verifyRequest())
+                .satisfies(request ->
+                        assertThat(request.getBody().get().get(parameterName)).isEqualTo(parameterValue));
+    }
+
 
 }
