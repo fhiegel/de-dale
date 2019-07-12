@@ -1,0 +1,14 @@
+slack:
+  api-url: ${slack.api.url:`https://slack.com/api/`}
+  channels:
+    default: ${slack.channel.default:`general`}
+    technical: ${slack.channel.technical:`outils`}
+  credentials:
+    tokens:
+      app: ${slack.token.app.value}
+      bot: ${slack.token.bot.value}
+#    client-id: 10144612743.242339181522
+#    client-secret: e602e9b7606038e5de586dac219ea545
+#    signing-secret: e1c3e388e5e7c18cbf0eb6f3ead2108d
+#    verification-token: X07kk0DyUdx2KeZBrMIlBdAv
+#    oauth-Access-token: xoxp-10144612743-10144489795-242479266773-7b3d3c6c54f400f2f6352cf09700b50b

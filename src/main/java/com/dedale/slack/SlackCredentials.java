@@ -1,12 +1,14 @@
 package com.dedale.slack;
 
+import io.micronaut.context.annotation.ConfigurationProperties;
+
 import java.util.Map;
 import java.util.Optional;
 
+@ConfigurationProperties("slack.credentials")
 public class SlackCredentials {
+    public static final String BOT_TOKEN = "bot";
 
-    private String defaultChannel;
-    private String technicalChannel;
     private Map<String, String> tokens = Map.of();
 
     public Map<String, String> getTokens() {
@@ -19,22 +21,6 @@ public class SlackCredentials {
 
     public String getToken(String tokenName) {
         return tokens.get(tokenName);
-    }
-
-    public String getDefaultChannel() {
-        return defaultChannel;
-    }
-
-    public void setDefaultChannel(String defaultChannel) {
-        this.defaultChannel = defaultChannel;
-    }
-
-    public String getTechnicalChannel() {
-        return technicalChannel;
-    }
-
-    public void setTechnicalChannel(String technicalChannel) {
-        this.technicalChannel = technicalChannel;
     }
 
 }

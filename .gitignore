@@ -11,6 +11,7 @@
 **.credentials*
 !**.credentials.sample*
 **.secrets*
+**-secrets*
 
 # Maven
 /target/

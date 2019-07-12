@@ -1,0 +1,9 @@
+slack:
+  api-url: ${slack.api.url:`https://slack.com/api/`}
+  channels:
+    default: ${slack.channel.default:`general`}
+    technical: ${slack.channel.technical:`outils`}
+  credentials:
+    tokens:
+      app: app_token_for_integration_tests
+      bot: bot_token_for_integration_tests

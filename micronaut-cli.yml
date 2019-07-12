@@ -1,0 +1,5 @@
+profile: service
+defaultPackage: com.dedale.slack
+---
+testFramework: junit
+sourceLanguage: java

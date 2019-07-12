@@ -1,7 +1,7 @@
 package com.dedale.slack;
 
-import com.dedale.slack.request.SlackRequest;
-import com.dedale.slack.request.SlackRequestReader;
+import com.dedale.slack.command.request.SlackCommandRequest;
+import com.dedale.slack.command.request.SlackRequestReader;
 import io.micronaut.context.annotation.Factory;
 import io.micronaut.core.convert.TypeConverter;
 
@@ -13,7 +13,7 @@ import java.util.Optional;
 public class SlackFeatures {
 
     @Singleton
-    public TypeConverter<Map<String, String>, SlackRequest> slackRequestConverter() {
+    public TypeConverter<Map<String, String>, SlackCommandRequest> slackRequestConverter() {
         SlackRequestReader reader = new SlackRequestReader();
         return (parameters, targetType, context) -> Optional.of(reader.readFrom(parameters));
     }
