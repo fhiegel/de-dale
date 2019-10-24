@@ -1,6 +1,6 @@
 package com.dedale.slack.client.request;
 
-import com.dedale.slack.command.response.SlackResponse;
+import com.dedale.slack.server.command.response.SlackResponse;
 
 public class Chat extends AbstractRequestMethod<Chat> {
 

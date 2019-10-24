@@ -1,6 +1,5 @@
 package com.dedale.slack.client;
 
-import com.dedale.slack.SlackCredentials;
 import com.dedale.slack.client.request.*;
 import io.micronaut.context.annotation.Value;
 import io.micronaut.http.client.RxHttpClient;

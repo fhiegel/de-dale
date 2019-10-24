@@ -11,7 +11,7 @@
         <micronaut.version>1.1.4</micronaut.version>
         <jdk.version>11</jdk.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <exec.mainClass>com.dedale.Application</exec.mainClass>
+        <exec.mainClass>com.dedale.slack.MicronautSlackServer</exec.mainClass>
 
         <!-- APACHE -->
         <apache.lang.version>3.4</apache.lang.version>
@@ -65,6 +65,12 @@
         <dependency>
             <groupId>io.micronaut</groupId>
             <artifactId>micronaut-http-server-netty</artifactId>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.fasterxml.jackson.module</groupId>
+            <artifactId>jackson-module-parameter-names</artifactId>
+            <version>2.9.9</version>
             <scope>compile</scope>
         </dependency>
         <dependency>
