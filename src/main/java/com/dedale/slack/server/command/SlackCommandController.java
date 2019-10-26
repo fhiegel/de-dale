@@ -6,6 +6,7 @@ import io.micronaut.http.annotation.Controller;
 import io.micronaut.http.annotation.Post;
 import io.micronaut.validation.Validated;
 
+import javax.inject.Inject;
 import javax.validation.Valid;
 import java.util.logging.Logger;
 
@@ -14,6 +15,7 @@ import java.util.logging.Logger;
 public class SlackCommandController {
 
     private static final Logger log = Logger.getLogger(SlackCommandController.class.getName());
+
     private final SlackCommandHandler handler;
 
     SlackCommandController(SlackCommandHandler handler) {

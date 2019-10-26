@@ -9,7 +9,7 @@ import javax.inject.Inject;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-
+@Disabled
 @MicronautTest(environments = "secrets")
 class SlackClientIntegrationTest {
 

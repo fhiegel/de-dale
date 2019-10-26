@@ -61,7 +61,7 @@ public class SlackResponse {
         this.responseType = responseType;
     }
 
-    private List<SlackAttachment> getAttachments() {
+    public List<SlackAttachment> getAttachments() {
         return attachments;
     }
 
@@ -96,6 +96,7 @@ public class SlackResponse {
     public void setChallenge(String challenge) {
         this.challenge = challenge;
     }
+
     // Object implementation methods
 
     @Override

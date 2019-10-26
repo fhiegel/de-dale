@@ -24,7 +24,7 @@ public class SlackEvent {
         this.type = type;
     }
 
-    String getChallenge() {
+    public String getChallenge() {
         return challenge;
     }
 
@@ -32,7 +32,7 @@ public class SlackEvent {
         this.challenge = challenge;
     }
 
-    // Object implementaiton methods
+    // Object implementation methods
 
     @Override
     public String toString() {
