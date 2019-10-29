@@ -1,0 +1,1 @@
+web: java -jar target/slack-client-0.1.0-SNAPSHOT.jar
