@@ -1,6 +1,6 @@
 package com.dedale.slack.server.command;
 
-class SlackCommandBuilder {
+public class SlackCommandBuilder {
 
     private final SlackCommand command = new SlackCommand();
 
@@ -44,7 +44,7 @@ class SlackCommandBuilder {
         return this;
     }
 
-    SlackCommandBuilder withText(String text) {
+    public SlackCommandBuilder withText(String text) {
         command.setText(text);
         return this;
     }
@@ -53,7 +53,7 @@ class SlackCommandBuilder {
         return this;
     }
 
-    SlackCommand asRequest() {
+    public SlackCommand asRequest() {
         return command;
     }
 
