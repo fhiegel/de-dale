@@ -22,7 +22,7 @@
         <maven-compiler-plugin.version>3.6.1</maven-compiler-plugin.version>
         <!-- APACHE -->
         <apache.lang.version>3.4</apache.lang.version>
-        <apache.common.io.version>2.5</apache.common.io.version>
+        <apache.common.io.version>2.7</apache.common.io.version>
 
         <!-- Tests -->
         <junit.version>4.12</junit.version>
